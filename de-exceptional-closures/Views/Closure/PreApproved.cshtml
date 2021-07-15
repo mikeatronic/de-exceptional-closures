@@ -1,7 +1,107 @@
-﻿
+﻿@model de_exceptional_closures.ViewModels.PreApprovedViewModel
 @{
     ViewData["Title"] = "PreApproved";
 }
 
-<h1>PreApproved</h1>
+<form asp-action="PreApproved" asp-controller="Closure" method="post">
+    @Html.AntiForgeryToken()
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
 
+                <partial name="../Components/_errorSummary.cshtml" />
+
+                <h1 class="govuk-heading-l">
+                    Pre-approved exceptional closure
+                </h1>
+
+                <div class="govuk-form-group">
+                    <label asp-for="DateFrom" class="govuk-label"></label>
+                    <span asp-validation-for="DateFrom" class="govuk-error-message"></span>
+
+                    <div class="govuk-date-input" id="StartDate">
+                        <div class="govuk-date-input__item">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-date-input__label" asp-for="DateFromDay">
+                                    Day
+                                </label>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="DateOfDeathDay" asp-for="DateFromDay" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric">
+                                <span asp-validation-for="DateFromDay" class="govuk-error-message"></span>
+                            </div>
+                        </div>
+                        <div class="govuk-date-input__item">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-date-input__label" asp-for="DateFromMonth">
+                                    Month
+                                </label>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="DateOfDeathMonth" asp-for="DateFromMonth" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric">
+                                <span asp-validation-for="DateFromMonth" class="govuk-error-message"></span>
+
+                            </div>
+                        </div>
+                        <div class="govuk-date-input__item">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-date-input__label" asp-for="DateFromYear">
+                                    Year
+                                </label>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-4" asp-for="DateFromYear" type="text" maxlength="4" pattern="[0-9]*" inputmode="numeric">
+                                <span asp-validation-for="DateFromYear" class="govuk-error-message"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 class="govuk-fieldset__heading">
+                                Select the reason for the closure
+                            </h1>
+                        </legend>
+                        <div class="govuk-radios">
+
+
+
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="where-do-you-live" name="where-do-you-live" type="radio" value="england">
+                                <label class="govuk-label govuk-radios__label" for="where-do-you-live">
+                                    England
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="where-do-you-live-2" name="where-do-you-live" type="radio" value="scotland">
+                                <label class="govuk-label govuk-radios__label" for="where-do-you-live-2">
+                                    Scotland
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="where-do-you-live-3" name="where-do-you-live" type="radio" value="wales">
+                                <label class="govuk-label govuk-radios__label" for="where-do-you-live-3">
+                                    Wales
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="where-do-you-live-4" name="where-do-you-live" type="radio" value="northern-ireland">
+                                <label class="govuk-label govuk-radios__label" for="where-do-you-live-4">
+                                    Northern Ireland
+                                </label>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+
+
+                <div class="govuk-form-group">
+                    <label asp-for="OtherReason" class="govuk-label"></label>
+                    <span asp-validation-for="OtherReason" class="govuk-error-message"></span>
+                    <input class="govuk-input govuk-!-width-two-thirds" asp-for="OtherReason" type="text">
+                </div>
+
+                <div class="govuk-form-group">
+                    <input type="submit" id="btnContinueSave" value="Save and continue" name="save" class="govuk-button" data-module="govuk-button" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

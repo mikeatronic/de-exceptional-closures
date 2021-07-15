@@ -1,4 +1,27 @@
-﻿@{
+﻿@model de_exceptional_closures.ViewModels.BaseViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
+<form asp-action="DeceasedOccupation">
+    @Html.AntiForgeryToken()
+    <div class="govuk-width-container">
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+
+                <h1 class="govuk-heading-l">
+                    What exceptional closure would you like to request?
+                </h1>
+
+                <p class="govuk-body">
+                    <a href="@Url.Action("PreApproved", "Closure")" class="govuk-link">Pre-approval</a>
+                </p>
+                <p class="govuk-body">
+                    <a href="@Url.Action("ApprovalRequired", "Closure")" class="govuk-link">Request that required approval</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</form>

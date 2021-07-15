@@ -1,10 +1,13 @@
 ﻿using de_exceptional_closures.Models;
+using de_exceptional_closures.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 namespace de_exceptional_closures.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -14,9 +17,13 @@ namespace de_exceptional_closures.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            BaseViewModel model = new BaseViewModel();
+            model.TitleTagName = "What exceptional closure would you like to request?";
+
+            return View(model);
         }
 
 
