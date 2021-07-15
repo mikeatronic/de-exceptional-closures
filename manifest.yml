@@ -1,0 +1,6 @@
+---
+applications:
+- name: de-exceptional-closures-sandbox
+  buildpacks:
+  - dotnet_core_buildpack
+  memory: 1G

@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - de_exceptional_closures</title>
+
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/sass/site.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+
+    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+    <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
+    <partial name="../Components/_cookieConsentBanner.cshtml" />
+    <partial name="../Components/_header.cshtml" />
+
+    <div class="govuk-width-container app-width-container">
+        <partial name="../Components/_alpha.cshtml" />
+        <div class="govuk__container">
+            <main role="main" class="govuk-main-wrapper" id="main-content">
+                <div class="govuk-grid-row">
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <partial name="../Components/_footer.cshtml" />
+    <partial name="../Shared/_ValidationScriptsPartial.cshtml" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+    <partial name="../Shared/_initializeGOVUKFrontend.cshtml" />
+
+
+</body>
+</html>
