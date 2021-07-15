@@ -1,11 +1,18 @@
 ﻿using de_exceptional_closures_core.Common;
+using de_exceptional_closures_core.Dtos;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace de_exceptional_closures.ViewModels
 {
     public class PreApprovedViewModel : BaseViewModel
     {
+        public PreApprovedViewModel()
+        {
+            ReasonTypeList = new List<ReasonTypeDto>();
+        }
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Date from is required")]
@@ -44,5 +51,7 @@ namespace de_exceptional_closures.ViewModels
         [Display(Name = "Other reason")]
         public string OtherReason { get; set; }
         public ApprovalType ApprovalType => ApprovalType.PreApproved;
+
+        public List<ReasonTypeDto> ReasonTypeList { get; set; }
     }
 }

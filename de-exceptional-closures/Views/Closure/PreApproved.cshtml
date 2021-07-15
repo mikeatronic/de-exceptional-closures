@@ -19,13 +19,13 @@
                     <label asp-for="DateFrom" class="govuk-label"></label>
                     <span asp-validation-for="DateFrom" class="govuk-error-message"></span>
 
-                    <div class="govuk-date-input" id="StartDate">
+                    <div class="govuk-date-input" id="DateFrom">
                         <div class="govuk-date-input__item">
                             <div class="govuk-form-group">
                                 <label class="govuk-label govuk-date-input__label" asp-for="DateFromDay">
                                     Day
                                 </label>
-                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="DateOfDeathDay" asp-for="DateFromDay" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric">
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="DateFromDay" asp-for="DateFromDay" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric">
                                 <span asp-validation-for="DateFromDay" class="govuk-error-message"></span>
                             </div>
                         </div>
@@ -34,7 +34,7 @@
                                 <label class="govuk-label govuk-date-input__label" asp-for="DateFromMonth">
                                     Month
                                 </label>
-                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="DateOfDeathMonth" asp-for="DateFromMonth" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric">
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="DateFromMonth" asp-for="DateFromMonth" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric">
                                 <span asp-validation-for="DateFromMonth" class="govuk-error-message"></span>
 
                             </div>
@@ -54,43 +54,25 @@
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 class="govuk-fieldset__heading">
+                            <h2 class="govuk-fieldset__heading">
                                 Select the reason for the closure
-                            </h1>
+                            </h2>
                         </legend>
                         <div class="govuk-radios">
 
 
-
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="where-do-you-live" name="where-do-you-live" type="radio" value="england">
-                                <label class="govuk-label govuk-radios__label" for="where-do-you-live">
-                                    England
-                                </label>
-                            </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="where-do-you-live-2" name="where-do-you-live" type="radio" value="scotland">
-                                <label class="govuk-label govuk-radios__label" for="where-do-you-live-2">
-                                    Scotland
-                                </label>
-                            </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="where-do-you-live-3" name="where-do-you-live" type="radio" value="wales">
-                                <label class="govuk-label govuk-radios__label" for="where-do-you-live-3">
-                                    Wales
-                                </label>
-                            </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="where-do-you-live-4" name="where-do-you-live" type="radio" value="northern-ireland">
-                                <label class="govuk-label govuk-radios__label" for="where-do-you-live-4">
-                                    Northern Ireland
-                                </label>
-                            </div>
+                            @foreach (var item in Model.ReasonTypeList)
+                            {
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="@item.Id" name="ReasonTypeId" type="radio" value="@item.Id">
+                                    <label class="govuk-label govuk-radios__label" for="@item.Id">
+                                        @item.Description
+                                    </label>
+                                </div>
+                            }
                         </div>
-
                     </fieldset>
                 </div>
-
 
                 <div class="govuk-form-group">
                     <label asp-for="OtherReason" class="govuk-label"></label>

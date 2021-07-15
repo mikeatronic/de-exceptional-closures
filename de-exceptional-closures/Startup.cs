@@ -1,4 +1,7 @@
+using de_exceptional_closures_infraStructure.Features.ReasonType.Validation;
 using de_exceptional_closures_Infrastructure.Data;
+using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
+using System.Reflection;
 
 namespace de_exceptional_closures
 {
@@ -27,12 +31,15 @@ namespace de_exceptional_closures
             services.ConfigureCloudFoundryOptions(Configuration);
             CloudFoundryServicesOptions = Configuration.GetSection("vcap").Get<CloudFoundryServicesOptions>();
 
+            // Third party libraries
+            services.AddAutoMapper(typeof(Startup).GetTypeInfo().Assembly, typeof(ApplicationDbContext).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(ApplicationDbContext).GetTypeInfo().Assembly);
+            services.AddMvc().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<GetAllReasonTypesQueryValidator>());
+
+            // Setup mysql database
             services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration));
 
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(
-            //        Configuration.GetConnectionString("DefaultConnection")));
-
+            // Setup identity
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
