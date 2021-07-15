@@ -3,4 +3,6 @@ applications:
 - name: de-exceptional-closures-sandbox
   buildpacks:
   - dotnet_core_buildpack
-  memory: 1G
+  memory: 256M
+  services:
+  - de-exceptional-closures-mysql
