@@ -59,8 +59,6 @@
                             </h2>
                         </legend>
                         <div class="govuk-radios">
-
-
                             @foreach (var item in Model.ReasonTypeList)
                             {
                                 <div class="govuk-radios__item">
@@ -76,12 +74,11 @@
 
                 <div class="govuk-form-group">
                     <label asp-for="OtherReason" class="govuk-label"></label>
-                    <span asp-validation-for="OtherReason" class="govuk-error-message"></span>
-                    <input class="govuk-input govuk-!-width-two-thirds" asp-for="OtherReason" type="text">
+                    <textarea class="govuk-textarea" asp-for="OtherReason"></textarea>
                 </div>
 
                 <div class="govuk-form-group">
-                    <input type="submit" id="btnContinueSave" value="Save and continue" name="save" class="govuk-button" data-module="govuk-button" />
+                    <input type="submit" id="btnContinueSave" value="Submit" name="Submit" class="govuk-button" data-module="govuk-button" />
                 </div>
             </div>
         </div>

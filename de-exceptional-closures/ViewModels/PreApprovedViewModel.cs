@@ -49,8 +49,9 @@ namespace de_exceptional_closures.ViewModels
         public int ReasonTypeId { get; set; }
 
         [Display(Name = "Other reason")]
+        [MinLength(5)]
+        [MaxLength(1024)]
         public string OtherReason { get; set; }
-        public ApprovalType ApprovalType => ApprovalType.PreApproved;
 
         public List<ReasonTypeDto> ReasonTypeList { get; set; }
     }
