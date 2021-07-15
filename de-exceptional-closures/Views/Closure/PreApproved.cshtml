@@ -62,7 +62,7 @@
                             @foreach (var item in Model.ReasonTypeList)
                             {
                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="@item.Id" name="ReasonTypeId" type="radio" value="@item.Id">
+                                    <input class="govuk-radios__input" id="@item.Id" name="ReasonTypeId" type="radio" value="@item.Id" onchange="showHideOtherReason(@item.Id);">
                                     <label class="govuk-label govuk-radios__label" for="@item.Id">
                                         @item.Description
                                     </label>
@@ -72,9 +72,9 @@
                     </fieldset>
                 </div>
 
-                <div class="govuk-form-group">
+                <div class="govuk-form-group" id="OtherReasons" style="display:none;">
                     <label asp-for="OtherReason" class="govuk-label"></label>
-                    <textarea class="govuk-textarea" asp-for="OtherReason"></textarea>
+                    <textarea class="govuk-textarea" rows="10" asp-for="OtherReason"></textarea>
                 </div>
 
                 <div class="govuk-form-group">

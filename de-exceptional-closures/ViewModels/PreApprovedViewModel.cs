@@ -49,7 +49,7 @@ namespace de_exceptional_closures.ViewModels
         public int ReasonTypeId { get; set; }
 
         [Display(Name = "Other reason")]
-        [MinLength(5)]
+        [MinLength(10)]
         [MaxLength(1024)]
         public string OtherReason { get; set; }
 
