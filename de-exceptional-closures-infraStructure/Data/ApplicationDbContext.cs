@@ -13,6 +13,7 @@ namespace de_exceptional_closures_Infrastructure.Data
 
         public DbSet<ReasonType> ReasonType { get; set; }
         public DbSet<ClosureReason> ClosureReason { get; set; }
+        public DbSet<ApprovalType> ApprovalType { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,6 +25,11 @@ namespace de_exceptional_closures_Infrastructure.Data
                         new ReasonType { Id = 4, Description = "Death of a member of staff, pupil or another person working at the school" },
                         new ReasonType { Id = 5, Description = "Other (inc. COVID-19; please enter start and proposed end date)" }
                         );
+
+            modelBuilder.Entity<ApprovalType>()
+                      .HasData(new ApprovalType { Id = 1, Description = "Pre-approved" },
+                               new ApprovalType { Id = 2, Description = "Approval required" }
+             );
 
             base.OnModelCreating(modelBuilder);
         }
