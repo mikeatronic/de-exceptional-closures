@@ -18,7 +18,7 @@ namespace de_exceptional_closures_Infrastructure.Data
         {
 
             modelBuilder.Entity<ReasonType>()
-             .HasData(  new ReasonType { Id = 1, Description = "Adverse weather" },
+             .HasData(new ReasonType { Id = 1, Description = "Adverse weather" },
                         new ReasonType { Id = 2, Description = "Use as a polling station" },
                         new ReasonType { Id = 3, Description = "Utilities failure (e.g. water, electricity)" },
                         new ReasonType { Id = 4, Description = "Death of a member of staff, pupil or another person working at the school" },
