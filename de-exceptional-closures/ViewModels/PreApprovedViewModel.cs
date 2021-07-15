@@ -1,5 +1,4 @@
-﻿using de_exceptional_closures_core.Common;
-using de_exceptional_closures_core.Dtos;
+﻿using de_exceptional_closures_core.Dtos;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

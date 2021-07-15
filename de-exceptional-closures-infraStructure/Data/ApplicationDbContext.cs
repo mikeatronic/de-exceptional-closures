@@ -31,6 +31,9 @@ namespace de_exceptional_closures_Infrastructure.Data
                                new ApprovalType { Id = 2, Description = "Approval required" }
              );
 
+         
+         //   modelBuilder.Entity<ClosureReason>().HasQueryFilter(f => EF.Property<int>(f, "UserId") == _userProvider.GetSolicitorFirmId(this).GetAwaiter().GetResult().Value);
+
             base.OnModelCreating(modelBuilder);
         }
     }

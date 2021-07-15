@@ -10,7 +10,7 @@ namespace de_exceptional_closures.Mapping
         {
             CreateMap<PreApprovedViewModel, ClosureReasonDto>();
             CreateMap<ClosureReasonDto, PreApprovedViewModel>();
-                
+
         }
     }
 }
