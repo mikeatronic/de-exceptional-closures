@@ -1,7 +1,91 @@
-﻿
+﻿@model de_exceptional_closures.ViewModels.ApprovalRequiredViewModel
 @{
     ViewData["Title"] = "ApprovalRequired";
 }
 
-<h1>ApprovalRequired</h1>
+<form asp-action="ApprovalRequired" asp-controller="Closure" method="post">
+    @Html.AntiForgeryToken()
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+
+                <partial name="../Components/_errorSummary.cshtml" />
+
+                <h1 class="govuk-heading-l">
+                    Pre-approved exceptional closure
+                </h1>
+
+                <div class="govuk-inset-text">
+                    We need you to give us some details about the closure. First tell us the date you closed, or plan to close, xxxx School below.
+                </div>
+
+                <div class="govuk-form-group">
+                    <label asp-for="DateFrom" class="govuk-label"></label>
+                    <span asp-validation-for="DateFrom" class="govuk-error-message"></span>
+
+                    <div class="govuk-date-input" id="DateFrom">
+                        <div class="govuk-date-input__item">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-date-input__label" asp-for="DateFromDay">
+                                    Day
+                                </label>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="DateFromDay" asp-for="DateFromDay" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric">
+                                <span asp-validation-for="DateFromDay" class="govuk-error-message"></span>
+                            </div>
+                        </div>
+                        <div class="govuk-date-input__item">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-date-input__label" asp-for="DateFromMonth">
+                                    Month
+                                </label>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="DateFromMonth" asp-for="DateFromMonth" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric">
+                                <span asp-validation-for="DateFromMonth" class="govuk-error-message"></span>
+
+                            </div>
+                        </div>
+                        <div class="govuk-date-input__item">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-date-input__label" asp-for="DateFromYear">
+                                    Year
+                                </label>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-4" asp-for="DateFromYear" type="text" maxlength="4" pattern="[0-9]*" inputmode="numeric">
+                                <span asp-validation-for="DateFromYear" class="govuk-error-message"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h2 class="govuk-fieldset__heading">
+                                Select the reason for the closure
+                            </h2>
+                        </legend>
+                        <div class="govuk-radios">
+                            @foreach (var item in Model.ReasonTypeList)
+                            {
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="@item.Id" name="ReasonTypeId" type="radio" value="@item.Id" onchange="showHideOtherReason(@item.Id);">
+                                    <label class="govuk-label govuk-radios__label" for="@item.Id">
+                                        @item.Description
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="govuk-form-group" id="OtherReasons" style="display:none;">
+                    <label asp-for="OtherReason" class="govuk-label"></label>
+                    <textarea class="govuk-textarea" rows="10" asp-for="OtherReason"></textarea>
+                </div>
+
+                <div class="govuk-form-group">
+                    <input type="submit" id="btnContinueSave" value="Submit" name="Submit" class="govuk-button" data-module="govuk-button" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 

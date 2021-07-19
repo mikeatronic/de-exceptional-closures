@@ -19,6 +19,10 @@ namespace de_exceptional_closures.ViewModels
         [DataType(DataType.Date)]
         public DateTime DateFrom { get; set; }
 
+        [Display(Name = "Date to")]
+        [DataType(DataType.Date)]
+        public DateTime? DateTo { get; set; }
+
         /// <summary>
         /// Gets or sets "Date of death Day.
         /// </summary>
@@ -43,7 +47,6 @@ namespace de_exceptional_closures.ViewModels
         [Range(2000, 2100, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateFromYear { get; set; }
 
-        public DateTime DateTo { get; set; }
         [Required(ErrorMessage = "Reason type required")]
         public int ReasonTypeId { get; set; }
 

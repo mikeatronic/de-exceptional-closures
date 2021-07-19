@@ -28,13 +28,11 @@ namespace de_exceptional_closures
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetAllReasonTypesQueryValidator>());
+            services.AddSingleton(services);
+            services.AddOptions();
             services.ConfigureCloudFoundryOptions(Configuration);
             CloudFoundryServicesOptions = Configuration.GetSection("vcap").Get<CloudFoundryServicesOptions>();
-
-            // Third party libraries
-            services.AddAutoMapper(typeof(Startup).GetTypeInfo().Assembly, typeof(ApplicationDbContext).GetTypeInfo().Assembly);
-            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(ApplicationDbContext).GetTypeInfo().Assembly);
-            services.AddMvc().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<GetAllReasonTypesQueryValidator>());
 
             // Setup mysql database
             services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration));
@@ -42,6 +40,10 @@ namespace de_exceptional_closures
             // Setup identity
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // Third party libraries
+            services.AddAutoMapper(typeof(Startup).GetTypeInfo().Assembly, typeof(ApplicationDbContext).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(ApplicationDbContext).GetTypeInfo().Assembly);
 
             services.AddControllersWithViews();
             services.AddRazorPages();

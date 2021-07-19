@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace de_exceptional_closures.Controllers
 {
@@ -73,9 +74,9 @@ namespace de_exceptional_closures.Controllers
             reasonDto.ApprovalTypeId = (int)ApprovalType.PreApproved;
             reasonDto.DateCreated = DateTime.Now;
 
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-
-            reasonDto.UserId = user.Id;
+            //  var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            //
+            //  reasonDto.UserId = user.Id;
 
             var createClosureReason = await _mediator.Send(new CreateClosureReasonCommand() { ClosureReasonDto = reasonDto });
 
@@ -96,6 +97,56 @@ namespace de_exceptional_closures.Controllers
 
         [HttpGet]
         public IActionResult ApprovalRequired()
+        {
+            ApprovalRequiredViewModel model = new ApprovalRequiredViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApprovalRequiredAsync(ApprovalRequiredViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            DateTime deceasedDob;
+
+            // Check for valid dates
+            if (DateTime.TryParse(CreateDate(model.DateFromYear.ToString(), model.DateFromMonth.ToString(), model.DateFromDay.ToString()), out deceasedDob))
+            {
+                model.DateFrom = new DateTime(deceasedDob.Year, deceasedDob.Month, deceasedDob.Day);
+            }
+            else
+            {
+                ModelState.AddModelError("DateFrom", "Please enter in a valid date");
+                return View(model);
+            }
+
+            // Add code when Database is done to actually save data.
+            var reasonDto = _mapper.Map<ClosureReasonDto>(model);
+            reasonDto.ApprovalTypeId = (int)ApprovalType.ApprovalRequired;
+            reasonDto.DateCreated = DateTime.Now;
+
+            // var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            //   reasonDto.UserId = user.Id;
+
+            var createClosureReason = await _mediator.Send(new CreateClosureReasonCommand() { ClosureReasonDto = reasonDto });
+
+            if (createClosureReason.IsFailure)
+            {
+                return View(model);
+            }
+
+            return RedirectToAction("Submitted");
+        }
+
+
+        [HttpGet]
+        public IActionResult MyClosures()
         {
             return View();
         }

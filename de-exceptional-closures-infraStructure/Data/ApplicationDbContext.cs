@@ -1,14 +1,28 @@
 ﻿using de_exceptional_closures_core.Entities;
+using dss_common.Extensions;
+using dss_common.Functional;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace de_exceptional_closures_Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private IServiceProvider _services;
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor, IServiceProvider services)
             : base(options)
         {
+            _httpContextAccessor = httpContextAccessor;
+            _services = services;
         }
 
         public DbSet<ReasonType> ReasonType { get; set; }
@@ -31,10 +45,46 @@ namespace de_exceptional_closures_Infrastructure.Data
                                new ApprovalType { Id = 2, Description = "Approval required" }
              );
 
-         
-         //   modelBuilder.Entity<ClosureReason>().HasQueryFilter(f => EF.Property<int>(f, "UserId") == _userProvider.GetSolicitorFirmId(this).GetAwaiter().GetResult().Value);
+            modelBuilder.Entity<ClosureReason>().HasQueryFilter(f => EF.Property<string>(f, "UserId") == GetCurrentUserId().GetAwaiter().GetResult().Value);
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e => (e.Entity is BaseUserEntity<int>) && (
+                                e.State == EntityState.Added
+                                || e.State == EntityState.Modified
+                                || e.State == EntityState.Deleted));
+
+            foreach (var entityEntry in entries)
+            {
+                if (entityEntry.State == EntityState.Added)
+                    if (entityEntry.Metadata.GetProperties().Any(p => p.Name == "UserId"))
+                    {
+                        var userResult = await GetCurrentUserId();
+                        if (userResult.IsSuccess)
+                            entityEntry.CurrentValues["UserId"] = userResult.Value;
+                    }
+            }
+
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<Result<string>> GetCurrentUserId()
+        {
+            var manager = _services.GetRequiredService<UserManager<IdentityUser>>();
+
+            var userResult = (await manager.GetUserAsync(_httpContextAccessor.HttpContext.User)).ToMaybe();
+
+            return !userResult.HasValue ? Result.Fail<string>("User not found") : Result.Ok(userResult.Value.Id);
+        }
+
+        public override int SaveChanges()
+        {
+            return SaveChangesAsync().GetAwaiter().GetResult();
         }
     }
 }

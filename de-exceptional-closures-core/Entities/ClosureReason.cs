@@ -2,9 +2,8 @@
 
 namespace de_exceptional_closures_core.Entities
 {
-    public class ClosureReason : BaseEntity<int>
+    public class ClosureReason : BaseUserEntity<int>
     {
-        public string UserId { get; set; }
         public string InstitutionName { get; set; }
         public string Srn { get; set; }
         public DateTime DateFrom { get; set; }

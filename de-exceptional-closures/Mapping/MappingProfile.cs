@@ -8,9 +8,10 @@ namespace de_exceptional_closures.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<PreApprovedViewModel, ClosureReasonDto>();
-            CreateMap<ClosureReasonDto, PreApprovedViewModel>();
-
+            CreateMap<PreApprovedViewModel, ClosureReasonDto>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+            CreateMap<ClosureReasonDto, PreApprovedViewModel>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }
