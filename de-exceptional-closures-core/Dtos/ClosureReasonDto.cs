@@ -10,6 +10,7 @@ namespace de_exceptional_closures_core.Dtos
         public DateTime DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
         public int ReasonTypeId { get; set; }
+        public string ReasonType { get; set; }
         public string OtherReason { get; set; }
         public bool Approved { get; set; }
         public DateTime? ApprovalDate { get; set; }

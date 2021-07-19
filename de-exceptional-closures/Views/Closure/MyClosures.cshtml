@@ -15,11 +15,11 @@
         <caption class="govuk-table__caption sr-only">List of Probate applications</caption>
         <thead class="text-left">
             <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">institution</th>
+                <th scope="col" class="govuk-table__header">Institution</th>
                 <th scope="col" class="govuk-table__header table-hide-Column">Date from</th>
                 <th scope="col" class="govuk-table__header table-hide-Column">Date to</th>
-                <th scope="col" class="govuk-table__header table-hide-Column text-right text-nowrap">Reason</th>
-                <th scope="col" class="govuk-table__header table-hide-Column text-right text-nowrap">Approved</th>
+                <th scope="col" class="govuk-table__header table-hide-Column">Reason</th>
+                <th scope="col" class="govuk-table__header table-hide-Column">Approved</th>
                 <th scope="col" class="govuk-table__header sorting_disabled"><span class="sr-only">Detail button</span>Detail</th>
             </tr>
         </thead>
@@ -30,17 +30,17 @@
                     <td class="govuk-table__cell">
                         @item.InstitutionName
                     </td>
-                    <td class="govuk-table__cell table-hide-Column text-right">
+                    <td class="govuk-table__cell table-hide-Column">
                        @item.DateFrom
                     </td>
-                    <td class="govuk-table__cell table-hide-Column text-right">
+                    <td class="govuk-table__cell table-hide-Column">
                         @item.DateTo
                     </td>
                     <td class="govuk-table__cell table-hide-Column">
-                      @item.ReasonTypeId
+                      @item.ReasonType
                     </td>
                     <td class="govuk-table__cell table-hide-Column">
-                       
+                       @item.ApprovalTypeId
                     </td>
                     <td class="govuk-table__cell">
                     
