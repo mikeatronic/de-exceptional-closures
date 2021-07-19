@@ -8,7 +8,14 @@
          <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
          <nav role="navigation" aria-label="Top Level Navigation" data-html2canvas-ignore="true">
              <ul id="navigation" class="govuk-header__navigation nidirect-header__navigation">
-                  <partial name="_LoginPartial" />
+                 @*<li class="govuk-header__navigation-item nidirect-header__navigation-item @(Model.SectionName == "My closures" ? "nidirect-header__navigation-item--active" : string.Empty)">*@
+                 <li class="govuk-header__navigation-item nidirect-header__navigation-item">
+
+                     <a class="govuk-header__link" asp-controller="Closure" asp-action="MyClosures">
+                         My closures
+                     </a>
+                 </li>
+                 <partial name="_LoginPartial" />
              </ul>
          </nav>
      </div>

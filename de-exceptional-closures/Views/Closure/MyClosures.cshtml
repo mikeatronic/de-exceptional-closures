@@ -1,7 +1,61 @@
-﻿
+﻿@model de_exceptional_closures.ViewModels.MyClosuresViewModel
 @{
     ViewData["Title"] = "MyClosures";
 }
 
-<h1>MyClosures</h1>
+<div class="govuk-grid-column-full">
 
+    <h1 class="govuk-heading-l">My closures</h1>
+
+    <a asp-action="Index" asp-controller="Home" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+        Create closure
+    </a>
+
+    <table class="govuk-table" id="ApplicationTable">
+        <caption class="govuk-table__caption sr-only">List of Probate applications</caption>
+        <thead class="text-left">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">institution</th>
+                <th scope="col" class="govuk-table__header table-hide-Column">Date from</th>
+                <th scope="col" class="govuk-table__header table-hide-Column">Date to</th>
+                <th scope="col" class="govuk-table__header table-hide-Column text-right text-nowrap">Reason</th>
+                <th scope="col" class="govuk-table__header table-hide-Column text-right text-nowrap">Approved</th>
+                <th scope="col" class="govuk-table__header sorting_disabled"><span class="sr-only">Detail button</span>Detail</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body text-left">
+            @foreach (var item in Model.ClosureList)
+            {
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">
+                        @item.InstitutionName
+                    </td>
+                    <td class="govuk-table__cell table-hide-Column text-right">
+                       @item.DateFrom
+                    </td>
+                    <td class="govuk-table__cell table-hide-Column text-right">
+                        @item.DateTo
+                    </td>
+                    <td class="govuk-table__cell table-hide-Column">
+                      @item.ReasonTypeId
+                    </td>
+                    <td class="govuk-table__cell table-hide-Column">
+                       
+                    </td>
+                    <td class="govuk-table__cell">
+                    
+                                @*<a asp-controller="Application" asp-action="Step1" asp-area="LetterOfAdmin" asp-route-id="@item.ApplicationId" class="govuk-link">Review</a>*@
+                        
+                        
+                     
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts 
+{
+    <script src="~/scripts/myclosures.js"></script>
+}

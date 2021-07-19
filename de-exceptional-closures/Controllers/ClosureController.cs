@@ -3,12 +3,13 @@ using de_exceptional_closures.ViewModels;
 using de_exceptional_closures_core.Common;
 using de_exceptional_closures_core.Dtos;
 using de_exceptional_closures_infraStructure.Features.ClosureReason.Commands;
+using de_exceptional_closures_infraStructure.Features.ClosureReason.Queries;
 using de_exceptional_closures_infraStructure.Features.ReasonType.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace de_exceptional_closures.Controllers
@@ -16,15 +17,13 @@ namespace de_exceptional_closures.Controllers
     [Authorize]
     public class ClosureController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
-        public ClosureController(IMediator mediator, IMapper mapper, UserManager<IdentityUser> userManager)
+        public ClosureController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
             _mapper = mapper;
-            _userManager = userManager;
         }
 
         [HttpGet]
@@ -74,10 +73,6 @@ namespace de_exceptional_closures.Controllers
             reasonDto.ApprovalTypeId = (int)ApprovalType.PreApproved;
             reasonDto.DateCreated = DateTime.Now;
 
-            //  var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            //
-            //  reasonDto.UserId = user.Id;
-
             var createClosureReason = await _mediator.Send(new CreateClosureReasonCommand() { ClosureReasonDto = reasonDto });
 
             if (createClosureReason.IsFailure)
@@ -96,9 +91,21 @@ namespace de_exceptional_closures.Controllers
 
 
         [HttpGet]
-        public IActionResult ApprovalRequired()
+        public async Task<IActionResult> ApprovalRequiredAsync()
         {
             ApprovalRequiredViewModel model = new ApprovalRequiredViewModel();
+
+            var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
+
+            if (getReasons.IsFailure)
+            {
+                return View(model);
+            }
+
+            foreach (var item in getReasons.Value)
+            {
+                model.ReasonTypeList.Add(item);
+            }
 
             return View(model);
         }
@@ -130,10 +137,6 @@ namespace de_exceptional_closures.Controllers
             reasonDto.ApprovalTypeId = (int)ApprovalType.ApprovalRequired;
             reasonDto.DateCreated = DateTime.Now;
 
-            // var user = await _userManager.FindByNameAsync(User.Identity.Name);
-
-            //   reasonDto.UserId = user.Id;
-
             var createClosureReason = await _mediator.Send(new CreateClosureReasonCommand() { ClosureReasonDto = reasonDto });
 
             if (createClosureReason.IsFailure)
@@ -146,9 +149,23 @@ namespace de_exceptional_closures.Controllers
 
 
         [HttpGet]
-        public IActionResult MyClosures()
+        public async Task<IActionResult> MyClosures()
         {
-            return View();
+            MyClosuresViewModel model = new MyClosuresViewModel();
+
+            model.SectionName = "My closures";
+            model.TitleTagName = "My closures";
+
+            var getAllClosures = await _mediator.Send(new GetAllClosuresQuery());
+
+            if (getAllClosures.IsFailure)
+            {
+                return View(model);
+            }
+
+            model.ClosureList = _mapper.Map<List<ClosureReasonDto>>(getAllClosures.Value); 
+
+            return View(model);
         }
 
         public string CreateDate(string dateOfBirthYear, string dateOfBirthMonth, string dateOfBirthDay)
