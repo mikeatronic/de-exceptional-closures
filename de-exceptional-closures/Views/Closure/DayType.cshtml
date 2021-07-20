@@ -1,0 +1,41 @@
+﻿@model de_exceptional_closures.ViewModels.Closure.DayTypeViewModel 
+@{
+    ViewData["Title"] = "DayType";
+}
+
+<form asp-action="DayType" asp-controller="Closure">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(i => i.ApprovalType)
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+
+                <a href="javascript:history.go(-1)" class="govuk-back-link">Back</a>
+
+                <partial name="../Components/_errorSummary.cshtml" />
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset" aria-describedby="changed-name-hint">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 class="govuk-fieldset__heading">@Model.TitleTagName</h1>
+                        </legend>
+
+                        <span asp-validation-for="IsSingleDay" class="govuk-error-message">
+                        </span>
+                        <div id="changed-name-hint" class="govuk-hint"></div>
+                        <div class="govuk-radios govuk-radios--inline">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="IsSingleDay" name="IsSingleDay" type="radio" value="true" data-val="true" data-val-required="IsSingleDay">
+                                <label class="govuk-label govuk-radios__label" for="IsSingleDay">Yes</label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="IsSingleDay-2" name="IsSingleDay" type="radio" value="false">
+                                <label class="govuk-label govuk-radios__label" for="IsSingleDay-2">No</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <input type="submit" value="Continue" name="save" class="govuk-button" data-module="govuk-button" />
+            </div>
+        </div>
+    </div>
+</form>

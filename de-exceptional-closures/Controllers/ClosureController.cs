@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using de_exceptional_closures.ViewModels;
+using de_exceptional_closures.ViewModels.Closure;
 using de_exceptional_closures_core.Common;
 using de_exceptional_closures_core.Dtos;
 using de_exceptional_closures_infraStructure.Features.ClosureReason.Commands;
@@ -27,9 +28,52 @@ namespace de_exceptional_closures.Controllers
         }
 
         [HttpGet]
-        public async System.Threading.Tasks.Task<IActionResult> PreApprovedAsync()
+        public IActionResult DayType(int approvalType)
+        {
+            DayTypeViewModel model = new DayTypeViewModel();
+            model.TitleTagName = "Is the closure for a single day?";
+            model.ApprovalType = approvalType;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DayType(DayTypeViewModel model)
+        {
+            model.TitleTagName = "Is the closure for a single day?";
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (model.ApprovalType == (int)ApprovalType.PreApproved && model.IsSingleDay)
+            {
+                return RedirectToAction("PreApproved", "Closure", new { isSingleDay = true });
+            }
+            else if (model.ApprovalType == (int)ApprovalType.PreApproved && !model.IsSingleDay)
+            {
+                return RedirectToAction("PreApproved", "Closure", new { isSingleDay = false });
+            }
+
+            if (model.ApprovalType == (int)ApprovalType.ApprovalRequired && model.IsSingleDay)
+            {
+                return RedirectToAction("ApprovalRequired", "Closure", new { isSingleDay = true });
+            }
+            else if (model.ApprovalType == (int)ApprovalType.ApprovalRequired && !model.IsSingleDay)
+            {
+                return RedirectToAction("ApprovalRequired", "Closure", new { isSingleDay = false });
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> PreApproved(bool isSingleDay)
         {
             PreApprovedViewModel model = new PreApprovedViewModel();
+            model.IsSingleDay = isSingleDay;
 
             var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
 
@@ -48,24 +92,40 @@ namespace de_exceptional_closures.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async System.Threading.Tasks.Task<IActionResult> PreApprovedAsync(PreApprovedViewModel model)
+        public async Task<IActionResult> PreApprovedAsync(PreApprovedViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            DateTime deceasedDob;
+            DateTime datefrom;
 
             // Check for valid dates
-            if (DateTime.TryParse(CreateDate(model.DateFromYear.ToString(), model.DateFromMonth.ToString(), model.DateFromDay.ToString()), out deceasedDob))
+            if (DateTime.TryParse(CreateDate(model.DateFromYear.ToString(), model.DateFromMonth.ToString(), model.DateFromDay.ToString()), out datefrom))
             {
-                model.DateFrom = new DateTime(deceasedDob.Year, deceasedDob.Month, deceasedDob.Day);
+                model.DateFrom = new DateTime(datefrom.Year, datefrom.Month, datefrom.Day);
             }
             else
             {
                 ModelState.AddModelError("DateFrom", "Please enter in a valid date");
                 return View(model);
+            }
+
+            if (!model.IsSingleDay)
+            {
+                DateTime dateTo;
+
+                // Check for valid dates
+                if (DateTime.TryParse(CreateDate(model.DateToYear.ToString(), model.DateToMonth.ToString(), model.DateToDay.ToString()), out dateTo))
+                {
+                    model.DateTo = new DateTime(dateTo.Year, dateTo.Month, dateTo.Day);
+                }
+                else
+                {
+                    ModelState.AddModelError("DateTo", "Please enter in a valid date");
+                    return View(model);
+                }
             }
 
             // Add code when Database is done to actually save data.
@@ -89,11 +149,11 @@ namespace de_exceptional_closures.Controllers
             return View();
         }
 
-
         [HttpGet]
-        public async Task<IActionResult> ApprovalRequiredAsync()
+        public async Task<IActionResult> ApprovalRequired(bool isSingleDay)
         {
             ApprovalRequiredViewModel model = new ApprovalRequiredViewModel();
+            model.IsSingleDay = isSingleDay;
 
             var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
 
@@ -132,6 +192,23 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
+
+            if (!model.IsSingleDay)
+            {
+                DateTime dateTo;
+
+                // Check for valid dates
+                if (DateTime.TryParse(CreateDate(model.DateToYear.ToString(), model.DateToMonth.ToString(), model.DateToDay.ToString()), out dateTo))
+                {
+                    model.DateTo = new DateTime(dateTo.Year, dateTo.Month, dateTo.Day);
+                }
+                else
+                {
+                    ModelState.AddModelError("DateTo", "Please enter in a valid date");
+                    return View(model);
+                }
+            }
+
             // Add code when Database is done to actually save data.
             var reasonDto = _mapper.Map<ClosureReasonDto>(model);
             reasonDto.ApprovalTypeId = (int)ApprovalType.ApprovalRequired;
@@ -163,7 +240,7 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
-            model.ClosureList = _mapper.Map<List<ClosureReasonDto>>(getAllClosures.Value); 
+            model.ClosureList = _mapper.Map<List<ClosureReasonDto>>(getAllClosures.Value);
 
             return View(model);
         }

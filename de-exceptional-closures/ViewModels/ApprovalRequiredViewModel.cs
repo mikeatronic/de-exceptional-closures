@@ -23,29 +23,32 @@ namespace de_exceptional_closures.ViewModels
         [DataType(DataType.Date)]
         public DateTime? DateTo { get; set; }
 
-        /// <summary>
-        /// Gets or sets "Date of death Day.
-        /// </summary>
         [Required(ErrorMessage = "Date from day is required")]
         [Display(Name = "Day")]
         [Range(1, 31, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateFromDay { get; set; }
 
-        /// <summary>
-        /// Gets or sets "Date of death Month.
-        /// </summary>
         [Required(ErrorMessage = "Date from month is required")]
         [Display(Name = "Month")]
         [Range(1, 12, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateFromMonth { get; set; }
 
-        /// <summary>
-        /// Gets or sets "Date of death Year.
-        /// </summary>
         [Required(ErrorMessage = "Date from year is required")]
         [Display(Name = "Year")]
         [Range(2000, 2100, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateFromYear { get; set; }
+
+        [Display(Name = "Day")]
+        [Range(1, 31, ErrorMessage = "{0} must be between {1} and {2}")]
+        public int? DateToDay { get; set; }
+
+        [Display(Name = "Month")]
+        [Range(1, 12, ErrorMessage = "{0} must be between {1} and {2}")]
+        public int? DateToMonth { get; set; }
+
+        [Display(Name = "Year")]
+        [Range(2000, 2100, ErrorMessage = "{0} must be between {1} and {2}")]
+        public int? DateToYear { get; set; }
 
         [Required(ErrorMessage = "Reason type required")]
         public int ReasonTypeId { get; set; }
@@ -54,6 +57,8 @@ namespace de_exceptional_closures.ViewModels
         [MinLength(10)]
         [MaxLength(1024)]
         public string OtherReason { get; set; }
+
+        public bool IsSingleDay { get; set; }
 
         public List<ReasonTypeDto> ReasonTypeList { get; set; }
     }

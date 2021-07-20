@@ -5,11 +5,12 @@
 
 <form asp-action="ApprovalRequired" asp-controller="Closure" method="post">
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(i => i.IsSingleDay)
     <div class="govuk-width-container">
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
 
-                <a href="@Url.Action("Index","Home")" class="govuk-back-link">Back</a>
+                <a href="javascript:history.go(-1)" class="govuk-back-link">Back</a>
 
                 <partial name="../Components/_errorSummary.cshtml" />
 
@@ -56,6 +57,45 @@
                         </div>
                     </div>
                 </div>
+
+                @if (!Model.IsSingleDay)
+                {
+                    <div class="govuk-form-group">
+                        <label asp-for="DateTo" class="govuk-label"></label>
+                        <span asp-validation-for="DateTo" class="govuk-error-message"></span>
+
+                        <div class="govuk-date-input" id="DateTo">
+                            <div class="govuk-date-input__item">
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label govuk-date-input__label" asp-for="DateToDay">
+                                        Day
+                                    </label>
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="DateToDay" asp-for="DateToDay" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric">
+                                    <span asp-validation-for="DateToDay" class="govuk-error-message"></span>
+                                </div>
+                            </div>
+                            <div class="govuk-date-input__item">
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label govuk-date-input__label" asp-for="DateToMonth">
+                                        Month
+                                    </label>
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="DateToMonth" asp-for="DateToMonth" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric">
+                                    <span asp-validation-for="DateToMonth" class="govuk-error-message"></span>
+
+                                </div>
+                            </div>
+                            <div class="govuk-date-input__item">
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label govuk-date-input__label" asp-for="DateToYear">
+                                        Year
+                                    </label>
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-4" asp-for="DateToYear" type="text" maxlength="4" pattern="[0-9]*" inputmode="numeric">
+                                    <span asp-validation-for="DateToYear" class="govuk-error-message"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
 
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">

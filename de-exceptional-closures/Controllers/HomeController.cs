@@ -1,5 +1,6 @@
 ﻿using de_exceptional_closures.Models;
-using de_exceptional_closures.ViewModels;
+using de_exceptional_closures.ViewModels.Home;
+using de_exceptional_closures_core.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,12 +21,30 @@ namespace de_exceptional_closures.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            BaseViewModel model = new BaseViewModel();
-            model.TitleTagName = "What exceptional closure would you like to request?";
+            IndexViewModel model = new IndexViewModel();
+            model.TitleTagName = "Is your exceptional closure pre-approved?";
 
             return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Index(IndexViewModel model)
+        {
+            model.TitleTagName = "Is your exceptional closure pre-approved?";
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (model.IsPreApproved)
+            {
+                return RedirectToAction("DayType", "Closure", new { approvalType = (int)ApprovalType.PreApproved });
+            }
+
+            return RedirectToAction("DayType", "Closure", new { approvalType = (int)ApprovalType.ApprovalRequired });
+        }
 
         public IActionResult Privacy()
         {
