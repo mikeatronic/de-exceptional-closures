@@ -11,7 +11,7 @@
         Create closure
     </a>
 
-    <table class="govuk-table" id="ApplicationTable">
+    <table class="govuk-table" id="MyClosuresTable">
         <caption class="govuk-table__caption sr-only">List of Probate applications</caption>
         <thead class="text-left">
             <tr class="govuk-table__row">
@@ -29,12 +29,17 @@
                 <tr class="govuk-table__row">
                     <td class="govuk-table__cell">
                         @item.InstitutionName
+                        Campbell College
                     </td>
                     <td class="govuk-table__cell table-hide-Column">
-                       @item.DateFrom
+                        @*<span class="hide">@item.DateFrom.Year@Math.Round((item.DateFrom.Month / 1.3), 1)@Math.Round((item.DateFrom.Day / 3.2), 1)</span>*@
+                        @item.DateFrom.ToShortDateString()
                     </td>
                     <td class="govuk-table__cell table-hide-Column">
-                        @item.DateTo
+                        @if (item.DateTo.HasValue)
+                        {
+                            <span>@item.DateTo.Value.ToShortDateString()</span>
+                        }
                     </td>
                     <td class="govuk-table__cell table-hide-Column">
                       @item.ReasonType
@@ -53,5 +58,5 @@
 
 @section scripts 
 {
-    <script src="~/scripts/myclosures.js"></script>
+    <script src="~/scripts/myclosures/myclosures.js"></script>
 }
