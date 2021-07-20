@@ -16,19 +16,31 @@
             </p>
 
             <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+
                 <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                    School
+                    Approval type
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    @Html.DisplayFor(model => model.InstitutionName)
-                    Campbell College
+                    @if (Model.ApprovalTypeId == 1)
+                    {
+                        <strong class="govuk-tag">Pre-approved</strong>
+                    }
+                    else
+                    {
+                        <strong class="govuk-tag">Approval required</strong>
+                    }
                 </dd>
-                <dd class="govuk-summary-list__actions">
-                    @*<a asp-controller="Application" asp-action="DeceasedNameStepOne" asp-route-id=@Model.ApplicationId asp-route-returnPath="Answers" class="govuk-link">
-                        Change<span class="govuk-visually-hidden"> name</span>
-                    </a>*@
-                </dd>
+        </div>
+
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Instituition
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Html.DisplayFor(model => model.InstitutionName)
+                Campbell College
+            </dd>
         </div>
 
         <div class="govuk-summary-list__row">
@@ -36,28 +48,21 @@
                 Date from
             </dt>
             <dd class="govuk-summary-list__value">
-                @Html.DisplayFor(model => model.DateFrom)
-            </dd>
-            <dd class="govuk-summary-list__actions">
-                @*<a asp-controller="Application" asp-action="DeceasedNameStepOne" asp-route-id=@Model.ApplicationId asp-route-returnPath="Answers" class="govuk-link">
-                    Change<span class="govuk-visually-hidden"> name</span>
-                </a>*@
+                @Model.DateFrom.ToShortDateString()
             </dd>
         </div>
 
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                Date to
-            </dt>
-            <dd class="govuk-summary-list__value">
-                @Html.DisplayFor(model => model.DateTo)
-            </dd>
-            <dd class="govuk-summary-list__actions">
-                @*<a asp-controller="Application" asp-action="DeceasedNameStepOne" asp-route-id=@Model.ApplicationId asp-route-returnPath="Answers" class="govuk-link">
-                    Change<span class="govuk-visually-hidden"> name</span>
-                </a>*@
-            </dd>
-        </div>
+        @if (Model.DateTo != null)
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Date to
+                </dt>
+                <dd class="govuk-summary-list__value">
+                   @Model.DateTo.Value.ToShortDateString()
+                </dd>
+            </div>
+        }
 
         <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">
@@ -66,14 +71,9 @@
             <dd class="govuk-summary-list__value">
                 @Html.DisplayFor(model => model.ReasonType)
             </dd>
-            <dd class="govuk-summary-list__actions">
-                @*<a asp-controller="Application" asp-action="DeceasedNameStepOne" asp-route-id=@Model.ApplicationId asp-route-returnPath="Answers" class="govuk-link">
-                    Change<span class="govuk-visually-hidden"> name</span>
-                </a>*@
-            </dd>
         </div>
 
-        @if (Model.OtherReason != "")
+        @if (Model.ReasonTypeId == 5)
         {
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
@@ -81,11 +81,6 @@
                 </dt>
                 <dd class="govuk-summary-list__value">
                     @Html.DisplayFor(model => model.OtherReason)
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    @*<a asp-controller="Application" asp-action="DeceasedNameStepOne" asp-route-id=@Model.ApplicationId asp-route-returnPath="Answers" class="govuk-link">
-                        Change<span class="govuk-visually-hidden"> name</span>
-                    </a>*@
                 </dd>
             </div>
         }
@@ -95,19 +90,10 @@
                 Date created
             </dt>
             <dd class="govuk-summary-list__value">
-                @Html.DisplayFor(model => model.DateCreated)
-            </dd>
-            <dd class="govuk-summary-list__actions">
+                @Model.DateCreated.ToShortDateString()
             </dd>
         </div>
-
-
-
         </dl>
-
-
-
-
     </div>
     </div>
 </div>
