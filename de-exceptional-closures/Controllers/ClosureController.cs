@@ -146,8 +146,6 @@ namespace de_exceptional_closures.Controllers
         [HttpGet]
         public async Task<IActionResult> Submitted(int id)
         {
-            // SubmittedViewModel model = new SubmittedViewModel();
-
             var getClosure = await _mediator.Send(new GetClosureReasonByIdQuery() { Id = id });
 
             if (getClosure.IsFailure)
@@ -236,9 +234,18 @@ namespace de_exceptional_closures.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var getClosure = await _mediator.Send(new GetClosureReasonByIdQuery() { Id = id });
+
+            if (getClosure.IsFailure)
+            {
+                return View();
+            }
+
+            var model = _mapper.Map<EditViewModel>(getClosure.Value);
+
+            return View(model);
         }
 
         [HttpGet]
