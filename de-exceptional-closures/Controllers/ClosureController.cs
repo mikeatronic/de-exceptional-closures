@@ -92,7 +92,7 @@ namespace de_exceptional_closures.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PreApprovedAsync(PreApprovedViewModel model)
+        public async Task<IActionResult> PreApproved(PreApprovedViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -140,12 +140,13 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
-            return RedirectToAction("Submitted");
+            return RedirectToAction("Submitted", "Closure", new { id = createClosureReason.Value });
         }
 
         [HttpGet]
-        public IActionResult Submitted()
+        public IActionResult Submitted(int id)
         {
+
             return View();
         }
 
@@ -172,7 +173,7 @@ namespace de_exceptional_closures.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ApprovalRequiredAsync(ApprovalRequiredViewModel model)
+        public async Task<IActionResult> ApprovalRequired(ApprovalRequiredViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -191,7 +192,6 @@ namespace de_exceptional_closures.Controllers
                 ModelState.AddModelError("DateFrom", "Please enter in a valid date");
                 return View(model);
             }
-
 
             if (!model.IsSingleDay)
             {
@@ -221,9 +221,14 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
-            return RedirectToAction("Submitted");
+            return RedirectToAction("Submitted", "Closure", new { id = createClosureReason.Value });
         }
 
+        [HttpGet]
+        public IActionResult Edit()
+        {
+            return View();
+        }
 
         [HttpGet]
         public async Task<IActionResult> MyClosures()
