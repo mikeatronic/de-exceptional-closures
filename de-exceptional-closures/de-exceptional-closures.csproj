@@ -27,4 +27,8 @@
     <ProjectReference Include="..\de-exceptional-closures-infraStructure\de-exceptional-closures-infraStructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\DataTables\" />
+  </ItemGroup>
+
 </Project>

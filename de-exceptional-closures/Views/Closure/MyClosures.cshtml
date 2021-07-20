@@ -11,8 +11,8 @@
         Create closure
     </a>
 
-    <table class="govuk-table" id="ApplicationTable">
-        <caption class="govuk-table__caption sr-only">List of Probate applications</caption>
+    <table class="govuk-table" id="MyClosuresTable">
+        <caption class="govuk-table__caption sr-only">List of exceptional closures</caption>
         <thead class="text-left">
             <tr class="govuk-table__row">
                 <th scope="col" class="govuk-table__header">Institution</th>
@@ -20,7 +20,7 @@
                 <th scope="col" class="govuk-table__header table-hide-Column">Date to</th>
                 <th scope="col" class="govuk-table__header table-hide-Column">Reason</th>
                 <th scope="col" class="govuk-table__header table-hide-Column">Approved</th>
-                <th scope="col" class="govuk-table__header sorting_disabled"><span class="sr-only">Detail button</span>Edit</th>
+                <th scope="col" class="govuk-table__header sorting_disabled"><span class="sr-only">Edit button</span>Edit</th>
             </tr>
         </thead>
         <tbody class="govuk-table__body text-left">
@@ -29,12 +29,17 @@
                 <tr class="govuk-table__row">
                     <td class="govuk-table__cell">
                         @item.InstitutionName
+                        Campbell College
                     </td>
                     <td class="govuk-table__cell table-hide-Column">
-                       @item.DateFrom
+                        @*<span class="hide">@item.DateFrom.Year@Math.Round((item.DateFrom.Month / 1.3), 1)@Math.Round((item.DateFrom.Day / 3.2), 1)</span>*@
+                        @item.DateFrom.ToShortDateString()
                     </td>
                     <td class="govuk-table__cell table-hide-Column">
-                        @item.DateTo
+                        @if (item.DateTo.HasValue)
+                        {
+                            <span>@item.DateTo.Value.ToShortDateString()</span>
+                        }
                     </td>
                     <td class="govuk-table__cell table-hide-Column">
                       @item.ReasonType
@@ -53,5 +58,5 @@
 
 @section scripts 
 {
-    <script src="~/scripts/myclosures.js"></script>
+    <script src="~/scripts/myclosures/myclosures.js"></script>
 }

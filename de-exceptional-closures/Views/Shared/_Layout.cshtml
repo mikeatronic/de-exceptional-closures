@@ -7,6 +7,10 @@
     @*<title>@(Model.TitleTagName != null ? Model.TitleTagName + " - " : string.Empty) Exceptional Closures</title>*@
     <title>Exceptional Closures</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link href="~/lib/DataTables/datatables.min.css" rel="stylesheet" />
+
+
     <link href="~/sass/site.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
 
@@ -32,6 +36,8 @@
     </div>
 
     <partial name="../Components/_footer.cshtml" />
+    <script src="~/lib/DataTables/datatables.min.js"></script>
+
     <partial name="../Shared/_ValidationScriptsPartial.cshtml" />
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -144,10 +144,21 @@ namespace de_exceptional_closures.Controllers
         }
 
         [HttpGet]
-        public IActionResult Submitted(int id)
+        public async Task<IActionResult> Submitted(int id)
         {
+           // SubmittedViewModel model = new SubmittedViewModel();
 
-            return View();
+            var getClosure = await _mediator.Send(new GetClosureReasonByIdQuery() { Id = id });
+
+            if (getClosure.IsFailure)
+            {
+                return View();
+            }
+
+            var model = _mapper.Map<SubmittedViewModel>(getClosure.Value);
+            model.TitleTagName = "Exceptional closure submitted";
+
+            return View(model);
         }
 
         [HttpGet]
@@ -226,6 +237,12 @@ namespace de_exceptional_closures.Controllers
 
         [HttpGet]
         public IActionResult Edit()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult CheckAnswers()
         {
             return View();
         }
