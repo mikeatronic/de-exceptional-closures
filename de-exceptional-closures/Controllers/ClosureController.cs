@@ -146,7 +146,7 @@ namespace de_exceptional_closures.Controllers
         [HttpGet]
         public async Task<IActionResult> Submitted(int id)
         {
-           // SubmittedViewModel model = new SubmittedViewModel();
+            // SubmittedViewModel model = new SubmittedViewModel();
 
             var getClosure = await _mediator.Send(new GetClosureReasonByIdQuery() { Id = id });
 
