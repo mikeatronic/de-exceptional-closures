@@ -96,6 +96,13 @@ namespace de_exceptional_closures.Controllers
         {
             if (!ModelState.IsValid)
             {
+                var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
+
+                foreach (var item in getReasons.Value)
+                {
+                    model.ReasonTypeList.Add(item);
+                }
+
                 return View(model);
             }
 
