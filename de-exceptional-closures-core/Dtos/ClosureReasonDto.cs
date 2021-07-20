@@ -4,6 +4,7 @@ namespace de_exceptional_closures_core.Dtos
 {
     public class ClosureReasonDto
     {
+        public int Id { get; set; }
         public string UserId { get; set; }
         public string InstitutionName { get; set; }
         public string Srn { get; set; }
