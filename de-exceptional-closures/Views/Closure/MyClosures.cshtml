@@ -20,7 +20,7 @@
                 <th scope="col" class="govuk-table__header table-hide-Column">Date to</th>
                 <th scope="col" class="govuk-table__header table-hide-Column">Reason</th>
                 <th scope="col" class="govuk-table__header table-hide-Column">Approved</th>
-                <th scope="col" class="govuk-table__header sorting_disabled"><span class="sr-only">Detail button</span>Detail</th>
+                <th scope="col" class="govuk-table__header sorting_disabled"><span class="sr-only">Detail button</span>Edit</th>
             </tr>
         </thead>
         <tbody class="govuk-table__body text-left">
@@ -40,14 +40,10 @@
                       @item.ReasonType
                     </td>
                     <td class="govuk-table__cell table-hide-Column">
-                       @item.ApprovalTypeId
+                       @item.ApprovalType
                     </td>
                     <td class="govuk-table__cell">
-                    
-                                @*<a asp-controller="Application" asp-action="Step1" asp-area="LetterOfAdmin" asp-route-id="@item.ApplicationId" class="govuk-link">Review</a>*@
-                        
-                        
-                     
+                      <a asp-controller="Closure" asp-action="Edit" class="govuk-link">Edit</a>
                     </td>
                 </tr>
             }

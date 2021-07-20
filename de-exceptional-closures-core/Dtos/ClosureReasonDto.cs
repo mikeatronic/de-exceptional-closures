@@ -16,5 +16,6 @@ namespace de_exceptional_closures_core.Dtos
         public DateTime? ApprovalDate { get; set; }
         public DateTime DateCreated { get; set; }
         public int ApprovalTypeId { get; set; }
+        public string ApprovalType { get; set; }
     }
 }
