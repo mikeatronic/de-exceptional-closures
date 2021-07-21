@@ -6,10 +6,10 @@
 | SonarCloud  | main   | TBA
 
 # de-exceptional-closures
-Application to record exceptional closures of schools in Northern Ireland.
 
 ## Description
 
+Application to record exceptional closures of schools in Northern Ireland.
 
 ## Contents of this file
 
@@ -34,6 +34,7 @@ Unless stated otherwise, the codebase is released under the MIT License. This co
 
 ### Why did we build this project?
 
+We built this project to replace a legacy application and also update this project with cloud technology and modern techniques.
 
 ### What problem was it solving?
 
