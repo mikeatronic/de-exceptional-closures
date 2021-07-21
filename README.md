@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/dof-dss/de-exceptional-closures/tree/main.svg?style=svg&circle-token=3e0ce0f5b4ec766d5d209c0cc88e4385201a0b83)](https://circleci.com/gh/dof-dss/de-exceptional-closures/tree/main)
+
 # de-exceptional-closures
 Application to record exceptional closures of schools
 
