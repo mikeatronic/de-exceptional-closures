@@ -1,7 +1,12 @@
-[![CircleCI](https://circleci.com/gh/dof-dss/de-exceptional-closures/tree/main.svg?style=svg&circle-token=3e0ce0f5b4ec766d5d209c0cc88e4385201a0b83)](https://circleci.com/gh/dof-dss/de-exceptional-closures/tree/main)
+
+
+| Builds  | Branch | Status 
+| ------------- | -----  |--------
+| Circle CI  | main   | [![CircleCI](https://circleci.com/gh/dof-dss/de-exceptional-closures/tree/main.svg?style=svg&circle-token=3e0ce0f5b4ec766d5d209c0cc88e4385201a0b83)](https://circleci.com/gh/dof-dss/de-exceptional-closures/tree/main)
+| SonarCloud  | main   | TBA
 
 # de-exceptional-closures
-Application to record exceptional closures of schools
+Application to record exceptional closures of schools in Northern Ireland.
 
 ## Description
 
@@ -32,15 +37,29 @@ Unless stated otherwise, the codebase is released under the MIT License. This co
 
 ### What problem was it solving?
 
+The old site is outdated and has some outstanding issues. This site will address all of these and add extra functionality.
 
 ### How did we do it?
 
+This is a dotnet core application which uses Mysql, Entity Framework, Dotnet Core Identity and Notify to send various emails. We are using the mediator pattern and CQRS to be more SOLID. We use various nuget packages.
 
+The main ones are below:
+
+- Dotnet Core
+- Dotnet Core Identity
+- Gov.UK Notify services for text and email notifications
+- MediaR
+- Pomelo
+- Mysql
+- EntityFramework Core
+- AutoMapper
+- Fluent Validation
 
 ### Future plans
 
+None at present.
 
 ### Deployment guide
 
-To build run "dotnet build" in command line then
-dotnet run to run the site
+To build run "dotnet build" in command line then dotnet run to run the site. 
+To update the database run update-database on the infrastructure project.
