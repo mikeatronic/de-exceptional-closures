@@ -944,13 +944,27 @@
                     // Replace message on existing label
                     error.html(message);
                 } else {
-                    // Michael Stevenson - this has to be taken out
-
+                    // Michael Stevenson - had to take this out
                     // Create error element
                     error = $("<" + this.settings.errorElement + ">")
                         .attr("id", elementID + "-error")
                         .addClass(this.settings.errorClass)
                         .html(message || "");
+
+                    //if (typeof message !== "undefined") {
+                    //    $(element).attr("aria-describedby", describedBy);
+                    //}
+                    //else {
+                    //    describedBy = describedBy.replace(new RegExp("\\b" + this.escapeCssMeta(errorID) + "\\b"), "");
+                    //    //clean up attributes.  remove extra whitespace if exists
+                    //    describedBy = describedBy.replace(/\s+(?=\s)/g, '');
+
+                    //    if (describedBy.length) {
+                    //        $(element).attr("aria-describedby", describedBy);
+                    //    } else {
+                    //        $(element).removeAttr("aria-describedby");
+                    //    }
+                    //}
 
                     // Maintain reference to the element to be placed into the DOM
                     place = error;
