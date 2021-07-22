@@ -6,3 +6,4 @@ applications:
   memory: 256M
   services:
   - de-exceptional-closures-mysql
+  - de-exceptional-closures-notify
