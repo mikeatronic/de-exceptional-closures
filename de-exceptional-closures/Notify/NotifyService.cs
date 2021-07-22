@@ -16,7 +16,7 @@ namespace de_exceptional_closures.Notify
             _notifyCredentials = notifyCredentials;
         }
 
-        public async Task SendEmail(string emailAddress, string userName, string subject, string message)
+        public async Task SendEmail(string emailAddress, string subject, string message)
         {
 
             var client = new NotificationClient(_notifyCredentials.Value.apiKey);
@@ -30,7 +30,6 @@ namespace de_exceptional_closures.Notify
 
             client.SendEmail(emailAddress, _notifyCredentials.Value.emailTemplate, personalisation);
         }
-
 
         public async Task SendText(string mobileNumber, string userName, string message)
         {
@@ -46,8 +45,6 @@ namespace de_exceptional_closures.Notify
               templateId: _notifyCredentials.Value.textTemplate,
               personalisation
               );
-
-
         }
     }
 }
