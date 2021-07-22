@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\de-exceptional-closures-infraStructure\de-exceptional-closures-infraStructure.csproj" />
+    <ProjectReference Include="..\de-exceptional-closures-services\de-exceptional-closures-services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

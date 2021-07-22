@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using de_exceptional_closures.Notify;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Closure;
 using de_exceptional_closures_core.Common;
@@ -20,11 +21,13 @@ namespace de_exceptional_closures.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
+        private readonly INotifyService _notifyService;
 
-        public ClosureController(IMediator mediator, IMapper mapper)
+        public ClosureController(IMediator mediator, IMapper mapper, INotifyService notifyService)
         {
             _mediator = mediator;
             _mapper = mapper;
+            _notifyService = notifyService;
         }
 
         [HttpGet]
@@ -33,6 +36,9 @@ namespace de_exceptional_closures.Controllers
             DayTypeViewModel model = new DayTypeViewModel();
             model.TitleTagName = "Is the closure for a single day?";
             model.ApprovalType = approvalType;
+
+            var test = _notifyService.SendEmail("michael.stevenson@finance-ni.gov.uk", "Michael", "subjetc", "message");
+            var test2 = _notifyService.SendText("07429182188", "Michael", "Test message");
 
             return View(model);
         }
