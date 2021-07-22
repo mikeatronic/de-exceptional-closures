@@ -286,3 +286,33 @@ body {
     margin: 0 0 15px 0;
     padding: 0;
 }
+
+/* Fix checkboxes*/
+.govuk-checkboxes__label::before {
+    content: "";
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    border: 2px solid currentColor;
+    background: transparent;
+}
+
+.govuk-checkboxes__label::after {
+    content: "";
+    position: absolute;
+    top: 11px;
+    left: 8px;
+    width: 24px;
+    height: 12px;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    border: solid;
+    border-width: 0 0 5px 5px;
+    border-top-color: transparent;
+    opacity: 0;
+    background: transparent;
+}

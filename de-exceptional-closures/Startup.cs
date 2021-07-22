@@ -1,3 +1,5 @@
+using de_exceptional_closures.Config;
+using de_exceptional_closures.Notify;
 using de_exceptional_closures_infraStructure.Features.ReasonType.Validation;
 using de_exceptional_closures_Infrastructure.Data;
 using FluentValidation.AspNetCore;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace de_exceptional_closures
@@ -25,6 +28,7 @@ namespace de_exceptional_closures
 
         public IConfiguration Configuration { get; }
         protected CloudFoundryServicesOptions CloudFoundryServicesOptions;
+        protected NotifyConfig NotifyConfig = new NotifyConfig();
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -41,6 +45,15 @@ namespace de_exceptional_closures
             // Setup identity
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // Notify Config
+            NotifyConfig = ConfigurationFactory.CreateNotifyConfig(CloudFoundryServicesOptions
+               .Services["user-provided"]
+               .First(s => s.Name == "de-exceptional-closures-notify").Credentials["Credentials"]);
+
+            services.Configure<NotifyConfig>(nc => nc.PopulateNotifyConfig(NotifyConfig));
+
+            services.AddSingleton<INotifyService, NotifyService>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -66,6 +79,8 @@ namespace de_exceptional_closures
             services.ConfigureApplicationCookie(options =>
             {
                 // Cookie settings
+                options.Cookie.Name = "DeClosuresCookie";
+                options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(100);
 
