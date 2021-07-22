@@ -9,22 +9,31 @@
 
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-                <h1>@ViewData["Title"]</h1>
+        <div class="govuk-grid-column-two-thirds">
+                <h1  class="govuk-heading-l">@ViewData["Title"]</h1>
                 <section>
                     <form id="account" method="post">
-                        <div asp-validation-summary="All" class="text-danger"></div>
-                        <div class="form-group">
-                            <label asp-for="Input.Email"></label>
+                        <div asp-validation-summary="None" class="govuk-error-summary">
+                            <h2 class="govuk-error-summary__title" id="error-summary-title">
+                                There is a problem
+                            </h2>
+                            <div class="govuk-error-summary__body">
+                                  <ul class="govuk-list govuk-error-summary__list">
+                                 </ul>
+                             </div>
+                        </div>
+
+                        <div class="govuk-form-group">
+                            <label asp-for="Input.Email" class="govuk-label"></label>
                             <input asp-for="Input.Email" class="govuk-input" />
                             <span asp-validation-for="Input.Email" class="govuk-error-message"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="Input.Password"></label>
+                        <div class="govuk-form-group">
+                            <label asp-for="Input.Password" class="govuk-label"></label>
                             <input asp-for="Input.Password" class="govuk-input" />
                             <span asp-validation-for="Input.Password" class="govuk-error-message"></span>
                         </div>
-                        <div class="form-group">
+                        <div class="govuk-form-group">
                             <div class="checkbox">
                                 <label asp-for="Input.RememberMe">
                                     <input asp-for="Input.RememberMe" />
@@ -32,14 +41,14 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="govuk-form-group">
                             <button type="submit" class="govuk-button" data-module="govuk-button">Log in</button>
                         </div>
-                        <div class="form-group">
-                            <p>
+                        <div class="govuk-form-group">
+                            <p class="govuk-body">
                                 <a id="forgot-password" asp-page="./ForgotPassword" class="govuk-link">Forgot your password?</a>
                             </p>
-                            <p>
+                            <p class="govuk-body">
                                 <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="govuk-link">Register as a new user</a>
                             </p>
                         </div>
