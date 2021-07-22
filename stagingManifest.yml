@@ -4,6 +4,6 @@ applications:
   buildpacks:
   - dotnet_core_buildpack
   memory: 1G
-  instances: 2
+  instances: 1
   services:
   - de-exceptional-closures-mysql
