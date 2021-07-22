@@ -37,9 +37,6 @@ namespace de_exceptional_closures.Controllers
             model.TitleTagName = "Is the closure for a single day?";
             model.ApprovalType = approvalType;
 
-            var test = _notifyService.SendEmail("michael.stevenson@finance-ni.gov.uk", "Michael", "subjetc", "message");
-            var test2 = _notifyService.SendText("07429182188", "Michael", "Test message");
-
             return View(model);
         }
 
