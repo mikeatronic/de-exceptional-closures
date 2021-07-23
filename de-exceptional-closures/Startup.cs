@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Notify.Client;
+using Notify.Interfaces;
 using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 using System;
@@ -53,7 +55,7 @@ namespace de_exceptional_closures
 
             services.Configure<NotifyConfig>(nc => nc.PopulateNotifyConfig(NotifyConfig));
 
-            services.AddSingleton<INotifyService, NotifyService>();
+            services.AddTransient<INotifyService, NotifyService>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -107,8 +109,7 @@ namespace de_exceptional_closures
             }
             else
             {
-                app.UseDeveloperExceptionPage();
-                //  app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
