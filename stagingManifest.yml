@@ -7,3 +7,4 @@ applications:
   instances: 1
   services:
   - de-exceptional-closures-mysql
+  - de-exceptional-closures-notify
