@@ -55,6 +55,8 @@ The main ones are below:
 - EntityFramework Core
 - AutoMapper
 - Fluent Validation
+- UXG css
+- GDS Design system
 
 ### Future plans
 
