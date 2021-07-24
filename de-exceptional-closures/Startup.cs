@@ -63,7 +63,8 @@ namespace de_exceptional_closures
                 options.ConsentCookie.Name = "DECconsentCookie";
                 options.CheckConsentNeeded = context => true;
                 options.ConsentCookie.Expiration = TimeSpan.FromDays(90);
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.MinimumSameSitePolicy = SameSiteMode.Lax;
+                options.Secure = CookieSecurePolicy.Always;
             });
 
             services.Configure<IdentityOptions>(options =>
