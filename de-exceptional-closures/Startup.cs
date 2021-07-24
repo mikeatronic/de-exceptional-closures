@@ -91,7 +91,7 @@ namespace de_exceptional_closures
             services.ConfigureApplicationCookie(options =>
             {
                 // Cookie settings
-                options.Cookie.Name = "DeClosuresCookie";
+                options.Cookie.Name = "DEClosuresCookie";
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
