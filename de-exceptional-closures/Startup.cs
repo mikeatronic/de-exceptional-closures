@@ -6,13 +6,12 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Notify.Client;
-using Notify.Interfaces;
 using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 using System;
@@ -57,6 +56,16 @@ namespace de_exceptional_closures
 
             services.AddTransient<INotifyService, NotifyService>();
 
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential 
+                // cookies is needed for a given request.
+                options.ConsentCookie.Name = "DECconsentCookie";
+                options.CheckConsentNeeded = context => true;
+                options.ConsentCookie.Expiration = TimeSpan.FromDays(90);
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
@@ -82,9 +91,9 @@ namespace de_exceptional_closures
             {
                 // Cookie settings
                 options.Cookie.Name = "DeClosuresCookie";
-                options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(100);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
 
                 options.LoginPath = "/Identity/Account/Login";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
@@ -122,6 +131,7 @@ namespace de_exceptional_closures
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseRouting();
 

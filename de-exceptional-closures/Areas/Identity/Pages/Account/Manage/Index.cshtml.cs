@@ -10,6 +10,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        public readonly string TitleTagName;
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
@@ -17,6 +18,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            TitleTagName = "Manage";
         }
 
         public string Username { get; set; }

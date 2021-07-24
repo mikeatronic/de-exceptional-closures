@@ -1,4 +1,5 @@
 ﻿using de_exceptional_closures.Models;
+using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Home;
 using de_exceptional_closures_core.Common;
 using Microsoft.AspNetCore.Authorization;
@@ -48,21 +49,26 @@ namespace de_exceptional_closures.Controllers
 
         public IActionResult Privacy()
         {
-            return View();
+            BaseViewModel model = new BaseViewModel();
+            model.TitleTagName = "Privacy";
+            return View(model);
         }
 
         [HttpGet]
         public IActionResult Accessibility()
         {
-            return View();
+            BaseViewModel model = new BaseViewModel();
+            model.TitleTagName = "Accessibility";
+            return View(model);
         }
 
         [HttpGet]
         public IActionResult Cookies()
         {
-            return View();
+            BaseViewModel model = new BaseViewModel();
+            model.TitleTagName = "Cookies";
+            return View(model);
         }
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
