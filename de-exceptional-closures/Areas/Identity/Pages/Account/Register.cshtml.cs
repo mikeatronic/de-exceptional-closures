@@ -23,6 +23,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly INotifyService _notifyService;
+        public readonly string TitleTagName;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -34,6 +35,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _notifyService = notifyService;
+            TitleTagName = "Register";
         }
 
         [BindProperty]
