@@ -17,11 +17,13 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly INotifyService _notifyService;
+        public readonly string TitleTagName;
 
         public ForgotPasswordModel(UserManager<IdentityUser> userManager, INotifyService notifyService)
         {
             _userManager = userManager;
             _notifyService = notifyService;
+            TitleTagName = "Forgot your password?";
         }
 
         [BindProperty]
