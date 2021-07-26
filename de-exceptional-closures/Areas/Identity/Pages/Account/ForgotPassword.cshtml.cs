@@ -1,4 +1,5 @@
-﻿using de_exceptional_closures.Notify;
+﻿using de_exceptional_closures.Captcha;
+using de_exceptional_closures.Notify;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,21 +12,26 @@ using System.Threading.Tasks;
 
 namespace de_exceptional_closures.Areas.Identity.Pages.Account
 {
+
     [AllowAnonymous]
+
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly INotifyService _notifyService;
         public readonly string TitleTagName;
+        private readonly ReCaptcha _captcha;
 
-        public ForgotPasswordModel(UserManager<IdentityUser> userManager, INotifyService notifyService)
+        public ForgotPasswordModel(UserManager<IdentityUser> userManager, INotifyService notifyService, ReCaptcha captcha)
         {
             _userManager = userManager;
             _notifyService = notifyService;
             TitleTagName = "Forgot your password?";
+            _captcha = captcha;
         }
 
         [BindProperty]
+
         public InputModel Input { get; set; }
 
         public class InputModel
@@ -39,7 +45,24 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
         {
             if (ModelState.IsValid)
             {
+                if (!Request.Form.ContainsKey("g-recaptcha-response"))
+                {
+                    ModelState.AddModelError("Input.Email", "Captcha response invalid.");
+
+                    return Page();
+                }
+
+                var captcha = Request.Form["g-recaptcha-response"].ToString();
+
+                if (!await _captcha.IsValid(captcha))
+                {
+                    ModelState.AddModelError("Input.Email", "You must pass the captcha check to continue.");
+
+                    return Page();
+                }
+
                 var user = await _userManager.FindByEmailAsync(Input.Email);
+
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed

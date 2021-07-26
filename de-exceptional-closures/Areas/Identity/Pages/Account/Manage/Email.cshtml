@@ -1,7 +1,7 @@
 ﻿@page
 @model EmailModel
 @{
-    ViewData["Title"] = "Manage Email";
+    ViewData["Title"] = "Manage email";
     ViewData["ActivePage"] = ManageNavPages.Email;
 }
 
@@ -26,11 +26,11 @@
                             <label asp-for="Email"></label>
                             @if (Model.IsEmailConfirmed)
                             {
-                                <div class="input-group">
+                                <div class="govuk-form-group">
                                     <input asp-for="Email" class="govuk-input" disabled />
-                                    <div class="input-group-append">
+                                    @*<div class="input-group-append">
                                         <span class="input-group-text text-success font-weight-bold">✓</span>
-                                    </div>
+                                    </div>*@
                                 </div>
                             }
                             else
@@ -39,10 +39,10 @@
                                 <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
                             }
                         </div>
-                        <div class="form-group">
+                        <div class="govuk-form-group">
                             <label asp-for="Input.NewEmail"></label>
                             <input asp-for="Input.NewEmail" class="govuk-input" />
-                            <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+                            <span asp-validation-for="Input.NewEmail" class="govuk-error-message"></span>
                         </div>
                         <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail"  class="govuk-button" data-module="govuk-button">Change email</button>
                     </form>
