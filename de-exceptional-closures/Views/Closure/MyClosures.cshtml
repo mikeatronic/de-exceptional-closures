@@ -20,6 +20,7 @@
                 <th scope="col" class="govuk-table__header table-hide-Column">Date to</th>
                 <th scope="col" class="govuk-table__header table-hide-Column">Reason</th>
                 <th scope="col" class="govuk-table__header">Approval status</th>
+                <th scope="col" class="govuk-table__header table-hide-Column">Decision date</th>
                 <th scope="col" class="govuk-table__header table-hide-Column">Approval Type</th>
                 <th scope="col" class="govuk-table__header sorting_disabled"><span class="sr-only">Edit button</span>Edit</th>
             </tr>
@@ -46,13 +47,37 @@
                     @item.ReasonType
                 </td>
                 <td class="govuk-table__cell">
-                   
+                    @if (item.Approved.HasValue)
+                    {
+                        <span>  @item.Approved</span>
+                    }
+                    else
+                    {
+                        <span>Decision required</span>
+                    }
+                </td>
+                <td class="govuk-table__cell table-hide-Column">
+                    @if (item.ApprovalDate.HasValue)
+                    {
+                    <span>  @item.ApprovalDate</span>
+                    }
+                    else
+                    {
+                        <span>Decision required</span>
+                    }
                 </td>
                 <td class="govuk-table__cell table-hide-Column">
                     @item.ApprovalType
                 </td>
                 <td class="govuk-table__cell">
-                    <a href="@Url.Action("Edit","Closure", new { id = item.Id })" class="govuk-link">Edit</a>
+                    @if (item.Approved.HasValue)
+                    {
+                        <a href="@Url.Action("View","Closure", new { id = item.Id })" class="govuk-link">View</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Edit","Closure", new { id = item.Id })" class="govuk-link">Edit</a>
+                    }
                 </td>
             </tr>
             }

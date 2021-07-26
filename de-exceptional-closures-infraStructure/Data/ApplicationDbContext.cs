@@ -16,7 +16,7 @@ namespace de_exceptional_closures_Infrastructure.Data
     public class ApplicationDbContext : IdentityDbContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private IServiceProvider _services;
+        private readonly IServiceProvider _services;
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor, IServiceProvider services)
             : base(options)
@@ -28,6 +28,7 @@ namespace de_exceptional_closures_Infrastructure.Data
         public DbSet<ReasonType> ReasonType { get; set; }
         public DbSet<ClosureReason> ClosureReason { get; set; }
         public DbSet<ApprovalType> ApprovalType { get; set; }
+        public DbSet<RejectionReason> RejectionReason { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,6 +44,24 @@ namespace de_exceptional_closures_Infrastructure.Data
             modelBuilder.Entity<ApprovalType>()
                       .HasData(new ApprovalType { Id = 1, Description = "Pre-approved" },
                                new ApprovalType { Id = 2, Description = "Approval required" }
+             );
+
+            modelBuilder.Entity<RejectionReason>()
+               .HasData(new RejectionReason { Id = 1, Description = "School development" },
+                        new RejectionReason { Id = 2, Description = "Half day" },
+                        new RejectionReason { Id = 3, Description = "Split site - other site operational" },
+                        new RejectionReason { Id = 4, Description = "Building work" },
+                        new RejectionReason { Id = 5, Description = "Move premises" },
+                        new RejectionReason { Id = 6, Description = "Some classes still in" },
+                        new RejectionReason { Id = 7, Description = "Planning day" },
+                        new RejectionReason { Id = 8, Description = "School open for a couple of hours" },
+                        new RejectionReason { Id = 9, Description = "Staff in school" },
+                        new RejectionReason { Id = 10, Description = "Pupils in to sit exams" },
+                        new RejectionReason { Id = 11, Description = "Strike day" },
+                        new RejectionReason { Id = 12, Description = "Bank or Public Holiday" },
+                        new RejectionReason { Id = 13, Description = "Wrong date" },
+                        new RejectionReason { Id = 14, Description = "Not required" },
+                        new RejectionReason { Id = 15, Description = "Does not meet criteria" }
              );
 
             modelBuilder.Entity<ClosureReason>().HasQueryFilter(f => EF.Property<string>(f, "UserId") == GetCurrentUserId().GetAwaiter().GetResult().Value);
