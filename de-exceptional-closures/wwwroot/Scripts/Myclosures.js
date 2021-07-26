@@ -3,7 +3,7 @@
         {
             "ordering": true,
             "columnDefs": [{
-                "targets": 5,
+                "targets": 7,
                 "orderable": false,
             }],
             aaSorting: [],

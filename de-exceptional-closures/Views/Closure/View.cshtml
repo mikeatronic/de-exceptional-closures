@@ -1,8 +1,128 @@
-﻿
+﻿@model de_exceptional_closures.ViewModels.Closure.ViewViewModel
 @{
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>View</h1>
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+
+            <a href="javascript:history.go(-1)" class="govuk-back-link">Back</a>
+
+            <h1 class="govuk-heading-l">View exceptional closure</h1>
+
+            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+
+                <div class="govuk-summary-list__row">
+
+
+                <dt class="govuk-summary-list__key">
+                    Approval type
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @if (Model.ApprovalTypeId == 1)
+                    {
+                        <strong class="govuk-tag">Pre-approved</strong>
+                    }
+                    else
+                    {
+                        <strong class="govuk-tag">Approval required</strong>
+                    }
+                </dd>
+        </div>
+
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Approval status
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Html.DisplayFor(model => model.Approved)
+            </dd>
+        </div>
+
+        @if (Model.Approved == "No")
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Rejection reason
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Html.DisplayFor(model => model.RejectionReason)
+                </dd>
+            </div>
+        }
+
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Approval date
+            </dt>
+            <dd class="govuk-summary-list__value">
+            @Model.ApprovalDate
+            </dd>
+        </div>
+
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Instituition
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Html.DisplayFor(model => model.InstitutionName)
+                Campbell College
+            </dd>
+        </div>
+
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Date from
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Model.DateFrom.ToShortDateString()
+            </dd>
+        </div>
+
+        @if (Model.DateTo != null)
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Date to
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.DateTo.Value.ToShortDateString()
+                </dd>
+            </div>
+        }
+
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Reason
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Html.DisplayFor(model => model.ReasonType)
+            </dd>
+        </div>
+
+        @if (Model.ReasonTypeId == 5)
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Other reason
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Html.DisplayFor(model => model.OtherReason)
+                </dd>
+            </div>
+        }
+
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Date created
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Model.DateCreated.ToShortDateString()
+            </dd>
+        </div>
+        </dl>
+    </div>
+</div>
 

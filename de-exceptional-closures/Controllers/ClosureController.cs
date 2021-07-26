@@ -270,7 +270,9 @@ namespace de_exceptional_closures.Controllers
                 return View();
             }
 
-            var model = _mapper.Map<EditViewModel>(getClosure.Value);
+            var model = _mapper.Map<ViewViewModel>(getClosure.Value);
+
+            model.TitleTagName = "View exceptional closure";
 
             return View(model);
         }
