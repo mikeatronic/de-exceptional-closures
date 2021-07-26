@@ -77,6 +77,7 @@ namespace de_exceptional_closures.Controllers
         {
             PreApprovedViewModel model = new PreApprovedViewModel();
             model.IsSingleDay = isSingleDay;
+            model.TitleTagName = "Pre-approved exceptional closure";
 
             var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
 
@@ -97,6 +98,8 @@ namespace de_exceptional_closures.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PreApproved(PreApprovedViewModel model)
         {
+            model.TitleTagName = "Pre-approved exceptional closure";
+
             if (!ModelState.IsValid)
             {
                 var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
@@ -176,6 +179,7 @@ namespace de_exceptional_closures.Controllers
         {
             ApprovalRequiredViewModel model = new ApprovalRequiredViewModel();
             model.IsSingleDay = isSingleDay;
+            model.TitleTagName = "Approval required exceptional closure";
 
             var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
 
@@ -196,6 +200,8 @@ namespace de_exceptional_closures.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ApprovalRequired(ApprovalRequiredViewModel model)
         {
+            model.TitleTagName = "Approval required exceptional closure";
+
             if (!ModelState.IsValid)
             {
                 return View(model);
