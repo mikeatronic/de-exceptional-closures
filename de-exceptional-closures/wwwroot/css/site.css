@@ -245,7 +245,7 @@ body {
 }
 
 .govuk-notification-banner {
-    font-family: "GDS Transport",arial,sans-serif;
+    font-family: arial,sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-weight: 400;
@@ -253,8 +253,8 @@ body {
     font-size: 1rem;
     line-height: 1.25;
     margin-bottom: 30px;
-    border: 5px solid #1d70b8;
-    background-color: #1d70b8;
+    border: 5px solid #0d3f66;
+    background-color: #0d3f66;
 }
 
 .govuk-notification-banner__header {
@@ -263,7 +263,7 @@ body {
 }
 
 .govuk-notification-banner__title {
-    font-family: "GDS Transport",arial,sans-serif;
+    font-family: arial,sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-weight: 700;
@@ -276,7 +276,7 @@ body {
 }
 
 .govuk-notification-banner__heading {
-    font-family: "GDS Transport",arial,sans-serif;
+    font-family: arial,sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-weight: 700;
@@ -315,4 +315,16 @@ body {
     border-top-color: transparent;
     opacity: 0;
     background: transparent;
+}
+
+header .nidirect-header {
+    background-color: #0d3f66;
+    color: #ffffff;
+}
+
+.nidirect-servicename-container .nidirect-servicename {
+    color: #0d3f66;
+    font-weight: 400;
+    padding: 0;
+    margin: 0;
 }
