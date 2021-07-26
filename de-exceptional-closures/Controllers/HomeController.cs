@@ -1,4 +1,5 @@
-﻿using de_exceptional_closures.Models;
+﻿using de_exceptional_closures.Extensions;
+using de_exceptional_closures.Models;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Home;
 using de_exceptional_closures_core.Common;
@@ -47,6 +48,8 @@ namespace de_exceptional_closures.Controllers
             return RedirectToAction("DayType", "Closure", new { approvalType = (int)ApprovalType.ApprovalRequired });
         }
 
+        [AllowAnonymous]
+        [HttpGet]
         public IActionResult Privacy()
         {
             BaseViewModel model = new BaseViewModel();
@@ -54,6 +57,7 @@ namespace de_exceptional_closures.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Accessibility()
         {
@@ -62,6 +66,8 @@ namespace de_exceptional_closures.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
+        [RateLimiting(Name = "Cookies", Seconds = 1)]
         [HttpGet]
         public IActionResult Cookies()
         {

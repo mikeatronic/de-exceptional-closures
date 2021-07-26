@@ -1,3 +1,4 @@
+using de_exceptional_closures.Captcha;
 using de_exceptional_closures.Config;
 using de_exceptional_closures.Notify;
 using de_exceptional_closures_infraStructure.Features.ReasonType.Validation;
@@ -30,6 +31,7 @@ namespace de_exceptional_closures
         public IConfiguration Configuration { get; }
         protected CloudFoundryServicesOptions CloudFoundryServicesOptions;
         protected NotifyConfig NotifyConfig = new NotifyConfig();
+        protected CaptchaConfig CaptchaConfig = new CaptchaConfig();
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -56,6 +58,17 @@ namespace de_exceptional_closures
 
             services.AddTransient<INotifyService, NotifyService>();
 
+            CaptchaConfig = ConfigurationFactory.CreateCaptchaConfig(CloudFoundryServicesOptions
+             .Services["user-provided"]
+            .First(s => s.Name == "de-exceptional-closures-captcha").Credentials["Credentials"]);
+
+            services.Configure<CaptchaConfig>(nc => nc.PopulateCaptchaConfig(CaptchaConfig));
+
+            services.AddHttpClient<ReCaptcha>(x =>
+            {
+                x.BaseAddress = new Uri("https://www.google.com/recaptcha/api/siteverify");
+            });
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential 
@@ -66,6 +79,8 @@ namespace de_exceptional_closures
                 options.MinimumSameSitePolicy = SameSiteMode.Lax;
                 options.Secure = CookieSecurePolicy.Always;
             });
+
+
 
             services.Configure<IdentityOptions>(options =>
             {
