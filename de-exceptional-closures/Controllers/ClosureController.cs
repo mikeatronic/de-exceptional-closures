@@ -256,6 +256,20 @@ namespace de_exceptional_closures.Controllers
             }
 
             var model = _mapper.Map<EditViewModel>(getClosure.Value);
+            model.TitleTagName = "Edit closure";
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
 
             return View(model);
         }
