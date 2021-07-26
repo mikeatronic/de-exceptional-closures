@@ -142,6 +142,8 @@ namespace de_exceptional_closures.Controllers
             var reasonDto = _mapper.Map<ClosureReasonDto>(model);
             reasonDto.ApprovalTypeId = (int)ApprovalType.PreApproved;
             reasonDto.DateCreated = DateTime.Now;
+            reasonDto.Approved = true;
+            reasonDto.ApprovalDate = DateTime.Now;
 
             var createClosureReason = await _mediator.Send(new CreateClosureReasonCommand() { ClosureReasonDto = reasonDto });
 
@@ -268,7 +270,9 @@ namespace de_exceptional_closures.Controllers
                 return View();
             }
 
-            var model = _mapper.Map<EditViewModel>(getClosure.Value);
+            var model = _mapper.Map<ViewViewModel>(getClosure.Value);
+
+            model.TitleTagName = "View exceptional closure";
 
             return View(model);
         }

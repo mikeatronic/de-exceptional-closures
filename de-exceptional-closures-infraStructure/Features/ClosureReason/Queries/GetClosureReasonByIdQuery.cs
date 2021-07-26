@@ -32,7 +32,9 @@ namespace de_exceptional_closures_infraStructure.Features.ClosureReason.Queries
                 return Result.Fail<ClosureReasonDto>(validationResult.ToString());
 
             var maybeClosure = (await ApplicationDbContext.ClosureReason.Include(c => c.ReasonType)
-                .Include(c => c.ApprovalType).SingleOrDefaultAsync(p => p.Id == request.Id, cancellationToken: cancellationToken)).ToMaybe();
+                .Include(c => c.ApprovalType)
+                .Include(c => c.RejectionReason)
+                .SingleOrDefaultAsync(p => p.Id == request.Id, cancellationToken: cancellationToken)).ToMaybe();
 
             if (!maybeClosure.HasValue)
                 return Result.Fail<ClosureReasonDto>("Closure reason not found");

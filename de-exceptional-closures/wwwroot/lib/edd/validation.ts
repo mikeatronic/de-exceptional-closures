@@ -1,4 +1,3 @@
-
 if ($('form').length > 0) {
     
     let submitted = false;

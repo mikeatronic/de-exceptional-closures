@@ -1,11 +1,9 @@
 ﻿using System;
 
-namespace de_exceptional_closures_core.Dtos
+namespace de_exceptional_closures.ViewModels.Closure
 {
-    public class ClosureReasonDto
+    public class ViewViewModel : BaseViewModel
     {
-        public int Id { get; set; }
-        public string UserId { get; set; }
         public string InstitutionName { get; set; }
         public string Srn { get; set; }
         public DateTime DateFrom { get; set; }
@@ -13,7 +11,7 @@ namespace de_exceptional_closures_core.Dtos
         public int ReasonTypeId { get; set; }
         public string ReasonType { get; set; }
         public string OtherReason { get; set; }
-        public bool? Approved { get; set; }
+        public string Approved { get; set; }
         public DateTime? ApprovalDate { get; set; }
         public DateTime DateCreated { get; set; }
         public int ApprovalTypeId { get; set; }
