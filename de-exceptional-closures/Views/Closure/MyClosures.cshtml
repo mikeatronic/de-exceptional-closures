@@ -49,7 +49,14 @@
                 <td class="govuk-table__cell">
                     @if (item.Approved.HasValue)
                     {
-                        <span>  @item.Approved</span>
+                        if (item.Approved.Value)
+                        {
+                            <span>Yes</span>
+                        }
+                        else
+                        {
+                            <span>No</span>
+                        }
                     }
                     else
                     {
@@ -59,7 +66,7 @@
                 <td class="govuk-table__cell table-hide-Column">
                     @if (item.ApprovalDate.HasValue)
                     {
-                    <span>  @item.ApprovalDate</span>
+                    <span>  @item.ApprovalDate.Value.ToShortDateString()</span>
                     }
                     else
                     {
