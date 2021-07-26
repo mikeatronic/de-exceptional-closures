@@ -26,10 +26,10 @@ namespace de_exceptional_closures.Captcha
             var postTask = await client
                     .PostAsync($"?secret=&response={captcha}", new StringContent(""));
 
-                var result = await postTask.Content.ReadAsStringAsync();
-                var resultObject = JObject.Parse(result);
-                dynamic success = resultObject["success"];
-                return (bool)success;
+            var result = await postTask.Content.ReadAsStringAsync();
+            var resultObject = JObject.Parse(result);
+            dynamic success = resultObject["success"];
+            return (bool)success;
         }
     }
 }

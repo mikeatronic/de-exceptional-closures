@@ -16,5 +16,7 @@ namespace de_exceptional_closures_core.Entities
         public DateTime DateCreated { get; set; }
         public int ApprovalTypeId { get; set; }
         public ApprovalType ApprovalType { get; set; }
+        public int? RejectionReasonId { get; set; }
+        public RejectionReason RejectionReason { get; set; }
     }
 }

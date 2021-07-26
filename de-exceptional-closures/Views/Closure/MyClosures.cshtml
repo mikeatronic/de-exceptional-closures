@@ -47,8 +47,24 @@
                     @item.ReasonType
                 </td>
                 <td class="govuk-table__cell">
+                    @if (item.Approved.HasValue)
+                    {
+                        <span>  @item.Approved</span>
+                    }
+                    else
+                    {
+                        <span>Decision required</span>
+                    }
                 </td>
                 <td class="govuk-table__cell table-hide-Column">
+                    @if (item.ApprovalDate.HasValue)
+                    {
+                    <span>  @item.ApprovalDate</span>
+                    }
+                    else
+                    {
+                        <span>Decision required</span>
+                    }
                 </td>
                 <td class="govuk-table__cell table-hide-Column">
                     @item.ApprovalType
