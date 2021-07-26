@@ -413,7 +413,7 @@ header .nidirect-header {
 
 
 .dataTables_info, .dataTables_paginate {
-    font-family: GDS Transport,Arial,sans-serif;
+    font-family: Arial,sans-serif;
 }
 
 .dataTables_filter input {
@@ -425,7 +425,7 @@ header .nidirect-header {
     height: 48px;
     padding: 9px 18px;
     font-size: 18px;
-    font-family: GDS Transport,Arial,sans-serif;
+    font-family: Arial,sans-serif;
     line-height: 1.5;
     color: black;
     border: 2px solid black;
