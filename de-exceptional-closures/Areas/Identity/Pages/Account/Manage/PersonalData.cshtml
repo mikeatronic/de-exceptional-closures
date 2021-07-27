@@ -5,17 +5,19 @@
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
-<h4>@ViewData["Title"]</h4>
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
 
-<div class="row">
-    <div class="col-md-6">
-        <p>Your account contains personal data that you have given us. This page allows you to delete that data.</p>
-        <p>
-            <a id="delete" asp-page="DeletePersonalData" class="btn btn-primary">Delete</a>
-        </p>
+            <h2>@ViewData["Title"]</h2>
+            <p class="govuk-body">Your account contains personal data that you have given us. This page allows you to delete that data.</p>
+            <p class="govuk-body">
+                <a id="delete" asp-page="DeletePersonalData" class="govuk-button govuk-button--warning">Delete</a>
+            </p>
+        </div>
     </div>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
