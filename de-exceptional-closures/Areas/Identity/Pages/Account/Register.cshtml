@@ -36,24 +36,25 @@
                 </div>
                 <div class="govuk-form-group">
                     <label asp-for="Input.Email" class="govuk-label"></label>
-                    <input asp-for="Input.Email" class="govuk-input" />
                     <span asp-validation-for="Input.Email" class="govuk-error-message"></span>
+                    <input asp-for="Input.Email" class="govuk-input" />
                 </div>
+
                 <div class="govuk-form-group">
                     <label asp-for="Input.Password" class="govuk-label"></label>
-                    <input asp-for="Input.Password" class="govuk-input" />
                     <span asp-validation-for="Input.Password" class="govuk-error-message"></span>
+                    <input asp-for="Input.Password" class="govuk-input" />
                 </div>
                 <div class="govuk-form-group">
                     <label asp-for="Input.ConfirmPassword" class="govuk-label"></label>
-                    <input asp-for="Input.ConfirmPassword" class="govuk-input" />
                     <span asp-validation-for="Input.ConfirmPassword" class="govuk-error-message"></span>
+                    <input asp-for="Input.ConfirmPassword" class="govuk-input" />
                 </div>
 
                 @*<div class="form-group">
-                    <label for="g-recaptcha-response" class="govuk-label sr-only">Captcha check</label>
-                    <div class="g-recaptcha" data-sitekey="6Lf9g7wbAAAAAAmh-QHCrvwvKnBuLhWgWgGiisKM"></div>
-                </div>*@
+            <label for="g-recaptcha-response" class="govuk-label sr-only">Captcha check</label>
+            <div class="g-recaptcha" data-sitekey="6Lf9g7wbAAAAAAmh-QHCrvwvKnBuLhWgWgGiisKM"></div>
+        </div>*@
 
                 <button type="submit" class="govuk-button" data-module="govuk-button">Register</button>
             </form>
