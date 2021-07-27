@@ -50,6 +50,7 @@ workflows:
           appname: de-exceptional-closures-sandbox
           requires:
             - build
+            - test
           org: DOF-DSS
           endpoint: https://api.london.cloud.service.gov.uk
           space: sandbox
@@ -72,6 +73,8 @@ workflows:
               only: /^v(0|[0-9]\d*)\.(0|[0-9]\d*)\.(0|[0-9]\d*)(?:-(alpha|beta))?$/
       - cloudfoundry/push:
           requires:
+            - build
+            - test
             - hold
           filters:
             tags:
