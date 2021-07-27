@@ -1,6 +1,4 @@
-﻿using de_exceptional_closures.Config;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -10,13 +8,11 @@ namespace de_exceptional_closures.Captcha
     {
         private readonly HttpClient captchaClient;
         private readonly IHttpClientFactory _notifyClientFactory;
-        private readonly IOptions<CaptchaConfig> _captchaConfig;
 
-        public ReCaptcha(HttpClient captchaClient, IHttpClientFactory notifyClientFactory, IOptions<CaptchaConfig> captchaConfig)
+        public ReCaptcha(HttpClient captchaClient, IHttpClientFactory notifyClientFactory)
         {
             this.captchaClient = captchaClient;
             _notifyClientFactory = notifyClientFactory;
-            _captchaConfig = captchaConfig;
         }
 
         public async Task<bool> IsValid(string captcha)

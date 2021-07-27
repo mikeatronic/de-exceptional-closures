@@ -1,5 +1,4 @@
-﻿using de_exceptional_closures.Captcha;
-using de_exceptional_closures.Notify;
+﻿using de_exceptional_closures.Notify;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -24,20 +23,18 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly INotifyService _notifyService;
         public readonly string TitleTagName;
-        private readonly ReCaptcha _captcha;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            INotifyService notifyService, ReCaptcha captcha)
+            INotifyService notifyService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _notifyService = notifyService;
             TitleTagName = "Register";
-            _captcha = captcha;
         }
 
         [BindProperty]
@@ -78,22 +75,6 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                //if (!Request.Form.ContainsKey("g-recaptcha-response"))
-                //{
-                //    ModelState.AddModelError("Input.Email", "Captcha response invalid.");
-
-                //    return Page();
-                //}
-
-                //var captcha = Request.Form["g-recaptcha-response"].ToString();
-
-                //if (!await _captcha.IsValid(captcha))
-                //{
-                //    ModelState.AddModelError("Input.Email", "You must pass the captcha check to continue.");
-
-                //    return Page();
-                //}
-
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

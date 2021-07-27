@@ -6,9 +6,6 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ResetPasswordConfirmationModel : PageModel
     {
-        public void OnGet()
-        {
 
-        }
     }
 }
