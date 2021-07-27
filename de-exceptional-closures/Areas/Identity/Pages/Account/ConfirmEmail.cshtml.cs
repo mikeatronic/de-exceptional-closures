@@ -12,10 +12,12 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
     public class ConfirmEmailModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
+        public readonly string TitleTagName;
 
         public ConfirmEmailModel(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
+            TitleTagName = "Confirm email";
         }
 
         [TempData]
