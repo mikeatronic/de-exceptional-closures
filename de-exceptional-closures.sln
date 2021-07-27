@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "de-exceptional-closures-inf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "de-exceptional-closures-core", "de-exceptional-closures-core\de-exceptional-closures-core.csproj", "{80E39C4B-B90D-4F01-9704-DB9014BACDE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "de-exceptional-closures-services", "de-exceptional-closures-services\de-exceptional-closures-services.csproj", "{EFAE2859-42CF-4D11-8170-D1F5FCE356C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "de-exceptional-closures-services", "de-exceptional-closures-services\de-exceptional-closures-services.csproj", "{EFAE2859-42CF-4D11-8170-D1F5FCE356C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "de-exceptional-closures-unitTests", "de-exceptional-closures-unitTests\de-exceptional-closures-unitTests.csproj", "{AB9F636F-073B-4498-A898-15BFB87928C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{EFAE2859-42CF-4D11-8170-D1F5FCE356C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFAE2859-42CF-4D11-8170-D1F5FCE356C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFAE2859-42CF-4D11-8170-D1F5FCE356C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB9F636F-073B-4498-A898-15BFB87928C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB9F636F-073B-4498-A898-15BFB87928C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB9F636F-073B-4498-A898-15BFB87928C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB9F636F-073B-4498-A898-15BFB87928C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
