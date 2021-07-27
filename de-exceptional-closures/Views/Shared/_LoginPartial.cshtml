@@ -3,25 +3,26 @@
 @inject UserManager<IdentityUser> UserManager
 
 
-    @if (SignInManager.IsSignedIn(User))
-    {
-    <li class="govuk-header__navigation-item nidirect-header__navigation-item">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="govuk-header__navigation-item nidirect-header__navigation-item @(Model.SectionName == "My closures" ? "nidirect-header__navigation-item--active" : string.Empty)">
+        <a class="govuk-header__link" asp-controller="Closure" asp-action="MyClosures">
+            My closures
+        </a>
+    </li>
+    <li class="govuk-header__navigation-item nidirect-header__navigation-item @(Model.SectionName == "Manage" ? "nidirect-header__navigation-item--active" : string.Empty)">
         <a class="govuk-header__link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage account</a>
     </li>
-    <li class="govuk-header__navigation-item nidirect-header__navigation-item">
-
-        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button type="submit" class="govuk-header__link link-input-button">Logout</button>
-        </form>
-
+    <li class="govuk-header__navigation-item nidirect-header__navigation-item @(Model.SectionName == "Log out" ? "nidirect-header__navigation-item--active" : string.Empty)">
+        <a class="govuk-header__link" asp-area="Identity" asp-page="/Account/Logout" title="Manage">Log out</a>
     </li>
-    }
-    else
-    {
-        <li class="govuk-header__navigation-item nidirect-header__navigation-item">
-            <a class="govuk-header__link" asp-area="Identity" asp-page="/Account/Register">Register</a>
-        </li>
-        <li class="govuk-header__navigation-item nidirect-header__navigation-item">
-            <a class="govuk-header__link" asp-area="Identity" asp-page="/Account/Login">Login</a>
-        </li>
-    }
+}
+else
+{
+    <li class="govuk-header__navigation-item nidirect-header__navigation-item">
+        <a class="govuk-header__link" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li class="govuk-header__navigation-item nidirect-header__navigation-item">
+        <a class="govuk-header__link" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}

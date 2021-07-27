@@ -16,6 +16,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IEmailSender _emailSender;
         public readonly string TitleTagName;
+        public readonly string SectionName;
 
         public EmailModel(
             UserManager<IdentityUser> userManager,
@@ -26,6 +27,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
             _emailSender = emailSender;
             TitleTagName = "Manage email";
+            SectionName = "Manage";
         }
 
         public string Username { get; set; }

@@ -1,28 +1,23 @@
-<header role="banner" data-module="govuk-header">
- <div class="nidirect-header">
-     <div class="govuk-width-container flex-parent">
-         <div class="nidirect-header__logo">
-             <h2>Exceptional Closures</h2>
-             <span class="govuk-visually-hidden">Exceptional Closures</span>
-         </div>
-         <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
-         <nav role="navigation" aria-label="Top Level Navigation" data-html2canvas-ignore="true">
-             <ul id="navigation" class="govuk-header__navigation nidirect-header__navigation">
-                 @*<li class="govuk-header__navigation-item nidirect-header__navigation-item @(Model.SectionName == "My closures" ? "nidirect-header__navigation-item--active" : string.Empty)">*@
-                 <li class="govuk-header__navigation-item nidirect-header__navigation-item">
 
-                     <a class="govuk-header__link" asp-controller="Closure" asp-action="MyClosures">
-                         My closures
-                     </a>
-                 </li>
-                 <partial name="_LoginPartial" />
-             </ul>
-         </nav>
-     </div>
- </div>
- <div class="nidirect-servicename-container">
-  <div class="govuk-width-container">
-      <span class="govuk-body govuk-!-font-size-27 nidirect-servicename">Institution Portal</span>
-  </div>
- </div>     
+<header role="banner" data-module="govuk-header">
+    <div class="nidirect-header">
+        <div class="govuk-width-container flex-parent">
+            <div class="nidirect-header__logo">
+                <h2>Exceptional Closures</h2>
+                <span class="govuk-visually-hidden">Exceptional Closures</span>
+            </div>
+            <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
+            <nav role="navigation" aria-label="Top Level Navigation" data-html2canvas-ignore="true">
+                <ul id="navigation" class="govuk-header__navigation nidirect-header__navigation">
+                  
+                    <partial name="_LoginPartial" />
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="nidirect-servicename-container">
+        <div class="govuk-width-container">
+            <span class="govuk-body govuk-!-font-size-27 nidirect-servicename">Institution Portal</span>
+        </div>
+    </div>
 </header>
