@@ -80,13 +80,12 @@ namespace de_exceptional_closures_Infrastructure.Data
 
             foreach (var entityEntry in entries)
             {
-                if (entityEntry.State == EntityState.Added)
-                    if (entityEntry.Metadata.GetProperties().Any(p => p.Name == "UserId"))
-                    {
-                        var userResult = await GetCurrentUserId();
-                        if (userResult.IsSuccess)
-                            entityEntry.CurrentValues["UserId"] = userResult.Value;
-                    }
+                if (entityEntry.State == EntityState.Added && entityEntry.Metadata.GetProperties().Any(p => p.Name == "UserId"))
+                {
+                    var userResult = await GetCurrentUserId();
+                    if (userResult.IsSuccess)
+                        entityEntry.CurrentValues["UserId"] = userResult.Value;
+                }
             }
 
             return await base.SaveChangesAsync(cancellationToken);
