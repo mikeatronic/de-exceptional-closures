@@ -5,7 +5,6 @@ using de_exceptional_closures.ViewModels.Home;
 using de_exceptional_closures_core.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 namespace de_exceptional_closures.Controllers
@@ -13,13 +12,6 @@ namespace de_exceptional_closures.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         [HttpGet]
         public IActionResult Index()
         {

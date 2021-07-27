@@ -12,8 +12,5 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
         {
             TitleTagName = "Forgot password confirmation";
         }
-        public void OnGet()
-        {
-        }
     }
 }

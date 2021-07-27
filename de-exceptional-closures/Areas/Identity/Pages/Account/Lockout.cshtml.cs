@@ -12,9 +12,5 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
         {
             TitleTagName = "Locked out";
         }
-        public void OnGet()
-        {
-
-        }
     }
 }
