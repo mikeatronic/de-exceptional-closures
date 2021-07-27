@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
 {
-    public class Disable2faModel : PageModel
+    public class Disable2FaModel : PageModel
     {
         [TempData]
         public string StatusMessage { get; set; }

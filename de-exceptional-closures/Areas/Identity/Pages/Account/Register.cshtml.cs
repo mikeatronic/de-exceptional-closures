@@ -90,7 +90,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                     _notifyService.SendEmail(Input.Email, "Confirm your email for DE exceptional closures", $"Please confirm your account by clicking this link: '{HtmlEncoder.Default.Encode(callbackUrl)}'");
+                    _notifyService.SendEmail(Input.Email, "Confirm your email for DE exceptional closures", $"Please confirm your account by clicking this link: '{HtmlEncoder.Default.Encode(callbackUrl)}'");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

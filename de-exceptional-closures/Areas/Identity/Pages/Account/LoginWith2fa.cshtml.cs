@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace de_exceptional_closures.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class LoginWith2faModel : PageModel
+    public class LoginWith2FaModel : PageModel
     {
 
         [BindProperty]
