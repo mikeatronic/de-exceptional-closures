@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 
 namespace de_exceptional_closures.Areas.Identity.Pages.Account
@@ -11,23 +8,6 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IEmailSender _emailSender;
-        private readonly ILogger<ExternalLoginModel> _logger;
-
-        public ExternalLoginModel(
-            SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
-            ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
-        {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _logger = logger;
-            _emailSender = emailSender;
-        }
-
         [BindProperty]
         public InputModel Input { get; set; }
 
@@ -49,7 +29,5 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
         {
             return RedirectToPage("./Login");
         }
-
-
     }
 }

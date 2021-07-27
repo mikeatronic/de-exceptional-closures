@@ -29,9 +29,9 @@ namespace de_exceptional_closures.Extensions
 
         private static MemoryCache Cache { get; } = new MemoryCache(new MemoryCacheOptions());
 
-        public override void OnActionExecuting(ActionExecutingContext c)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var key = string.Concat(Name, "-", c.HttpContext.Request.HttpContext.Connection.RemoteIpAddress);
+            var key = string.Concat(Name, "-", context.HttpContext.Request.HttpContext.Connection.RemoteIpAddress);
 
             if (!Cache.TryGetValue(key, out bool entry))
             {
@@ -44,8 +44,8 @@ namespace de_exceptional_closures.Extensions
                 if (string.IsNullOrEmpty(Message))
                     Message = "You may only perform this action every {n} seconds.";
 
-                c.Result = new ContentResult { Content = Message.Replace("{n}", Seconds.ToString()) };
-                c.HttpContext.Response.StatusCode = (int)HttpStatusCode.Conflict;
+                context.Result = new ContentResult { Content = Message.Replace("{n}", Seconds.ToString()) };
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Conflict;
             }
         }
     }
