@@ -3,7 +3,7 @@
 | Builds  | Branch | Status 
 | ------------- | -----  |--------
 | Circle CI  | main   | [![CircleCI](https://circleci.com/gh/dof-dss/de-exceptional-closures/tree/main.svg?style=svg&circle-token=3e0ce0f5b4ec766d5d209c0cc88e4385201a0b83)](https://circleci.com/gh/dof-dss/de-exceptional-closures/tree/main)
-| SonarCloud  | main   | TBA
+| SonarCloud  | main   | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dof-dss_de-exceptional-closures&metric=alert_status)](https://sonarcloud.io/dashboard?id=dof-dss_de-exceptional-closures)
 
 # de-exceptional-closures
 
