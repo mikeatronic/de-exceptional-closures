@@ -12,15 +12,19 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
+        public readonly string TitleTagName;
 
         public LogoutModel(SignInManager<IdentityUser> signInManager, ILogger<LogoutModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
+            TitleTagName = "You have successfully logged out of the application.";
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
         }
 
         public async Task<IActionResult> OnPost(string returnUrl = null)

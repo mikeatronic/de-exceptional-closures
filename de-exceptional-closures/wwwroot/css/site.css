@@ -351,15 +351,19 @@ header .nidirect-header {
     text-decoration: none;
 }
 
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #0d3f66;
+    border-color: #0d3f66;
+}
+
 @media all and (max-width:576px) {
     .table-hide-Column {
         display: none !important;
     }
 }
 
-/*
- * DATATABLE styles
- */
+/* DATATABLE styles */
 
 .dataTables_length {
     margin-right: 25px;

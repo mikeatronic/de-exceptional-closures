@@ -12,6 +12,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
         public readonly string TitleTagName;
+        public readonly string SectionName;
 
         public ChangePasswordModel(
             UserManager<IdentityUser> userManager,
@@ -22,6 +23,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
             _logger = logger;
             TitleTagName = "Change password";
+            SectionName = "Manage";
         }
 
         [BindProperty]
