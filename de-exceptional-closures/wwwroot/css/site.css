@@ -934,3 +934,17 @@ table.dataTable .govuk-link {
  * END OF DATATABLE styles
  */
 
+.banner-dangerous {
+    background: #fff;
+    color: #0b0c0c;
+    border: 5px solid #b10e1e;
+    margin: 0px;
+}
+
+.banner-dangerous-heading {
+    margin: 0px;
+}
+
+.banner-dangerous-content {
+    padding: 10px !important;
+}

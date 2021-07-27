@@ -10,6 +10,8 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<PersonalDataModel> _logger;
+        public readonly string TitleTagName;
+        public readonly string SectionName;
 
         public PersonalDataModel(
             UserManager<IdentityUser> userManager,
@@ -17,6 +19,8 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
         {
             _userManager = userManager;
             _logger = logger;
+            TitleTagName = "Personal date";
+            SectionName = "Manage";
         }
 
         public async Task<IActionResult> OnGet()
