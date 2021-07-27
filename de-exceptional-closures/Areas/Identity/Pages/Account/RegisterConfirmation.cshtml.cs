@@ -12,10 +12,13 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
     public class RegisterConfirmationModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
+        public readonly string TitleTagName;
+
 
         public RegisterConfirmationModel(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
+            TitleTagName = "Register confirmation";
         }
 
         public string Email { get; set; }

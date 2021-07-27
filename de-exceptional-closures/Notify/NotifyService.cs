@@ -1,10 +1,7 @@
 ﻿using de_exceptional_closures.Config;
-using dss_common.Functional;
 using Microsoft.Extensions.Options;
 using Notify.Client;
-using Notify.Models.Responses;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace de_exceptional_closures.Notify
 {
@@ -19,7 +16,7 @@ namespace de_exceptional_closures.Notify
             _notificationClient = new NotificationClient(_notifyCredentials.Value.apiKey);
         }
 
-        public async Task SendEmail(string emailAddress, string subject, string message)
+        public void SendEmail(string emailAddress, string subject, string message)
         {
             Dictionary<string, dynamic> personalisation = new Dictionary<string, dynamic>
                 {
@@ -30,23 +27,15 @@ namespace de_exceptional_closures.Notify
             _notificationClient.SendEmail(emailAddress, _notifyCredentials.Value.emailTemplate, personalisation);
         }
 
-        public async Task<Result<int>> SendText(string mobileNumber, string userName, string message)
+        public void SendText(string mobileNumber, string message)
         {
-            var client = new NotificationClient(_notifyCredentials.Value.apiKey);
-
             Dictionary<string, dynamic> personalisation = new Dictionary<string, dynamic>
                 {
                     {"message",  message}
                 };
 
-            SmsNotificationResponse response = client.SendSms(
-              mobileNumber: mobileNumber,
-              templateId: _notifyCredentials.Value.textTemplate,
-              personalisation
+            _notificationClient.SendSms(mobileNumber: mobileNumber, templateId: _notifyCredentials.Value.textTemplate, personalisation
               );
-
-
-            return Result.Ok(1);
         }
     }
 }

@@ -76,7 +76,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                await _notifyService.SendEmail(Input.Email, "Reset Password", $"Please reset your password by clicking this link \n \n {HtmlEncoder.Default.Encode(callbackUrl)}");
+                 _notifyService.SendEmail(Input.Email, "Reset Password", $"Please reset your password by clicking this link \n \n {HtmlEncoder.Default.Encode(callbackUrl)}");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
