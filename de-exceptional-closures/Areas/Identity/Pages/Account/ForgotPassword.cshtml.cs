@@ -1,5 +1,4 @@
-﻿using de_exceptional_closures.Captcha;
-using de_exceptional_closures.Notify;
+﻿using de_exceptional_closures.Notify;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,14 +19,12 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly INotifyService _notifyService;
         public readonly string TitleTagName;
-        private readonly ReCaptcha _captcha;
 
-        public ForgotPasswordModel(UserManager<IdentityUser> userManager, INotifyService notifyService, ReCaptcha captcha)
+        public ForgotPasswordModel(UserManager<IdentityUser> userManager, INotifyService notifyService)
         {
             _userManager = userManager;
             _notifyService = notifyService;
             TitleTagName = "Forgot your password?";
-            _captcha = captcha;
         }
 
         [BindProperty]
