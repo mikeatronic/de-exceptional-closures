@@ -30,10 +30,10 @@ namespace de_exceptional_closures_Infrastructure.Data
         public DbSet<ApprovalType> ApprovalType { get; set; }
         public DbSet<RejectionReason> RejectionReason { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
 
-            modelBuilder.Entity<ReasonType>()
+            builder.Entity<ReasonType>()
              .HasData(new ReasonType { Id = 1, Description = "Adverse weather" },
                         new ReasonType { Id = 2, Description = "Use as a polling station" },
                         new ReasonType { Id = 3, Description = "Utilities failure (e.g. water, electricity)" },
@@ -41,12 +41,12 @@ namespace de_exceptional_closures_Infrastructure.Data
                         new ReasonType { Id = 5, Description = "Other (inc. COVID-19; please enter start and proposed end date)" }
                         );
 
-            modelBuilder.Entity<ApprovalType>()
+            builder.Entity<ApprovalType>()
                       .HasData(new ApprovalType { Id = 1, Description = "Pre-approved" },
                                new ApprovalType { Id = 2, Description = "Approval required" }
              );
 
-            modelBuilder.Entity<RejectionReason>()
+            builder.Entity<RejectionReason>()
                .HasData(new RejectionReason { Id = 1, Description = "School development" },
                         new RejectionReason { Id = 2, Description = "Half day" },
                         new RejectionReason { Id = 3, Description = "Split site - other site operational" },
@@ -64,9 +64,9 @@ namespace de_exceptional_closures_Infrastructure.Data
                         new RejectionReason { Id = 15, Description = "Does not meet criteria" }
              );
 
-            modelBuilder.Entity<ClosureReason>().HasQueryFilter(f => EF.Property<string>(f, "UserId") == GetCurrentUserId().GetAwaiter().GetResult().Value);
+            builder.Entity<ClosureReason>().HasQueryFilter(f => EF.Property<string>(f, "UserId") == GetCurrentUserId().GetAwaiter().GetResult().Value);
 
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

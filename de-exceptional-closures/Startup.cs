@@ -66,7 +66,7 @@ namespace de_exceptional_closures
 
             services.AddHttpClient<ReCaptcha>("CaptchaClient", x =>
             {
-                x.BaseAddress = new Uri("https://www.google.com/recaptcha/api/siteverify");
+                x.BaseAddress = new Uri(CaptchaConfig.googleUrl);
             });
 
             services.Configure<CookiePolicyOptions>(options =>

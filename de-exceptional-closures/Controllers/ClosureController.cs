@@ -269,13 +269,12 @@ namespace de_exceptional_closures.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(EditViewModel model)
+        public IActionResult Edit(EditViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
 
             return View(model);
         }
