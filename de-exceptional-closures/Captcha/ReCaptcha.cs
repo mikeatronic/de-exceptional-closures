@@ -6,12 +6,10 @@ namespace de_exceptional_closures.Captcha
 {
     public class ReCaptcha
     {
-        private readonly HttpClient captchaClient;
         private readonly IHttpClientFactory _notifyClientFactory;
 
-        public ReCaptcha(HttpClient captchaClient, IHttpClientFactory notifyClientFactory)
+        public ReCaptcha(IHttpClientFactory notifyClientFactory)
         {
-            this.captchaClient = captchaClient;
             _notifyClientFactory = notifyClientFactory;
         }
 

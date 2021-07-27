@@ -42,22 +42,6 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                //if (!Request.Form.ContainsKey("g-recaptcha-response"))
-                //{
-                //    ModelState.AddModelError("Input.Email", "Captcha response invalid.");
-
-                //    return Page();
-                //}
-
-                //var captcha = Request.Form["g-recaptcha-response"].ToString();
-
-                //if (!await _captcha.IsValid(captcha))
-                //{
-                //    ModelState.AddModelError("Input.Email", "You must pass the captcha check to continue.");
-
-                //    return Page();
-                //}
-
                 var user = await _userManager.FindByEmailAsync(Input.Email);
 
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
