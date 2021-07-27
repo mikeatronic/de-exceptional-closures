@@ -13,10 +13,12 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
     public class ResetPasswordModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
+        public readonly string TitleTagName;
 
         public ResetPasswordModel(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
+            TitleTagName = "Reset password";
         }
 
         [BindProperty]

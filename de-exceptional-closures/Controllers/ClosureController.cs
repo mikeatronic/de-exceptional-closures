@@ -9,6 +9,7 @@ using de_exceptional_closures_infraStructure.Features.ClosureReason.Queries;
 using de_exceptional_closures_infraStructure.Features.ReasonType.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,12 +23,17 @@ namespace de_exceptional_closures.Controllers
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
         private readonly INotifyService _notifyService;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ClosureController(IMediator mediator, IMapper mapper, INotifyService notifyService)
+        public ClosureController(IMediator mediator, IMapper mapper, INotifyService notifyService, SignInManager<IdentityUser> signInManager,
+             UserManager<IdentityUser> userManager)
         {
             _mediator = mediator;
             _mapper = mapper;
             _notifyService = notifyService;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -155,6 +161,8 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
+            await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education has approved this exceptional closure and will sanction a corresponding reduction in the minimum number of days on which your school is required to be in operation during this school year.");
+
             return RedirectToAction("Submitted", "Closure", new { id = createClosureReason.Value });
         }
 
@@ -248,6 +256,8 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
+            await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education will be in touch in due course with the outcome.");
+
             return RedirectToAction("Submitted", "Closure", new { id = createClosureReason.Value });
         }
 
@@ -263,6 +273,23 @@ namespace de_exceptional_closures.Controllers
 
             var model = _mapper.Map<EditViewModel>(getClosure.Value);
             model.TitleTagName = "Edit closure";
+
+            if (!getClosure.Value.DateTo.HasValue)
+            {
+                model.IsSingleDay = true;
+            }
+
+            var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
+
+            if (getReasons.IsFailure)
+            {
+                return View(model);
+            }
+
+            foreach (var item in getReasons.Value)
+            {
+                model.ReasonTypeList.Add(item);
+            }
 
             return View(model);
         }
@@ -320,6 +347,15 @@ namespace de_exceptional_closures.Controllers
             model.ClosureList = _mapper.Map<List<ClosureReasonDto>>(getAllClosures.Value);
 
             return View(model);
+        }
+
+        private async Task SendNotification(string subject, string message)
+        {
+            var getUser = await _userManager.GetUserAsync(User);
+
+            var getUserEmail = _signInManager.UserManager.GetEmailAsync(getUser);
+
+            _notifyService.SendEmail(getUserEmail.Result, subject, message);
         }
 
         public string CreateDate(string dateOfBirthYear, string dateOfBirthMonth, string dateOfBirthDay)
