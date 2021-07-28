@@ -14,7 +14,7 @@ jobs:
           command: dotnet restore
       - run:
           name: "Run Application Tests"
-          command: dotnet test
+          command: dotnet test -v n --results-directory:test_coverage --collect:"Code Coverage"
   build:
     executor:
       name: windows/default
