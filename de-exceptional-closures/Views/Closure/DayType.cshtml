@@ -13,27 +13,45 @@
                 <a href="javascript:history.go(-1)" class="govuk-back-link">Back</a>
 
                 <partial name="../Components/_errorSummary.cshtml" />
+
                 <div class="govuk-form-group">
-                    <fieldset class="govuk-fieldset" aria-describedby="changed-name-hint">
+                    <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 class="govuk-fieldset__heading">@Model.TitleTagName</h1>
                         </legend>
-
-                        <span asp-validation-for="IsSingleDay" class="govuk-error-message">
-                        </span>
-                        <div id="changed-name-hint" class="govuk-hint"></div>
+                        <span asp-validation-for="IsSingleDay" class="govuk-error-message"></span>
                         <div class="govuk-radios govuk-radios--inline">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="IsSingleDay" name="IsSingleDay" type="radio" value="true" data-val="true" data-val-required="IsSingleDay">
-                                <label class="govuk-label govuk-radios__label" for="IsSingleDay">Yes</label>
+                                @if (Model.IsSingleDay != null && Model.IsSingleDay.Value == true)
+                                {
+                                    <input class="govuk-radios__input" id="IsSingleDay" name="IsSingleDay" asp-for="IsSingleDay" type="radio" value=true checked>
+                                }
+                                else
+                                {
+                                    <input class="govuk-radios__input" id="IsSingleDay" name="IsSingleDay" asp-for="IsSingleDay" type="radio" value=true>
+                                }
+
+                                <label class="govuk-label govuk-radios__label" for="IsSingleDay">
+                                    Yes
+                                </label>
                             </div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="IsSingleDay-2" name="IsSingleDay" type="radio" value="false">
-                                <label class="govuk-label govuk-radios__label" for="IsSingleDay-2">No</label>
+                                @if (Model.IsSingleDay != null && Model.IsSingleDay.Value == false)
+                                {
+                                    <input class="govuk-radios__input" id="IsSingleDay-No" name="IsSingleDay" asp-for="IsSingleDay" type="radio" value=false checked>
+                                }
+                                else
+                                {
+                                    <input class="govuk-radios__input" id="IsSingleDay-No" name="IsSingleDay" asp-for="IsSingleDay" type="radio" value=false>
+                                }
+                                <label class="govuk-label govuk-radios__label" for="IsSingleDay-No">
+                                    No
+                                </label>
                             </div>
                         </div>
                     </fieldset>
                 </div>
+
                 <input type="submit" value="Continue" name="save" class="govuk-button" data-module="govuk-button" />
             </div>
         </div>

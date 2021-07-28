@@ -32,7 +32,7 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
-            if (model.IsPreApproved)
+            if (model.IsPreApproved.Value)
             {
                 return RedirectToAction("DayType", "Closure", new { approvalType = (int)ApprovalType.PreApproved });
             }

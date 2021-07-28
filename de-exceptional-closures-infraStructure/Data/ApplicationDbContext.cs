@@ -29,6 +29,7 @@ namespace de_exceptional_closures_Infrastructure.Data
         public DbSet<ClosureReason> ClosureReason { get; set; }
         public DbSet<ApprovalType> ApprovalType { get; set; }
         public DbSet<RejectionReason> RejectionReason { get; set; }
+        public DbSet<AutoApprovalList> AutoApprovalList { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
