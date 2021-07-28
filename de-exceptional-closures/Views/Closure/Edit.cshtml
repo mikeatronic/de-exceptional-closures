@@ -3,7 +3,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<form asp-action="Edit" asp-controller="Closure" method="post">
+<form asp-action="Edit" asp-controller="Closure" method="post" id="editForm">
     @Html.AntiForgeryToken()
     @Html.HiddenFor(i => i.IsSingleDay)
 
@@ -109,12 +109,12 @@
                         <div class="govuk-radios">
                             @foreach (var item in Model.ReasonTypeList)
                             {
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" name="ReasonTypeId" value="@item.Id" onchange="showHideOtherReason(@item.Id);" />
-                                <label class="govuk-label govuk-radios__label" for="@item.Id">
-                                    @item.Description
-                                </label>
-                            </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" name="ReasonTypeId" value="@item.Id" onchange="showHideOtherReason(@item.Id);" />
+                                    <label class="govuk-label govuk-radios__label" for="@item.Id">
+                                        @item.Description
+                                    </label>
+                                </div>
 
                             }
                         </div>
@@ -133,3 +133,8 @@
         </div>
     </div>
 </form>
+
+@section Scripts
+{
+    <script src="~/Scripts/Edit.js"></script>
+}
