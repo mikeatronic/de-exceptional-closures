@@ -28,32 +28,47 @@
                     </div>
                 </div>
 
-
                 <partial name="../Components/_errorSummary.cshtml" />
 
                 <div class="govuk-form-group">
-                    <fieldset class="govuk-fieldset" aria-describedby="changed-name-hint">
+                    <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 class="govuk-fieldset__heading">@Model.TitleTagName</h1>
                         </legend>
+                        <span asp-validation-for="IsPreApproved" class="govuk-error-message"></span>
 
-                        <span asp-validation-for="IsPreApproved" class="govuk-error-message">
-
-                        </span>
-                        <div id="changed-name-hint" class="govuk-hint"></div>
                         <div class="govuk-radios govuk-radios--inline">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="IsPreApproved" name="IsPreApproved" type="radio" value="true" data-val="true" data-val-required="IsPreApproved">
-                                <label class="govuk-label govuk-radios__label" for="IsPreApproved">Yes</label>
+                                @if (Model.IsPreApproved != null && Model.IsPreApproved.Value == true)
+                                {
+                                    <input class="govuk-radios__input" id="IsPreApproved" name="IsPreApproved" asp-for="IsPreApproved" type="radio" value=true checked>
+                                }
+                                else
+                                {
+                                    <input class="govuk-radios__input" id="IsPreApproved" name="IsPreApproved" asp-for="IsPreApproved" type="radio" value=true>
+                                }
+
+                                <label class="govuk-label govuk-radios__label" for="IsPreApproved">
+                                    Yes
+                                </label>
                             </div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="IsPreApproved-2" name="IsPreApproved" type="radio" value="false">
-                                <label class="govuk-label govuk-radios__label" for="IsPreApproved-2">No</label>
+                                @if (Model.IsPreApproved != null && Model.IsPreApproved.Value == false)
+                                {
+                                    <input class="govuk-radios__input" id="IsPreApproved-No" name="IsPreApproved" asp-for="IsPreApproved" type="radio" value=false checked>
+                                }
+                                else
+                                {
+                                    <input class="govuk-radios__input" id="IsPreApproved-No" name="IsPreApproved" asp-for="IsPreApproved" type="radio" value=false>
+                                }
+                                <label class="govuk-label govuk-radios__label" for="IsPreApproved-No">
+                                    No
+                                </label>
                             </div>
                         </div>
-
                     </fieldset>
                 </div>
+
                 <input type="submit" value="Continue" name="save" class="govuk-button" data-module="govuk-button" />
             </div>
         </div>

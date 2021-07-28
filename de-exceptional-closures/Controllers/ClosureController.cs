@@ -57,20 +57,20 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
-            if (model.ApprovalType == (int)ApprovalType.PreApproved && model.IsSingleDay)
+            if (model.ApprovalType == (int)ApprovalType.PreApproved && model.IsSingleDay.Value)
             {
                 return RedirectToAction("PreApproved", "Closure", new { isSingleDay = true });
             }
-            else if (model.ApprovalType == (int)ApprovalType.PreApproved && !model.IsSingleDay)
+            else if (model.ApprovalType == (int)ApprovalType.PreApproved && !model.IsSingleDay.Value)
             {
                 return RedirectToAction("PreApproved", "Closure", new { isSingleDay = false });
             }
 
-            if (model.ApprovalType == (int)ApprovalType.ApprovalRequired && model.IsSingleDay)
+            if (model.ApprovalType == (int)ApprovalType.ApprovalRequired && model.IsSingleDay.Value)
             {
                 return RedirectToAction("ApprovalRequired", "Closure", new { isSingleDay = true });
             }
-            else if (model.ApprovalType == (int)ApprovalType.ApprovalRequired && !model.IsSingleDay)
+            else if (model.ApprovalType == (int)ApprovalType.ApprovalRequired && !model.IsSingleDay.Value)
             {
                 return RedirectToAction("ApprovalRequired", "Closure", new { isSingleDay = false });
             }
