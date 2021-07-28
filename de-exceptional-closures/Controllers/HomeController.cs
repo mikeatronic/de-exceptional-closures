@@ -1,5 +1,4 @@
-﻿using de_exceptional_closures.Extensions;
-using de_exceptional_closures.Models;
+﻿using de_exceptional_closures.Models;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Home;
 using de_exceptional_closures_core.Common;
