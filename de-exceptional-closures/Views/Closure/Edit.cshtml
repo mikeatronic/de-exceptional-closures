@@ -3,9 +3,10 @@
     ViewData["Title"] = "Edit";
 }
 
-<form asp-action="Edit" asp-controller="Closure" method="post">
+<form asp-action="Edit" asp-controller="Closure" method="post" id="editForm">
     @Html.AntiForgeryToken()
     @Html.HiddenFor(i => i.IsSingleDay)
+    @Html.HiddenFor(i => i.ApprovalTypeId)
 
     <div class="govuk-width-container">
         <div class="govuk-grid-row">
@@ -24,7 +25,7 @@
                 </div>
 
                 <div class="govuk-form-group">
-                    <label asp-for="DateFrom" class="govuk-label"></label>
+                    @*<label asp-for="DateFrom" class="govuk-label"></label>*@
 
                     <span asp-validation-for="DateFrom" class="govuk-error-message"></span>
 
@@ -34,7 +35,7 @@
                                 <label class="govuk-label govuk-date-input__label" asp-for="DateFromDay">
                                     Day
                                 </label>
-                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="DateFromDay" asp-for="DateFromDay" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric">
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" asp-for="DateFromDay" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric">
                                 <span asp-validation-for="DateFromDay" class="govuk-error-message"></span>
                             </div>
                         </div>
@@ -43,7 +44,7 @@
                                 <label class="govuk-label govuk-date-input__label" asp-for="DateFromMonth">
                                     Month
                                 </label>
-                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="DateFromMonth" asp-for="DateFromMonth" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric">
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" asp-for="DateFromMonth" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric">
                                 <span asp-validation-for="DateFromMonth" class="govuk-error-message"></span>
 
                             </div>
@@ -60,7 +61,7 @@
                     </div>
                 </div>
 
-                @if (!Model.IsSingleDay)
+                @*@if (!Model.IsSingleDay)
                 {
                     <div class="govuk-form-group">
                         <label asp-for="DateTo" class="govuk-label"></label>
@@ -97,7 +98,7 @@
                             </div>
                         </div>
                     </div>
-                }
+                }*@
 
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">
@@ -109,12 +110,12 @@
                         <div class="govuk-radios">
                             @foreach (var item in Model.ReasonTypeList)
                             {
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" name="ReasonTypeId" value="@item.Id" onchange="showHideOtherReason(@item.Id);" />
-                                <label class="govuk-label govuk-radios__label" for="@item.Id">
-                                    @item.Description
-                                </label>
-                            </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" name="ReasonTypeId" value="@item.Id" onchange="showHideOtherReason(@item.Id);" />
+                                    <label class="govuk-label govuk-radios__label" for="@item.Id">
+                                        @item.Description
+                                    </label>
+                                </div>
 
                             }
                         </div>
@@ -133,3 +134,8 @@
         </div>
     </div>
 </form>
+
+@section Scripts
+{
+    <script src="~/Scripts/Edit.js"></script>
+}

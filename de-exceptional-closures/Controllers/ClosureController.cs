@@ -85,17 +85,7 @@ namespace de_exceptional_closures.Controllers
             model.IsSingleDay = isSingleDay;
             model.TitleTagName = "Pre-approved exceptional closure";
 
-            var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
-
-            if (getReasons.IsFailure)
-            {
-                return View(model);
-            }
-
-            foreach (var item in getReasons.Value)
-            {
-                model.ReasonTypeList.Add(item);
-            }
+            model.ReasonTypeList = await GetReasonTypes();
 
             return View(model);
         }
@@ -108,12 +98,7 @@ namespace de_exceptional_closures.Controllers
 
             if (!ModelState.IsValid)
             {
-                var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
-
-                foreach (var item in getReasons.Value)
-                {
-                    model.ReasonTypeList.Add(item);
-                }
+                model.ReasonTypeList = await GetReasonTypes();
 
                 return View(model);
             }
@@ -189,17 +174,7 @@ namespace de_exceptional_closures.Controllers
             model.IsSingleDay = isSingleDay;
             model.TitleTagName = "Approval required exceptional closure";
 
-            var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
-
-            if (getReasons.IsFailure)
-            {
-                return View(model);
-            }
-
-            foreach (var item in getReasons.Value)
-            {
-                model.ReasonTypeList.Add(item);
-            }
+            model.ReasonTypeList = await GetReasonTypes();
 
             return View(model);
         }
@@ -212,6 +187,8 @@ namespace de_exceptional_closures.Controllers
 
             if (!ModelState.IsValid)
             {
+                model.ReasonTypeList = await GetReasonTypes();
+
                 return View(model);
             }
 
@@ -279,31 +256,71 @@ namespace de_exceptional_closures.Controllers
                 model.IsSingleDay = true;
             }
 
-            var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
-
-            if (getReasons.IsFailure)
-            {
-                return View(model);
-            }
-
-            foreach (var item in getReasons.Value)
-            {
-                model.ReasonTypeList.Add(item);
-            }
+            model.ReasonTypeList = await GetReasonTypes();
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(EditViewModel model)
+        public async Task<IActionResult> EditAsync(EditViewModel model)
         {
             if (!ModelState.IsValid)
             {
+                model.ReasonTypeList = await GetReasonTypes();
+
                 return View(model);
             }
 
-            return View(model);
+            DateTime datefrom;
+
+            // Check for valid dates
+            if (DateTime.TryParse(CreateDate(model.DateFromYear.ToString(), model.DateFromMonth.ToString(), model.DateFromDay.ToString()), out datefrom))
+            {
+                model.DateFrom = new DateTime(datefrom.Year, datefrom.Month, datefrom.Day);
+            }
+            else
+            {
+                model.ReasonTypeList = await GetReasonTypes();
+
+                ModelState.AddModelError("DateFrom", "Please enter in a valid date");
+                return View(model);
+            }
+
+            if (!model.IsSingleDay)
+            {
+                DateTime dateTo;
+
+                // Check for valid dates
+                if (DateTime.TryParse(CreateDate(model.DateToYear.ToString(), model.DateToMonth.ToString(), model.DateToDay.ToString()), out dateTo))
+                {
+                    model.DateTo = new DateTime(dateTo.Year, dateTo.Month, dateTo.Day);
+                }
+                else
+                {
+                    model.ReasonTypeList = await GetReasonTypes();
+                    ModelState.AddModelError("DateTo", "Please enter in a valid date");
+                    return View(model);
+                }
+            }
+
+            var reasonToUpdate = _mapper.Map<ClosureReasonDto>(model);
+
+            var updateReason = await _mediator.Send(new UpdateClosureReasonCommand() { ClosureReasonDto = reasonToUpdate });
+
+            if (updateReason.IsFailure)
+            {
+                var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
+
+                foreach (var item in getReasons.Value)
+                {
+                    model.ReasonTypeList.Add(item);
+                }
+
+                return View(model);
+            }
+
+            return RedirectToAction("MyClosures", "Closure");
         }
 
         [HttpGet]
@@ -363,6 +380,13 @@ namespace de_exceptional_closures.Controllers
             string dateToCheck = dateOfBirthYear + "/" + dateOfBirthMonth + "/" + dateOfBirthDay;
 
             return dateToCheck;
+        }
+
+        public async Task<List<ReasonTypeDto>> GetReasonTypes()
+        {
+            var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
+
+            return getReasons.Value;
         }
     }
 }

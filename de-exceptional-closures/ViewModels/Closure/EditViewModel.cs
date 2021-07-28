@@ -63,5 +63,6 @@ namespace de_exceptional_closures.ViewModels.Closure
         public bool IsSingleDay { get; set; }
 
         public List<ReasonTypeDto> ReasonTypeList { get; set; }
+        public int ApprovalTypeId { get; set; }
     }
 }
