@@ -1,5 +1,4 @@
-﻿using de_exceptional_closures.Extensions;
-using de_exceptional_closures_core.Common;
+﻿using de_exceptional_closures_core.Common;
 using de_exceptional_closures_core.Dtos;
 using System;
 using System.Collections.Generic;
@@ -58,7 +57,6 @@ namespace de_exceptional_closures.ViewModels
         [Display(Name = "Other reason")]
         [MinLength(1)]
         [MaxLength(1024)]
-        [Required(ErrorMessage = "Other reason is required")]
         [AlphaNumericLimitedSpecialCharsAttribute]
         public string OtherReason { get; set; }
 
