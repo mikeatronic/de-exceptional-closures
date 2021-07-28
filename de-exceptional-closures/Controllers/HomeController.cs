@@ -59,7 +59,6 @@ namespace de_exceptional_closures.Controllers
         }
 
         [AllowAnonymous]
-        [RateLimiting(Name = "Cookies", Seconds = 1)]
         [HttpGet]
         public IActionResult Cookies()
         {

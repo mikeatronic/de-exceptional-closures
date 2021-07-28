@@ -1,4 +1,5 @@
 ﻿using de_exceptional_closures_core.Entities;
+using de_exceptional_closures_infraStructure.Data;
 using dss_common.Extensions;
 using dss_common.Functional;
 using Microsoft.AspNetCore.Http;
@@ -65,7 +66,7 @@ namespace de_exceptional_closures_Infrastructure.Data
                         new RejectionReason { Id = 15, Description = "Does not meet criteria" }
              );
 
-            builder.Entity<ClosureReason>().HasQueryFilter(f => EF.Property<string>(f, "UserId") == GetCurrentUserId().GetAwaiter().GetResult().Value);
+            builder.Entity<ClosureReason>().HasQueryFilter(f => EF.Property<string>(f, "UserId") == GetCurrentUserId().GetAwaiter().GetResult().Value.Id);
 
             base.OnModelCreating(builder);
         }
@@ -85,20 +86,27 @@ namespace de_exceptional_closures_Infrastructure.Data
                 {
                     var userResult = await GetCurrentUserId();
                     if (userResult.IsSuccess)
-                        entityEntry.CurrentValues["UserId"] = userResult.Value;
+                    {
+                        entityEntry.CurrentValues["UserId"] = userResult.Value.Id;
+                        entityEntry.CurrentValues["UserEmail"] = userResult.Value.Email;
+
+                    }
                 }
             }
 
             return await base.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<Result<string>> GetCurrentUserId()
+        public async Task<Result<UserData>> GetCurrentUserId()
         {
             var manager = _services.GetRequiredService<UserManager<IdentityUser>>();
 
             var userResult = (await manager.GetUserAsync(_httpContextAccessor.HttpContext.User)).ToMaybe();
+            UserData userData = new UserData();
+            userData.Id = userResult.Value.Id;
+            userData.Email = userResult.Value.Email;
 
-            return !userResult.HasValue ? Result.Fail<string>("User not found") : Result.Ok(userResult.Value.Id);
+            return !userResult.HasValue ? Result.Fail<UserData>("User not found") : Result.Ok(userData);
         }
 
         public override int SaveChanges()
