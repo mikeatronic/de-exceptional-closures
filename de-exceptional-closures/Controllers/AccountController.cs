@@ -46,7 +46,7 @@ namespace de_exceptional_closures.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [RateLimiting(Name = "ForgotPasswordConfirmation", Seconds = 5)]
+        [RateLimiting(Name = "ForgotPasswordConfirmation", Seconds = 2)]
         public IActionResult ForgotPasswordConfirmation()
         {
             BaseViewModel model = new BaseViewModel();
@@ -57,14 +57,14 @@ namespace de_exceptional_closures.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [RateLimiting(Name = "ForgotPassword", Seconds = 5)]
+        [RateLimiting(Name = "ForgotPassword", Seconds = 2)]
         public async Task<IActionResult> ForgotPassword(ForgotPassWordViewModel model)
         {
             if (ModelState.IsValid)
             {
                 if (!Request.Form.ContainsKey("g-recaptcha-response"))
                 {
-                    ModelState.AddModelError("Input.Email", "Captcha response invalid.");
+                    ModelState.AddModelError("Email", "Captcha response invalid.");
 
                     return View(model);
                 }
@@ -73,7 +73,7 @@ namespace de_exceptional_closures.Controllers
 
                 if (!await IsValid(captcha))
                 {
-                    ModelState.AddModelError("Input.Email", "You must pass the captcha check to continue.");
+                    ModelState.AddModelError("Email", "You must pass the captcha check to continue.");
 
                     return View(model);
                 }
