@@ -33,6 +33,9 @@ namespace de_exceptional_closures.Mapping
             CreateMap<ClosureReasonDto, EditViewModel>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
+            CreateMap<EditViewModel, ClosureReasonDto>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
             CreateMap<ClosureReasonDto, ViewViewModel>()
                  .ForMember(d => d.Approved,
                     o => o.MapFrom(s => s.Approved.Value ? "Yes" : "No"))
