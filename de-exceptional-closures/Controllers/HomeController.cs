@@ -1,5 +1,4 @@
-﻿using de_exceptional_closures.Extensions;
-using de_exceptional_closures.Models;
+﻿using de_exceptional_closures.Models;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Home;
 using de_exceptional_closures_core.Common;
@@ -59,7 +58,6 @@ namespace de_exceptional_closures.Controllers
         }
 
         [AllowAnonymous]
-        [RateLimiting(Name = "Cookies", Seconds = 1)]
         [HttpGet]
         public IActionResult Cookies()
         {
