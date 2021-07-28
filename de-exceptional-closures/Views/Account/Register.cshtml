@@ -1,0 +1,41 @@
+﻿@model de_exceptional_closures.ViewModels.Account.RegisterViewModel 
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+
+            <a asp-controller="Home" asp-action="Index" class="govuk-back-link">Back</a>
+
+            <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+
+            <form asp-controller="Account" asp-action="Register" method="post">
+                <p class="govuk-inset-text">Create a new account.</p>
+
+                <partial name="../Components/_errorSummary.cshtml" />
+
+                <div class="govuk-form-group">
+                    <label asp-for="Email" class="govuk-label"></label>
+                    <span asp-validation-for="Email" class="govuk-error-message"></span>
+                    <input asp-for="Email" class="govuk-input" />
+                </div>
+
+                <div class="govuk-form-group">
+                    <label asp-for="Password" class="govuk-label"></label>
+                    <span asp-validation-for="Password" class="govuk-error-message"></span>
+                    <input asp-for="Password" class="govuk-input" />
+                </div>
+                <div class="govuk-form-group">
+                    <label asp-for="ConfirmPassword" class="govuk-label"></label>
+                    <span asp-validation-for="ConfirmPassword" class="govuk-error-message"></span>
+                    <input asp-for="ConfirmPassword" class="govuk-input" />
+                </div>
+
+                <button type="submit" class="govuk-button" data-module="govuk-button">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
