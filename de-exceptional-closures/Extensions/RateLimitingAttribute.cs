@@ -9,7 +9,6 @@ namespace de_exceptional_closures.Extensions
     [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
     public class RateLimitingAttribute : ActionFilterAttribute
     {
-
         /// <summary>
         /// A unique name for this Throttle.
         /// </summary>

@@ -55,7 +55,7 @@ namespace de_exceptional_closures.ViewModels
         public int ReasonTypeId { get; set; }
 
         [Display(Name = "Other reason")]
-        [MinLength(10)]
+        [MinLength(1, ErrorMessage = "")]
         [MaxLength(1024)]
         [AlphaNumericLimitedSpecialCharsAttribute]
         public string OtherReason { get; set; }

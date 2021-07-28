@@ -112,6 +112,7 @@ namespace de_exceptional_closures.Controllers
             }
             else
             {
+                model.ReasonTypeList = await GetReasonTypes();
                 ModelState.AddModelError("DateFrom", "Please enter in a valid date");
                 return View(model);
             }
@@ -127,6 +128,7 @@ namespace de_exceptional_closures.Controllers
                 }
                 else
                 {
+                    model.ReasonTypeList = await GetReasonTypes();
                     ModelState.AddModelError("DateTo", "Please enter in a valid date");
                     return View(model);
                 }
@@ -143,6 +145,7 @@ namespace de_exceptional_closures.Controllers
 
             if (createClosureReason.IsFailure)
             {
+                model.ReasonTypeList = await GetReasonTypes();
                 return View(model);
             }
 
@@ -201,6 +204,7 @@ namespace de_exceptional_closures.Controllers
             }
             else
             {
+                model.ReasonTypeList = await GetReasonTypes();
                 ModelState.AddModelError("DateFrom", "Please enter in a valid date");
                 return View(model);
             }
@@ -216,6 +220,7 @@ namespace de_exceptional_closures.Controllers
                 }
                 else
                 {
+                    model.ReasonTypeList = await GetReasonTypes();
                     ModelState.AddModelError("DateTo", "Please enter in a valid date");
                     return View(model);
                 }
@@ -230,6 +235,7 @@ namespace de_exceptional_closures.Controllers
 
             if (createClosureReason.IsFailure)
             {
+                model.ReasonTypeList = await GetReasonTypes();
                 return View(model);
             }
 
