@@ -104,6 +104,28 @@ namespace de_exceptional_closures.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        [RateLimiting(Name = "Register", Seconds = 5)]
+        public IActionResult Register()
+        {
+            BaseViewModel model = new BaseViewModel();
+            model.TitleTagName = "Register";
+
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [RateLimiting(Name = "RegisterConfirmation", Seconds = 5)]
+        public IActionResult RegisterConfirmation()
+        {
+            BaseViewModel model = new BaseViewModel();
+            model.TitleTagName = "Register confirmation";
+
+            return View(model);
+        }
+
         public async Task<bool> IsValid(string captcha)
         {
             var client = _httpClientFactory.CreateClient("CaptchaClient");
