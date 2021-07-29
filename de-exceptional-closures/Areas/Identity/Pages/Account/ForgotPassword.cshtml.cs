@@ -16,14 +16,10 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
 
     public class ForgotPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly INotifyService _notifyService;
         public readonly string TitleTagName;
 
-        public ForgotPasswordModel(UserManager<IdentityUser> userManager, INotifyService notifyService)
+        public ForgotPasswordModel()
         {
-            _userManager = userManager;
-            _notifyService = notifyService;
             TitleTagName = "Forgot your password?";
         }
 
@@ -38,34 +34,9 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
             public string Email { get; set; }
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public IActionResult OnGet()
         {
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.FindByEmailAsync(Input.Email);
-
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPasswordConfirmation");
-                }
-
-                // For more information on how to enable account confirmation and password reset please 
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ResetPassword",
-                    pageHandler: null,
-                    values: new { area = "Identity", code },
-                    protocol: Request.Scheme);
-
-                _notifyService.SendEmail(Input.Email, "Reset Password", $"Please reset your password by clicking this link \n \n {HtmlEncoder.Default.Encode(callbackUrl)}");
-
-                return RedirectToPage("./ForgotPasswordConfirmation");
-            }
-
-            return Page();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
