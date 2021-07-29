@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace de_exceptional_closures.Areas.Identity.Pages.Account
@@ -11,6 +12,11 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
         public ForgotPasswordConfirmation()
         {
             TitleTagName = "Forgot password confirmation";
+        }
+
+        public IActionResult OnGet()
+        {
+            return RedirectToAction("Index", "Home");
         }
     }
 }

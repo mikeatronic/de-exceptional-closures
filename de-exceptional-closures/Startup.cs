@@ -1,4 +1,3 @@
-using de_exceptional_closures.Captcha;
 using de_exceptional_closures.Config;
 using de_exceptional_closures.Notify;
 using de_exceptional_closures_infraStructure.Features.ReasonType.Validation;
@@ -63,11 +62,6 @@ namespace de_exceptional_closures
             .First(s => s.Name == "de-exceptional-closures-captcha").Credentials["Credentials"]);
 
             services.Configure<CaptchaConfig>(nc => nc.PopulateCaptchaConfig(CaptchaConfig));
-
-            services.AddHttpClient("CaptchaClient", x =>
-            {
-                x.BaseAddress = new Uri("https://www.google.com/recaptcha/api/siteverify");
-            });
 
             services.Configure<CookiePolicyOptions>(options =>
             {

@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -21,16 +20,11 @@ namespace de_exceptional_closures.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly INotifyService _notifyService;
         public readonly string TitleTagName;
-        private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IOptions<CaptchaConfig> _captchaConfig;
 
-
-        public AccountController(UserManager<IdentityUser> userManager, INotifyService notifyService, IHttpClientFactory httpClientFactory, IOptions<CaptchaConfig> captchaConfig)
+        public AccountController(UserManager<IdentityUser> userManager, INotifyService notifyService)
         {
             _userManager = userManager;
             _notifyService = notifyService;
-            _httpClientFactory = httpClientFactory;
-            _captchaConfig = captchaConfig;
             TitleTagName = "Forgot your password?";
         }
 
@@ -57,27 +51,11 @@ namespace de_exceptional_closures.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [RateLimiting(Name = "ForgotPassword", Seconds = 2)]
+        [RateLimiting(Name = "ForgotPassword", Seconds = 5)]
         public async Task<IActionResult> ForgotPassword(ForgotPassWordViewModel model)
         {
             if (ModelState.IsValid)
             {
-                if (!Request.Form.ContainsKey("g-recaptcha-response"))
-                {
-                    ModelState.AddModelError("Email", "Captcha response invalid.");
-
-                    return View(model);
-                }
-
-                var captcha = Request.Form["g-recaptcha-response"].ToString();
-
-                if (!await IsValid(captcha))
-                {
-                    ModelState.AddModelError("Email", "You must pass the captcha check to continue.");
-
-                    return View(model);
-                }
-
                 var user = await _userManager.FindByEmailAsync(model.Email);
 
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
@@ -124,19 +102,6 @@ namespace de_exceptional_closures.Controllers
             model.TitleTagName = "Register confirmation";
 
             return View(model);
-        }
-
-        public async Task<bool> IsValid(string captcha)
-        {
-            var client = _httpClientFactory.CreateClient("CaptchaClient");
-
-            var postTask = await client
-                    .PostAsync($"?secret={_captchaConfig.Value.Secret}&response={captcha}", new StringContent(""));
-
-            var result = await postTask.Content.ReadAsStringAsync();
-            var resultObject = JObject.Parse(result);
-            dynamic success = resultObject["success"];
-            return (bool)success;
         }
     }
 }
