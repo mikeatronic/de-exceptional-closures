@@ -1,5 +1,4 @@
-﻿using de_exceptional_closures.Config;
-using de_exceptional_closures.Extensions;
+﻿using de_exceptional_closures.Extensions;
 using de_exceptional_closures.Notify;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Account;
@@ -7,8 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Options;
-using System.Net.Http;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -113,8 +110,6 @@ namespace de_exceptional_closures.Controllers
 
                 if (result.Succeeded)
                 {
-                   // _logger.LogInformation("User created a new account with password.");
-
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
