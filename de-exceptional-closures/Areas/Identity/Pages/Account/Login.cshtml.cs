@@ -82,6 +82,11 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    if (returnUrl == "/")
+                    {
+                        return RedirectToAction("MyClosures", "Closure");
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

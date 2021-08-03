@@ -122,7 +122,7 @@ namespace de_exceptional_closures.Controllers
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = model.Email, returnUrl = returnUrl });
+                        return RedirectToAction("RegisterConfirmation", "Account");
                     }
                     else
                     {
@@ -139,7 +139,6 @@ namespace de_exceptional_closures.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
 
         [HttpGet]
         [AllowAnonymous]
