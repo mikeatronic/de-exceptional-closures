@@ -1,4 +1,5 @@
 ﻿using de_exceptional_closures.ViewModels;
+using de_exceptional_closures_infraStructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,10 +9,10 @@ namespace de_exceptional_closures.Controllers
 {
     public class HelperController : Controller
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private static readonly NLog.Logger Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
-        public HelperController(SignInManager<IdentityUser> signInManager)
+        public HelperController(SignInManager<ApplicationUser> signInManager)
         {
             _signInManager = signInManager;
         }

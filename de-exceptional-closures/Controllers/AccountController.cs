@@ -3,13 +3,13 @@ using de_exceptional_closures.Models;
 using de_exceptional_closures.Notify;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Account;
+using de_exceptional_closures_infraStructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -20,14 +20,14 @@ namespace de_exceptional_closures.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly INotifyService _notifyService;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IHttpClientFactory _client;
         public readonly string TitleTagName;
         private static readonly NLog.Logger Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
-        public AccountController(UserManager<IdentityUser> userManager, INotifyService notifyService, SignInManager<IdentityUser> signInManager, IHttpClientFactory client)
+        public AccountController(UserManager<ApplicationUser> userManager, INotifyService notifyService, SignInManager<ApplicationUser> signInManager, IHttpClientFactory client)
         {
             _userManager = userManager;
             _notifyService = notifyService;
@@ -111,7 +111,7 @@ namespace de_exceptional_closures.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        [RateLimiting(Name = "Register", Minutes = 15)]
+     //   [RateLimiting(Name = "Register", Minutes = 15)]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             model.TitleTagName = "Register";
@@ -136,9 +136,21 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
+            var searchInstitution = await CheckInstitution(model.InstitutionReference);
+
+            // Then check if Institute reference is valid
+            if (searchInstitution == string.Empty)
+            {
+                LogAudit("tried to Register with an unknown Institute: " + model.InstitutionReference);
+
+                ModelState.AddModelError("InstitutionReference", "Cannot find Institute");
+                return View(model);
+            }
+
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, InstitutionReference = model.InstitutionReference, InstitutionName = searchInstitution };
+
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
@@ -193,10 +205,8 @@ namespace de_exceptional_closures.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> GetInstitution(string referenceNumber)
+        public async Task<string> CheckInstitution(string referenceNumber)
         {
-            referenceNumber = "1420020";
-
             var client = _client.CreateClient("InstitutionsClient");
 
             client.DefaultRequestHeaders.Accept.Clear();
@@ -204,18 +214,20 @@ namespace de_exceptional_closures.Controllers
 
             var result = await client.GetAsync("GetByReferenceNumber?refNumber=" + referenceNumber);
 
-            Institution institution = new Institution();
-
             if (result.IsSuccessStatusCode)
             {
+                Institution institution;
+
                 using (HttpContent content = result.Content)
                 {
                     var resp = content.ReadAsStringAsync();
                     institution = JsonConvert.DeserializeObject<Institution>(resp.Result);
                 }
+
+                return institution.Name;
             }
 
-            return Json(institution);
+            return string.Empty;
         }
 
         internal void LogAudit(string message)

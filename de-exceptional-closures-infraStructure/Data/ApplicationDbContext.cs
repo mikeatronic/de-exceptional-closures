@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace de_exceptional_closures_Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IServiceProvider _services;
@@ -89,7 +89,8 @@ namespace de_exceptional_closures_Infrastructure.Data
                     {
                         entityEntry.CurrentValues["UserId"] = userResult.Value.Id;
                         entityEntry.CurrentValues["UserEmail"] = userResult.Value.Email;
-
+                        entityEntry.CurrentValues["Srn"] = userResult.Value.Srn;
+                        entityEntry.CurrentValues["InstitutionName"] = userResult.Value.InstitutionName;
                     }
                 }
             }
@@ -99,12 +100,15 @@ namespace de_exceptional_closures_Infrastructure.Data
 
         public async Task<Result<UserData>> GetCurrentUserId()
         {
-            var manager = _services.GetRequiredService<UserManager<IdentityUser>>();
+            var manager = _services.GetRequiredService<UserManager<ApplicationUser>>();
 
             var userResult = (await manager.GetUserAsync(_httpContextAccessor.HttpContext.User)).ToMaybe();
+
             UserData userData = new UserData();
             userData.Id = userResult.Value.Id;
             userData.Email = userResult.Value.Email;
+            userData.Srn = userResult.Value.InstitutionReference;
+            userData.InstitutionName = userResult.Value.InstitutionName;
 
             return !userResult.HasValue ? Result.Fail<UserData>("User not found") : Result.Ok(userData);
         }
