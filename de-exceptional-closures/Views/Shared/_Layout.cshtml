@@ -11,6 +11,7 @@
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/lib/DataTables/datatables.min.css" rel="stylesheet" />
     <link href="~/sass/site.css" rel="stylesheet" />
+    <link href="~/css/jquery-modal.css" rel="stylesheet" />
     <link href="~/css/fontawesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="icon" href="~/images/favicon.ico" type="image/x-icon" />
@@ -34,7 +35,7 @@
             </main>
         </div>
     </div>
-
+    <partial name="../Shared/_TimeOutControl.cshtml" />
     <partial name="../Components/_footer.cshtml" />
     <script src="~/lib/DataTables/datatables.min.js"></script>
     <partial name="../Shared/_ValidationScriptsPartial.cshtml" />
@@ -42,6 +43,11 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
     <partial name="../Shared/_initializeGOVUKFrontend.cshtml" />
+
+    <script src="~/js/moment.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-modal.js" asp-append-version="true"></script>
+    <script src="~/js/inactivity-alert.js" asp-append-version="true"></script>
+
     <script src="~/Scripts/PreApproved.js"></script>
 
 </body>

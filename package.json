@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "jquery-validation": "^1.19.3"
+    "jquery-validation": "^1.19.3",
+    "moment": "^2.29.1"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.6"
