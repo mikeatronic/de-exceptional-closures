@@ -17,7 +17,7 @@ namespace de_exceptional_closures.Extensions
         /// <summary>
         /// The number of seconds clients must wait before executing this decorated route again.
         /// </summary>
-        public int Seconds { get; set; }
+        public int Minutes { get; set; }
 
         /// <summary>
         /// A text message that will be sent to the client upon throttling.  You can include the token {n} to
@@ -34,16 +34,16 @@ namespace de_exceptional_closures.Extensions
 
             if (!Cache.TryGetValue(key, out bool entry))
             {
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(Seconds));
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(Minutes));
 
                 Cache.Set(key, true, cacheEntryOptions);
             }
             else
             {
                 if (string.IsNullOrEmpty(Message))
-                    Message = "You may only perform this action every {n} seconds.";
+                    Message = "You may only perform this action every {n} minutes.";
 
-                context.Result = new ContentResult { Content = Message.Replace("{n}", Seconds.ToString()) };
+                context.Result = new ContentResult { Content = Message.Replace("{n}", Minutes.ToString()) };
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Conflict;
             }
         }

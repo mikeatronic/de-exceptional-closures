@@ -39,7 +39,7 @@ namespace de_exceptional_closures.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [RateLimiting(Name = "ForgotPassword", Seconds = 5)]
+        [RateLimiting(Name = "ForgotPassword", Minutes = 15)]
         public async Task<IActionResult> ForgotPassword(ForgotPassWordViewModel model)
         {
             if (ModelState.IsValid)
@@ -72,7 +72,7 @@ namespace de_exceptional_closures.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [RateLimiting(Name = "ForgotPasswordConfirmation", Seconds = 5)]
+        [RateLimiting(Name = "ForgotPasswordConfirmation", Minutes = 15)]
         public IActionResult ForgotPasswordConfirmation()
         {
             BaseViewModel model = new BaseViewModel();
@@ -83,7 +83,6 @@ namespace de_exceptional_closures.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [RateLimiting(Name = "Register", Seconds = 5)]
         public IActionResult Register()
         {
             RegisterViewModel model = new RegisterViewModel();
@@ -96,7 +95,7 @@ namespace de_exceptional_closures.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        [RateLimiting(Name = "Register", Seconds = 5)]
+        [RateLimiting(Name = "Register", Minutes = 15)]
         public async Task<IActionResult> RegisterAsync(RegisterViewModel model, string returnUrl = null)
         {
             model.TitleTagName = "Register";
@@ -142,7 +141,7 @@ namespace de_exceptional_closures.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [RateLimiting(Name = "RegisterConfirmation", Seconds = 5)]
+        [RateLimiting(Name = "RegisterConfirmation", Minutes = 15)]
         public IActionResult RegisterConfirmation()
         {
             BaseViewModel model = new BaseViewModel();
