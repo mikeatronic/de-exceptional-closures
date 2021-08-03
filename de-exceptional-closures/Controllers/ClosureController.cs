@@ -209,7 +209,7 @@ namespace de_exceptional_closures.Controllers
             if (!ModelState.IsValid)
             {
                 model.ReasonTypeList = await GetReasonTypes();
-                LogAudit("Error encountered: " + ModelState.IsValid.ToString() +". ApprovalRequired POST view");
+                LogAudit("Error encountered: " + ModelState.IsValid.ToString() + ". ApprovalRequired POST view");
                 return View(model);
             }
 

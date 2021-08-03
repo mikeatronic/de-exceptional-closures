@@ -101,16 +101,33 @@ namespace de_exceptional_closures.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         [RateLimiting(Name = "Register", Minutes = 15)]
-        public async Task<IActionResult> RegisterAsync(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             model.TitleTagName = "Register";
 
             returnUrl = returnUrl ?? Url.Content("~/");
+
+            // Check for valid emails
+            if (!model.Email.EndsWith("@finance-ni.gov.uk") && !model.Email.EndsWith("@c2kni.net")
+                && !model.Email.EndsWith(".ni.sch.uk") && !model.Email.EndsWith(".ni.sch.co.uk")
+                && !model.Email.EndsWith("@c2ken.net") && !model.Email.EndsWith("@education-ni.gov.uk"))
+            {
+                model.TitleTagName = "Register";
+
+                LogAudit("tried to Register with an unauthorised email address. Email address: " + model.Email);
+
+                ModelState.AddModelError("Email", "Only authorised Institution email addresses can be used");
+                return View(model);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
             if (ModelState.IsValid)
             {
@@ -143,7 +160,7 @@ namespace de_exceptional_closures.Controllers
                         return LocalRedirect(returnUrl);
                     }
                 }
-               
+
                 foreach (var error in result.Errors)
                 {
                     LogAudit("encountered an error: " + error.Description);

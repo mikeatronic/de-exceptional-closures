@@ -1,5 +1,7 @@
 ﻿using de_exceptional_closures.Controllers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using Xunit;
 
 namespace de_exceptional_closures_unitTests.Controllers
@@ -12,6 +14,14 @@ namespace de_exceptional_closures_unitTests.Controllers
         {
             // Arrange
             controller = new HomeController();
+
+            // Setup Context
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+
+            // Add fake Ip address for audit
+            IPAddress ip = new IPAddress(16885952);
+            controller.HttpContext.Connection.RemoteIpAddress = ip;
         }
 
         [Fact]
