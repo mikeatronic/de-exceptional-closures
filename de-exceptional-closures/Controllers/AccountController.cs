@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using System;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace de_exceptional_closures.Controllers
         private readonly INotifyService _notifyService;
         private readonly SignInManager<IdentityUser> _signInManager;
         public readonly string TitleTagName;
+        private static readonly NLog.Logger Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
         public AccountController(UserManager<IdentityUser> userManager, INotifyService notifyService, SignInManager<IdentityUser> signInManager)
         {
@@ -33,6 +35,8 @@ namespace de_exceptional_closures.Controllers
         {
             ForgotPassWordViewModel model = new ForgotPassWordViewModel();
             model.TitleTagName = "Forgot your password?";
+
+            LogAudit("opened Forgot your password GET view");
 
             return View(model);
         }
@@ -64,6 +68,8 @@ namespace de_exceptional_closures.Controllers
 
                 _notifyService.SendEmail(model.Email, "Reset Password", $"Please reset your password by clicking this link \n \n {HtmlEncoder.Default.Encode(callbackUrl)}");
 
+                LogAudit("opened Forgot your password POST view and being re-directed to ForgotPasswordConfirmation view");
+
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
@@ -78,6 +84,8 @@ namespace de_exceptional_closures.Controllers
             BaseViewModel model = new BaseViewModel();
             model.TitleTagName = "Forgot password confirmation";
 
+            LogAudit("opened Forgot password confirmation GET view");
+
             return View(model);
         }
 
@@ -87,6 +95,8 @@ namespace de_exceptional_closures.Controllers
         {
             RegisterViewModel model = new RegisterViewModel();
             model.TitleTagName = "Register";
+
+            LogAudit("opened Register GET view");
 
             return View(model);
         }
@@ -119,18 +129,24 @@ namespace de_exceptional_closures.Controllers
 
                     _notifyService.SendEmail(model.Email, "Confirm your email for DE exceptional closures", $"Please confirm your account by clicking this link: '{HtmlEncoder.Default.Encode(callbackUrl)}'");
 
+                    LogAudit("Email sent to confirm account");
+
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
+                        LogAudit("Redirecting to RegisterConfirmation view");
                         return RedirectToAction("RegisterConfirmation", "Account");
                     }
                     else
                     {
+                        LogAudit("Signing user in");
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
                 }
+               
                 foreach (var error in result.Errors)
                 {
+                    LogAudit("encountered an error: " + error.Description);
                     ModelState.AddModelError("Password", error.Description);
                 }
             }
@@ -147,7 +163,16 @@ namespace de_exceptional_closures.Controllers
             BaseViewModel model = new BaseViewModel();
             model.TitleTagName = "Register confirmation";
 
+            LogAudit("opened Register confirmation view");
+
             return View(model);
+        }
+
+        internal void LogAudit(string message)
+        {
+            string ip = "IPAddress: " + HttpContext.Connection.RemoteIpAddress.ToString() + ", DateTime: " + DateTime.Now;
+
+            Logger.Info(User.Identity.Name + " " + message + ". " + ip);
         }
     }
 }

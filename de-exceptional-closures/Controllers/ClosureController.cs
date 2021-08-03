@@ -25,6 +25,7 @@ namespace de_exceptional_closures.Controllers
         private readonly INotifyService _notifyService;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private static readonly NLog.Logger Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
         public ClosureController(IMediator mediator, IMapper mapper, INotifyService notifyService, SignInManager<IdentityUser> signInManager,
              UserManager<IdentityUser> userManager)
@@ -43,6 +44,8 @@ namespace de_exceptional_closures.Controllers
             model.TitleTagName = "Is the closure for a single day?";
             model.ApprovalType = approvalType;
 
+            LogAudit("opened Is the closure for a single day GET view");
+
             return View(model);
         }
 
@@ -56,6 +59,8 @@ namespace de_exceptional_closures.Controllers
             {
                 return View(model);
             }
+
+            LogAudit("opened Is the closure for a single day POST view");
 
             if (model.ApprovalType == (int)ApprovalType.PreApproved && model.IsSingleDay.Value)
             {
@@ -87,6 +92,8 @@ namespace de_exceptional_closures.Controllers
 
             model.ReasonTypeList = await GetReasonTypes();
 
+            LogAudit("opened Pre-approved exceptional closure GET view");
+
             return View(model);
         }
 
@@ -103,6 +110,8 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
+            LogAudit("opened Pre-approved exceptional closure POST view");
+
             DateTime datefrom;
 
             // Check for valid dates
@@ -113,6 +122,8 @@ namespace de_exceptional_closures.Controllers
             else
             {
                 model.ReasonTypeList = await GetReasonTypes();
+
+                LogAudit("Encountered an error: Please enter in a valid date. Pre-approved exceptional closure POST view.");
                 ModelState.AddModelError("DateFrom", "Please enter in a valid date");
                 return View(model);
             }
@@ -129,6 +140,7 @@ namespace de_exceptional_closures.Controllers
                 else
                 {
                     model.ReasonTypeList = await GetReasonTypes();
+                    LogAudit("Encountered an error: Please enter in a valid date. Pre-approved exceptional closure POST view.");
                     ModelState.AddModelError("DateTo", "Please enter in a valid date");
                     return View(model);
                 }
@@ -151,6 +163,8 @@ namespace de_exceptional_closures.Controllers
 
             await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education has approved this exceptional closure and will sanction a corresponding reduction in the minimum number of days on which your school is required to be in operation during this school year.");
 
+            LogAudit("Completed Pre-approved exceptional closure POST view");
+
             return RedirectToAction("Submitted", "Closure", new { id = createClosureReason.Value });
         }
 
@@ -167,6 +181,8 @@ namespace de_exceptional_closures.Controllers
             var model = _mapper.Map<SubmittedViewModel>(getClosure.Value);
             model.TitleTagName = "Exceptional closure submitted";
 
+            LogAudit("opened Submitted GET view");
+
             return View(model);
         }
 
@@ -178,6 +194,8 @@ namespace de_exceptional_closures.Controllers
             model.TitleTagName = "Approval required exceptional closure";
 
             model.ReasonTypeList = await GetReasonTypes();
+
+            LogAudit("opened ApprovalRequired GET view");
 
             return View(model);
         }
@@ -191,7 +209,7 @@ namespace de_exceptional_closures.Controllers
             if (!ModelState.IsValid)
             {
                 model.ReasonTypeList = await GetReasonTypes();
-
+                LogAudit("Error encountered: " + ModelState.IsValid.ToString() +". ApprovalRequired POST view");
                 return View(model);
             }
 
@@ -205,6 +223,7 @@ namespace de_exceptional_closures.Controllers
             else
             {
                 model.ReasonTypeList = await GetReasonTypes();
+                LogAudit("Error encountered: Please enter in a valid date. ApprovalRequired POST view");
                 ModelState.AddModelError("DateFrom", "Please enter in a valid date");
                 return View(model);
             }
@@ -221,6 +240,7 @@ namespace de_exceptional_closures.Controllers
                 else
                 {
                     model.ReasonTypeList = await GetReasonTypes();
+                    LogAudit("Error encountered: Please enter in a valid date. ApprovalRequired POST view");
                     ModelState.AddModelError("DateTo", "Please enter in a valid date");
                     return View(model);
                 }
@@ -240,6 +260,8 @@ namespace de_exceptional_closures.Controllers
             }
 
             await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education will be in touch in due course with the outcome.");
+
+            LogAudit("Completed ApprovalRequired POST view");
 
             return RedirectToAction("Submitted", "Closure", new { id = createClosureReason.Value });
         }
@@ -264,6 +286,8 @@ namespace de_exceptional_closures.Controllers
 
             model.ReasonTypeList = await GetReasonTypes();
 
+            LogAudit("opened Edit GET view");
+
             return View(model);
         }
 
@@ -274,6 +298,7 @@ namespace de_exceptional_closures.Controllers
             if (!ModelState.IsValid)
             {
                 model.ReasonTypeList = await GetReasonTypes();
+                LogAudit("Error encountered: " + ModelState.IsValid.ToString() + ". Edit POST view");
 
                 return View(model);
             }
@@ -343,12 +368,16 @@ namespace de_exceptional_closures.Controllers
 
             model.TitleTagName = "View exceptional closure";
 
+            LogAudit("opened Edit VIEW view");
+
             return View(model);
         }
 
         [HttpGet]
         public IActionResult CheckAnswers()
         {
+            LogAudit("opened CheckAnswers view");
+
             return View();
         }
 
@@ -359,6 +388,8 @@ namespace de_exceptional_closures.Controllers
 
             model.SectionName = "My closures";
             model.TitleTagName = "My closures";
+
+            LogAudit("opened MyClosures view");
 
             var getAllClosures = await _mediator.Send(new GetAllClosuresQuery());
 
@@ -378,6 +409,8 @@ namespace de_exceptional_closures.Controllers
 
             var getUserEmail = _signInManager.UserManager.GetEmailAsync(getUser);
 
+            LogAudit("email sent: " + subject + ". " + message);
+
             _notifyService.SendEmail(getUserEmail.Result, subject, message);
         }
 
@@ -393,6 +426,13 @@ namespace de_exceptional_closures.Controllers
             var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
 
             return getReasons.Value;
+        }
+
+        internal void LogAudit(string message)
+        {
+            string ip = "IPAddress: " + HttpContext.Connection.RemoteIpAddress.ToString() + ", DateTime: " + DateTime.Now;
+
+            Logger.Info(User.Identity.Name + " " + message + ". " + ip);
         }
     }
 }
