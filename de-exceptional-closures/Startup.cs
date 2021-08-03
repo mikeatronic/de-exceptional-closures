@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NLog;
 using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 using System;
@@ -22,9 +23,12 @@ namespace de_exceptional_closures
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        protected readonly string currentEnvironment;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            currentEnvironment = env.EnvironmentName;
         }
 
         public IConfiguration Configuration { get; }
@@ -47,6 +51,23 @@ namespace de_exceptional_closures
             // Setup identity
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // Nlog
+            if (currentEnvironment == "Development")
+            {
+                // Set Nlog Connection string
+                GlobalDiagnosticsContext.Set("DefaultNlogConnection", ConfigurationFactory.PopulateLocalConnectionString(Configuration));
+            }
+            else
+            {
+                MySqlCredentials adminApplication;
+
+                adminApplication = ConfigurationFactory.CreateDatabaseConfig(CloudFoundryServicesOptions
+               .Services["mysql"].First(s => s.Name == "de-institutions-api-mysql").Credentials);
+
+                // Set Nlog Connection string
+                GlobalDiagnosticsContext.Set("DefaultNlogConnection", ConfigurationFactory.PopulateConnectionString(adminApplication));
+            }
 
             // Notify Config
             NotifyConfig = ConfigurationFactory.CreateNotifyConfig(CloudFoundryServicesOptions

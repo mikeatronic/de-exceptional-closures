@@ -9,16 +9,15 @@ namespace de_exceptional_closures.Controllers
     public class HelperController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
+        private static readonly NLog.Logger Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
         public HelperController(SignInManager<IdentityUser> signInManager)
         {
             _signInManager = signInManager;
         }
 
-        public async Task<RedirectToActionResult> TimeoutResult()
+        public RedirectToActionResult TimeoutResult()
         {
-            await _signInManager.SignOutAsync();
-
             return RedirectToAction("Timeout", "Helper");
         }
 
@@ -30,13 +29,18 @@ namespace de_exceptional_closures.Controllers
             model.SectionName = "Time out";
             model.TitleTagName = "Timed out";
 
-            // Logging User being directed to NIDA
-            string propertiesString = "{'IPAddress': '" + HttpContext.Connection.RemoteIpAddress.ToString() + "', 'DateTime': '" + DateTime.Now + "'}";
+            LogAudit("Logging out user: " + User.Identity.Name);
 
-            // Log to Nlog
-            // Logger.Info(JsonConvert.SerializeObject(auditItem));
+            await _signInManager.SignOutAsync();
 
             return View(model);
+        }
+
+        internal void LogAudit(string message)
+        {
+            string ip = "IPAddress: " + HttpContext.Connection.RemoteIpAddress.ToString() + ", DateTime: " + DateTime.Now;
+
+            Logger.Info(message + ". " + ip);
         }
     }
 }
