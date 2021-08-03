@@ -1,4 +1,5 @@
 ﻿using de_exceptional_closures.Extensions;
+using de_exceptional_closures.Models;
 using de_exceptional_closures.Notify;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Account;
@@ -6,7 +7,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -18,14 +23,16 @@ namespace de_exceptional_closures.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly INotifyService _notifyService;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IHttpClientFactory _client;
         public readonly string TitleTagName;
         private static readonly NLog.Logger Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
-        public AccountController(UserManager<IdentityUser> userManager, INotifyService notifyService, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager, INotifyService notifyService, SignInManager<IdentityUser> signInManager, IHttpClientFactory client)
         {
             _userManager = userManager;
             _notifyService = notifyService;
             _signInManager = signInManager;
+            _client = client;
             TitleTagName = "Forgot your password?";
         }
 
@@ -183,6 +190,32 @@ namespace de_exceptional_closures.Controllers
             LogAudit("opened Register confirmation view");
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetInstitution(string referenceNumber)
+        {
+            referenceNumber = "1420020";
+
+            var client = _client.CreateClient("InstitutionsClient");
+
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var result = await client.GetAsync("GetByReferenceNumber?refNumber=" + referenceNumber);
+
+            Institution institution = new Institution();
+
+            if (result.IsSuccessStatusCode)
+            {
+                using (HttpContent content = result.Content)
+                {
+                    var resp = content.ReadAsStringAsync();
+                    institution = JsonConvert.DeserializeObject<Institution>(resp.Result);
+                }
+            }
+
+            return Json(institution);
         }
 
         internal void LogAudit(string message)

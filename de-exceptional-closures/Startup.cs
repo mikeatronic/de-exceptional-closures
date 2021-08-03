@@ -63,7 +63,7 @@ namespace de_exceptional_closures
                 MySqlCredentials adminApplication;
 
                 adminApplication = ConfigurationFactory.CreateDatabaseConfig(CloudFoundryServicesOptions
-               .Services["mysql"].First(s => s.Name == "de-institutions-api-mysql").Credentials);
+               .Services["mysql"].First(s => s.Name == "de-exceptional-closures-mysql").Credentials);
 
                 // Set Nlog Connection string
                 GlobalDiagnosticsContext.Set("DefaultNlogConnection", ConfigurationFactory.PopulateConnectionString(adminApplication));
@@ -83,6 +83,9 @@ namespace de_exceptional_closures
             .First(s => s.Name == "de-exceptional-closures-captcha").Credentials["Credentials"]);
 
             services.Configure<CaptchaConfig>(nc => nc.PopulateCaptchaConfig(CaptchaConfig));
+
+            services.AddHttpClient("InstitutionsClient", p => p.BaseAddress = new Uri("https://de-institutions-api-sandbox.london.cloudapps.digital/api/v1/Institution/"));
+
 
             services.Configure<CookiePolicyOptions>(options =>
             {
