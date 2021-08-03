@@ -13,16 +13,22 @@
             <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
 
             <form asp-controller="Account" asp-action="Register" method="post">
-                        <partial name="../Components/_errorSummary.cshtml" />
+                <partial name="../Components/_errorSummary.cshtml" />
 
                 <p class="govuk-inset-text">
-                   Create a new account. Only authorised Institution staff should use this service 
+                    Create a new account. Only authorised Institution staff should use this service
                 </p>
 
                 <div class="govuk-form-group">
                     <label asp-for="Email" class="govuk-label"></label>
                     <span asp-validation-for="Email" class="govuk-error-message"></span>
                     <input asp-for="Email" class="govuk-input" />
+                </div>
+
+                <div class="govuk-form-group">
+                    <label asp-for="InstitutionReference" class="govuk-label"></label>
+                    <span asp-validation-for="InstitutionReference" class="govuk-error-message"></span>
+                    <input asp-for="InstitutionReference" class="govuk-input" />
                 </div>
 
                 <div class="govuk-form-group">

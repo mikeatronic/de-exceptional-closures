@@ -64,5 +64,7 @@ namespace de_exceptional_closures.ViewModels.Closure
 
         public List<ReasonTypeDto> ReasonTypeList { get; set; }
         public int ApprovalTypeId { get; set; }
+
+        public string InstitutionName { get; set; }
     }
 }

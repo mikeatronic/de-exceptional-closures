@@ -19,5 +19,9 @@ namespace de_exceptional_closures.ViewModels.Account
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Institution Reference")]
+        public string InstitutionReference { get; set; }
     }
 }

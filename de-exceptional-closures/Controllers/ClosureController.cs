@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using de_exceptional_closures.Models;
 using de_exceptional_closures.Notify;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Closure;
 using de_exceptional_closures_core.Common;
 using de_exceptional_closures_core.Dtos;
+using de_exceptional_closures_infraStructure.Data;
 using de_exceptional_closures_infraStructure.Features.ClosureReason.Commands;
 using de_exceptional_closures_infraStructure.Features.ClosureReason.Queries;
 using de_exceptional_closures_infraStructure.Features.ReasonType.Queries;
@@ -11,8 +13,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace de_exceptional_closures.Controllers
@@ -23,18 +28,20 @@ namespace de_exceptional_closures.Controllers
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
         private readonly INotifyService _notifyService;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHttpClientFactory _client;
         private static readonly NLog.Logger Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
-        public ClosureController(IMediator mediator, IMapper mapper, INotifyService notifyService, SignInManager<IdentityUser> signInManager,
-             UserManager<IdentityUser> userManager)
+        public ClosureController(IMediator mediator, IMapper mapper, INotifyService notifyService, SignInManager<ApplicationUser> signInManager,
+             UserManager<ApplicationUser> userManager, IHttpClientFactory client)
         {
             _mediator = mediator;
             _mapper = mapper;
             _notifyService = notifyService;
             _signInManager = signInManager;
             _userManager = userManager;
+            _client = client;
         }
 
         [HttpGet]
@@ -91,6 +98,10 @@ namespace de_exceptional_closures.Controllers
             model.TitleTagName = "Pre-approved exceptional closure";
 
             model.ReasonTypeList = await GetReasonTypes();
+
+            var getUser = _userManager.GetUserAsync(User);
+
+            model.InstitutionName = getUser.Result.InstitutionName;
 
             LogAudit("opened Pre-approved exceptional closure GET view");
 
@@ -427,6 +438,30 @@ namespace de_exceptional_closures.Controllers
 
             return getReasons.Value;
         }
+
+        //[HttpGet]
+        //public async Task<string> GetInstitutionName(string referenceNumber)
+        //{
+        //    var client = _client.CreateClient("InstitutionsClient");
+
+        //    client.DefaultRequestHeaders.Accept.Clear();
+        //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+        //    var result = await client.GetAsync("GetByReferenceNumber?refNumber=" + referenceNumber);
+
+        //    Institution institution = new Institution();
+
+        //    if (result.IsSuccessStatusCode)
+        //    {
+        //        using (HttpContent content = result.Content)
+        //        {
+        //            var resp = content.ReadAsStringAsync();
+        //            institution = JsonConvert.DeserializeObject<Institution>(resp.Result);
+        //        }
+        //    }
+
+        //    return institution.Name;
+        //}
 
         internal void LogAudit(string message)
         {

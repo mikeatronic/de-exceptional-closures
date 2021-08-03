@@ -1,5 +1,6 @@
 using de_exceptional_closures.Config;
 using de_exceptional_closures.Notify;
+using de_exceptional_closures_infraStructure.Data;
 using de_exceptional_closures_infraStructure.Features.ReasonType.Validation;
 using de_exceptional_closures_Infrastructure.Data;
 using FluentValidation.AspNetCore;
@@ -49,7 +50,7 @@ namespace de_exceptional_closures
             services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration));
 
             // Setup identity
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // Nlog
