@@ -7,61 +7,15 @@
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-
-            <a asp-controller="Home" asp-action="Index" class="govuk-back-link">Back</a>
-
             <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
 
-            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                <p class="govuk-inset-text">Create a new account.</p>
-
-                <div asp-validation-summary="None" class="govuk-error-summary">
-                    <h2 class="govuk-error-summary__title" id="error-summary-title">
-                        There is a problem
-                    </h2>
-                    <div class="govuk-error-summary__body">
-                        <ul class="govuk-list govuk-error-summary__list">
-                            @foreach (var modelStateKey in ViewData.ModelState.Keys)
-                            {
-                                var modelStateVal = ViewData.ModelState[modelStateKey];
-                                foreach (var error in modelStateVal.Errors)
-                                {
-                                    <li>
-                                        <a class="error-items" href="#@modelStateKey">@error.ErrorMessage</a>
-                                    </li>
-                                }
-                            }
-                        </ul>
-                    </div>
-                </div>
-                <div class="govuk-form-group">
-                    <label asp-for="Input.Email" class="govuk-label"></label>
-                    <span asp-validation-for="Input.Email" class="govuk-error-message"></span>
-                    <input asp-for="Input.Email" class="govuk-input" />
-                </div>
-
-                <div class="govuk-form-group">
-                    <label asp-for="Input.Password" class="govuk-label"></label>
-                    <span asp-validation-for="Input.Password" class="govuk-error-message"></span>
-                    <input asp-for="Input.Password" class="govuk-input" />
-                </div>
-                <div class="govuk-form-group">
-                    <label asp-for="Input.ConfirmPassword" class="govuk-label"></label>
-                    <span asp-validation-for="Input.ConfirmPassword" class="govuk-error-message"></span>
-                    <input asp-for="Input.ConfirmPassword" class="govuk-input" />
-                </div>
-
-                @*<div class="form-group">
-            <label for="g-recaptcha-response" class="govuk-label sr-only">Captcha check</label>
-            <div class="g-recaptcha" data-sitekey="6Lf9g7wbAAAAAAmh-QHCrvwvKnBuLhWgWgGiisKM"></div>
-        </div>*@
-
-                <button type="submit" class="govuk-button" data-module="govuk-button">Register</button>
-            </form>
-    
-            </div>
+            <p class="govuk-body">
+                This functionality is not available.
+            </p>
         </div>
     </div>
-            @section Scripts {
-                <partial name="_ValidationScriptsPartial" />
-            }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
