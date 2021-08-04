@@ -951,20 +951,20 @@
                         .addClass(this.settings.errorClass)
                         .html(message || "");
 
-                    if (typeof message !== "undefined") {
-                        $(element).attr("aria-describedby", describedBy);
-                    }
-                    else {
-                        describedBy = describedBy.replace(new RegExp("\\b" + this.escapeCssMeta(errorID) + "\\b"), "");
-                        //clean up attributes.  remove extra whitespace if exists
-                        describedBy = describedBy.replace(/\s+(?=\s)/g, '');
+                    //if (typeof message !== "undefined") {
+                    //    $(element).attr("aria-describedby", describedBy);
+                    //}
+                    //else {
+                    //    describedBy = describedBy.replace(new RegExp("\\b" + this.escapeCssMeta(errorID) + "\\b"), "");
+                    //    //clean up attributes.  remove extra whitespace if exists
+                    //    describedBy = describedBy.replace(/\s+(?=\s)/g, '');
 
-                        if (describedBy.length) {
-                            $(element).attr("aria-describedby", describedBy);
-                        } else {
-                            $(element).removeAttr("aria-describedby");
-                        }
-                    }
+                    //    if (describedBy.length) {
+                    //        $(element).attr("aria-describedby", describedBy);
+                    //    } else {
+                    //        $(element).removeAttr("aria-describedby");
+                    //    }
+                    //}
 
                     // Maintain reference to the element to be placed into the DOM
                     place = error;
