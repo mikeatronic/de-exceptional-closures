@@ -111,7 +111,7 @@ namespace de_exceptional_closures.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-     //   [RateLimiting(Name = "Register", Minutes = 15)]
+        //   [RateLimiting(Name = "Register", Minutes = 15)]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             model.TitleTagName = "Register";

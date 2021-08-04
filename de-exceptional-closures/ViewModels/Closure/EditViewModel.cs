@@ -1,4 +1,5 @@
-﻿using de_exceptional_closures_core.Common;
+﻿using de_exceptional_closures.Extensions;
+using de_exceptional_closures_core.Common;
 using de_exceptional_closures_core.Dtos;
 using System;
 using System.Collections.Generic;
@@ -57,7 +58,8 @@ namespace de_exceptional_closures.ViewModels.Closure
         [Display(Name = "Other reason")]
         [MinLength(10)]
         [MaxLength(1024)]
-        [AlphaNumericLimitedSpecialCharsAttribute]
+        [RequiredIf("ReasonTypeId", (int)OtherReasonType.Other, ErrorMessage = "Please enter other reason")]
+        [AlphaNumericLimitedSpecialChars]
         public string OtherReason { get; set; }
 
         public bool IsSingleDay { get; set; }

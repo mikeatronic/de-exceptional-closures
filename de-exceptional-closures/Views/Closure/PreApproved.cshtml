@@ -3,7 +3,7 @@
     ViewData["Title"] = "PreApproved";
 }
 
-<form asp-action="PreApproved" asp-controller="Closure" method="post">
+<form asp-action="PreApproved" asp-controller="Closure" method="post" id="preApprovedForm">
     @Html.AntiForgeryToken()
     @Html.HiddenFor(i => i.IsSingleDay)
     <div class="govuk-width-container">
@@ -133,6 +133,14 @@
         </div>
     </div>
 </form>
+
+@section Scripts
+{
+
+    <script src="~/Scripts/PreApproved.js"></script>
+
+}
+
 
 <script>
 
