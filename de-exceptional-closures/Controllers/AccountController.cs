@@ -230,11 +230,11 @@ namespace de_exceptional_closures.Controllers
             return string.Empty;
         }
 
-        internal void LogAudit(string message)
+        internal void LogAudit(string auditAction)
         {
             string ip = "IPAddress: " + HttpContext.Connection.RemoteIpAddress.ToString() + ", DateTime: " + DateTime.Now;
 
-            Logger.Info(User.Identity.Name + " " + message + ". " + ip);
+            Logger.Info(User.Identity.Name + " " + auditAction + ". " + ip);
         }
     }
 }
