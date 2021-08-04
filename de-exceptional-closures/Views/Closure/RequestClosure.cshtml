@@ -1,9 +1,11 @@
-﻿@model de_exceptional_closures.ViewModels.ApprovalRequiredViewModel
+﻿@model de_exceptional_closures.ViewModels.Closure.RequestClosureViewModel
 @{
-    ViewData["Title"] = "ApprovalRequired";
+    ViewData["Title"] = "RequestClosure";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form asp-action="ApprovalRequired" asp-controller="Closure" method="post" id="approvalForm">
+
+<form asp-action="RequestClosure" asp-controller="Closure" method="post" id="approvalForm">
     @Html.AntiForgeryToken()
     @Html.HiddenFor(i => i.IsSingleDay)
     <div class="govuk-width-container">
@@ -15,7 +17,7 @@
                 <partial name="../Components/_errorSummary.cshtml" />
 
                 <h1 class="govuk-heading-l">
-                    Approval required exceptional closure
+                    Request exceptional closure
                 </h1>
 
                 <div class="govuk-inset-text">
@@ -150,9 +152,7 @@
     </div>
 </form>
 
-
 <script>
-
     $(document).ready(function ()
     {
         // if page has errors
@@ -173,12 +173,7 @@
                     $('#DateFromMonth').css("border", "4px solid #d4351c");
                     $('#DateFromYear').css("border", "4px solid #d4351c");
                 }
-
-
-
-
             })
         }
     });
-
 </script>

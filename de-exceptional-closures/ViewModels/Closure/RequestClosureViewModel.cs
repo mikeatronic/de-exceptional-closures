@@ -5,15 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace de_exceptional_closures.ViewModels
+namespace de_exceptional_closures.ViewModels.Closure
 {
-    public class PreApprovedViewModel : BaseViewModel
+    public class RequestClosureViewModel : BaseViewModel
     {
-        public PreApprovedViewModel()
+        public RequestClosureViewModel()
         {
             ReasonTypeList = new List<ReasonTypeDto>();
         }
-
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Date from is required")]
@@ -64,11 +63,8 @@ namespace de_exceptional_closures.ViewModels
         [RequiredIf("ReasonTypeId", (int)OtherReasonType.Other, ErrorMessage = "Please enter other reason")]
         [AlphaNumericLimitedSpecialChars]
         public string OtherReason { get; set; }
-
         public bool IsSingleDay { get; set; }
-
         public List<ReasonTypeDto> ReasonTypeList { get; set; }
-
         public string InstitutionName { get; set; }
     }
 }

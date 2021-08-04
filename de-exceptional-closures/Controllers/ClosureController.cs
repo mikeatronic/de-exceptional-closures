@@ -42,57 +42,11 @@ namespace de_exceptional_closures.Controllers
         }
 
         [HttpGet]
-        public IActionResult DayType(int approvalType)
+        public async Task<IActionResult> RequestClosureAsync(bool isSingleDay)
         {
-            DayTypeViewModel model = new DayTypeViewModel();
-            model.TitleTagName = "Is the closure for a single day?";
-            model.ApprovalType = approvalType;
-
-            LogAudit("opened Is the closure for a single day GET view");
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DayType(DayTypeViewModel model)
-        {
-            model.TitleTagName = "Is the closure for a single day?";
-
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            LogAudit("opened Is the closure for a single day POST view");
-
-            if (model.ApprovalType == (int)ApprovalType.PreApproved && model.IsSingleDay.Value)
-            {
-                return RedirectToAction("PreApproved", "Closure", new { isSingleDay = true });
-            }
-            else if (model.ApprovalType == (int)ApprovalType.PreApproved && !model.IsSingleDay.Value)
-            {
-                return RedirectToAction("PreApproved", "Closure", new { isSingleDay = false });
-            }
-
-            if (model.ApprovalType == (int)ApprovalType.ApprovalRequired && model.IsSingleDay.Value)
-            {
-                return RedirectToAction("ApprovalRequired", "Closure", new { isSingleDay = true });
-            }
-            else if (model.ApprovalType == (int)ApprovalType.ApprovalRequired && !model.IsSingleDay.Value)
-            {
-                return RedirectToAction("ApprovalRequired", "Closure", new { isSingleDay = false });
-            }
-
-            return View(model);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> PreApproved(bool isSingleDay)
-        {
-            PreApprovedViewModel model = new PreApprovedViewModel();
+            RequestClosureViewModel model = new RequestClosureViewModel();
+            model.TitleTagName = "Request exceptional closure";
             model.IsSingleDay = isSingleDay;
-            model.TitleTagName = "Pre-approved exceptional closure";
 
             model.ReasonTypeList = await GetReasonTypes();
 
@@ -100,16 +54,16 @@ namespace de_exceptional_closures.Controllers
 
             model.InstitutionName = getUser.Result.InstitutionName;
 
-            LogAudit("opened Pre-approved exceptional closure GET view");
+            LogAudit("opened RequestClosure GET view");
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PreApproved(PreApprovedViewModel model)
+        public async Task<IActionResult> RequestClosure(RequestClosureViewModel model)
         {
-            model.TitleTagName = "Pre-approved exceptional closure";
+            model.TitleTagName = "Request exceptional closure";
 
             if (!ModelState.IsValid)
             {
@@ -118,7 +72,7 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
-            LogAudit("opened Pre-approved exceptional closure POST view");
+            LogAudit("opened RequestClosure POST view");
 
             DateTime datefrom;
 
@@ -156,10 +110,16 @@ namespace de_exceptional_closures.Controllers
 
             // Add code when Database is done to actually save data.
             var reasonDto = _mapper.Map<ClosureReasonDto>(model);
-            reasonDto.ApprovalTypeId = (int)ApprovalType.PreApproved;
+
+            reasonDto.ApprovalTypeId = reasonDto.ReasonTypeId == (int)OtherReasonType.Other ? (int)ApprovalType.ApprovalRequired : (int)ApprovalType.PreApproved;
+
+            if (reasonDto.ReasonTypeId != (int)OtherReasonType.Other)
+            {
+                reasonDto.Approved = true;
+                reasonDto.ApprovalDate = DateTime.Now;
+            }
+
             reasonDto.DateCreated = DateTime.Now;
-            reasonDto.Approved = true;
-            reasonDto.ApprovalDate = DateTime.Now;
 
             var createClosureReason = await _mediator.Send(new CreateClosureReasonCommand() { ClosureReasonDto = reasonDto });
 
@@ -169,9 +129,16 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
-            await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education has approved this exceptional closure and will sanction a corresponding reduction in the minimum number of days on which your school is required to be in operation during this school year.");
+            if (reasonDto.ReasonTypeId != (int)OtherReasonType.Other)
+            {
+                await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education has approved this exceptional closure and will sanction a corresponding reduction in the minimum number of days on which your school is required to be in operation during this school year.");
+            }
+            else
+            {
+                await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education will be in touch in due course with the outcome.");
+            }
 
-            LogAudit("Completed Pre-approved exceptional closure POST view");
+            LogAudit("Completed RequestClosure POST view");
 
             return RedirectToAction("Submitted", "Closure", new { id = createClosureReason.Value });
         }
@@ -192,86 +159,6 @@ namespace de_exceptional_closures.Controllers
             LogAudit("opened Submitted GET view");
 
             return View(model);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ApprovalRequired(bool isSingleDay)
-        {
-            ApprovalRequiredViewModel model = new ApprovalRequiredViewModel();
-            model.IsSingleDay = isSingleDay;
-            model.TitleTagName = "Approval required exceptional closure";
-
-            model.ReasonTypeList = await GetReasonTypes();
-
-            LogAudit("opened ApprovalRequired GET view");
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ApprovalRequired(ApprovalRequiredViewModel model)
-        {
-            model.TitleTagName = "Approval required exceptional closure";
-
-            if (!ModelState.IsValid)
-            {
-                model.ReasonTypeList = await GetReasonTypes();
-                LogAudit("Error encountered: " + ModelState.IsValid.ToString() + ". ApprovalRequired POST view");
-                return View(model);
-            }
-
-            DateTime deceasedDob;
-
-            // Check for valid dates
-            if (DateTime.TryParse(CreateDate(model.DateFromYear.ToString(), model.DateFromMonth.ToString(), model.DateFromDay.ToString()), out deceasedDob))
-            {
-                model.DateFrom = new DateTime(deceasedDob.Year, deceasedDob.Month, deceasedDob.Day);
-            }
-            else
-            {
-                model.ReasonTypeList = await GetReasonTypes();
-                LogAudit("Error encountered: Please enter in a valid date. ApprovalRequired POST view");
-                ModelState.AddModelError("DateFrom", "Please enter in a valid date");
-                return View(model);
-            }
-
-            if (!model.IsSingleDay)
-            {
-                DateTime dateTo;
-
-                // Check for valid dates
-                if (DateTime.TryParse(CreateDate(model.DateToYear.ToString(), model.DateToMonth.ToString(), model.DateToDay.ToString()), out dateTo))
-                {
-                    model.DateTo = new DateTime(dateTo.Year, dateTo.Month, dateTo.Day);
-                }
-                else
-                {
-                    model.ReasonTypeList = await GetReasonTypes();
-                    LogAudit("Error encountered: Please enter in a valid date. ApprovalRequired POST view");
-                    ModelState.AddModelError("DateTo", "Please enter in a valid date");
-                    return View(model);
-                }
-            }
-
-            // Add code when Database is done to actually save data.
-            var reasonDto = _mapper.Map<ClosureReasonDto>(model);
-            reasonDto.ApprovalTypeId = (int)ApprovalType.ApprovalRequired;
-            reasonDto.DateCreated = DateTime.Now;
-
-            var createClosureReason = await _mediator.Send(new CreateClosureReasonCommand() { ClosureReasonDto = reasonDto });
-
-            if (createClosureReason.IsFailure)
-            {
-                model.ReasonTypeList = await GetReasonTypes();
-                return View(model);
-            }
-
-            await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education will be in touch in due course with the outcome.");
-
-            LogAudit("Completed ApprovalRequired POST view");
-
-            return RedirectToAction("Submitted", "Closure", new { id = createClosureReason.Value });
         }
 
         [HttpGet]
@@ -301,7 +188,7 @@ namespace de_exceptional_closures.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditAsync(EditViewModel model)
+        public async Task<IActionResult> Edit(EditViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -379,14 +266,6 @@ namespace de_exceptional_closures.Controllers
             LogAudit("opened Edit VIEW view");
 
             return View(model);
-        }
-
-        [HttpGet]
-        public IActionResult CheckAnswers()
-        {
-            LogAudit("opened CheckAnswers view");
-
-            return View();
         }
 
         [HttpGet]
