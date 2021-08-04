@@ -13,7 +13,6 @@ namespace de_exceptional_closures.ViewModels
         {
             ReasonTypeList = new List<ReasonTypeDto>();
         }
-
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Date from is required")]
@@ -64,11 +63,8 @@ namespace de_exceptional_closures.ViewModels
         [RequiredIf("ReasonTypeId", (int)OtherReasonType.Other, ErrorMessage = "Please enter other reason")]
         [AlphaNumericLimitedSpecialChars]
         public string OtherReason { get; set; }
-
         public bool IsSingleDay { get; set; }
-
         public List<ReasonTypeDto> ReasonTypeList { get; set; }
-
         public string InstitutionName { get; set; }
     }
 }
