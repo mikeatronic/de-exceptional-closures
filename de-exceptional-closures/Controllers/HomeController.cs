@@ -1,7 +1,6 @@
 ﻿using de_exceptional_closures.Models;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Home;
-using de_exceptional_closures_core.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,9 +17,10 @@ namespace de_exceptional_closures.Controllers
         public IActionResult Index()
         {
             IndexViewModel model = new IndexViewModel();
-            model.TitleTagName = "Is your exceptional closure pre-approved?";
 
-            LogAudit("opened Is your exceptional closure pre-approved GET view");
+            model.TitleTagName = "Is the closure for a single day?";
+
+            LogAudit("opened Is the closure for a single day GET view");
 
             return View(model);
         }
@@ -29,23 +29,16 @@ namespace de_exceptional_closures.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Index(IndexViewModel model)
         {
-            model.TitleTagName = "Is your exceptional closure pre-approved?";
+            model.TitleTagName = "Is the closure for a single day?";
 
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            if (model.IsPreApproved.Value)
-            {
-                LogAudit("opened Is your exceptional closure pre-approved POST view and selected model.preapproved = " + model.IsPreApproved);
+            LogAudit("opened Is the closure for a single day POST view and selected model.IsSingleDay = " + model.IsSingleDay);
 
-                return RedirectToAction("DayType", "Closure", new { approvalType = (int)ApprovalType.PreApproved });
-            }
-
-            LogAudit("opened Is your exceptional closure pre-approved POST view and selected model.preapproved = " + model.IsPreApproved);
-
-            return RedirectToAction("DayType", "Closure", new { approvalType = (int)ApprovalType.ApprovalRequired });
+            return RedirectToAction("RequestClosure", "Closure", new { isSingleDay = model.IsSingleDay });
         }
 
         [AllowAnonymous]

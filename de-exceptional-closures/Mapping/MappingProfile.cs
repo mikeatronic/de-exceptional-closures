@@ -9,18 +9,6 @@ namespace de_exceptional_closures.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<PreApprovedViewModel, ClosureReasonDto>()
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
-
-            CreateMap<ClosureReasonDto, PreApprovedViewModel>()
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
-
-            CreateMap<ApprovalRequiredViewModel, ClosureReasonDto>()
-                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
-
-            CreateMap<ClosureReasonDto, ApprovalRequiredViewModel>()
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
-
             CreateMap<MyClosuresViewModel, ClosureReasonDto>()
               .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
@@ -39,6 +27,12 @@ namespace de_exceptional_closures.Mapping
             CreateMap<ClosureReasonDto, ViewViewModel>()
                  .ForMember(d => d.Approved,
                     o => o.MapFrom(s => s.Approved.Value ? "Yes" : "No"))
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            CreateMap<RequestClosureViewModel, ClosureReasonDto>()
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            CreateMap<ClosureReasonDto, RequestClosureViewModel>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
