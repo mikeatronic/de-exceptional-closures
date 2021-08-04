@@ -41,14 +41,17 @@ namespace de_exceptional_closures.ViewModels.Closure
         public int? DateFromYear { get; set; }
 
         [Display(Name = "Day")]
+        [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter Day To")]
         [Range(1, 31, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateToDay { get; set; }
 
         [Display(Name = "Month")]
+        [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter Month To")]
         [Range(1, 12, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateToMonth { get; set; }
 
         [Display(Name = "Year")]
+        [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter Year To")]
         [Range(2000, 2100, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateToYear { get; set; }
 

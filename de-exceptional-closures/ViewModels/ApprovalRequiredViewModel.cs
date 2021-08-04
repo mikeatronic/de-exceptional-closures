@@ -13,7 +13,6 @@ namespace de_exceptional_closures.ViewModels
         {
             ReasonTypeList = new List<ReasonTypeDto>();
         }
-
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Date from is required")]
@@ -41,14 +40,17 @@ namespace de_exceptional_closures.ViewModels
         public int? DateFromYear { get; set; }
 
         [Display(Name = "Day")]
+        [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter Day To")]
         [Range(1, 31, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateToDay { get; set; }
 
         [Display(Name = "Month")]
+        [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter Month To")]
         [Range(1, 12, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateToMonth { get; set; }
 
         [Display(Name = "Year")]
+        [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter Year To")]
         [Range(2000, 2100, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateToYear { get; set; }
 
@@ -61,11 +63,8 @@ namespace de_exceptional_closures.ViewModels
         [RequiredIf("ReasonTypeId", (int)OtherReasonType.Other, ErrorMessage = "Please enter other reason")]
         [AlphaNumericLimitedSpecialChars]
         public string OtherReason { get; set; }
-
         public bool IsSingleDay { get; set; }
-
         public List<ReasonTypeDto> ReasonTypeList { get; set; }
-
         public string InstitutionName { get; set; }
     }
 }

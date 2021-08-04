@@ -58,7 +58,11 @@
                 Approval date
             </dt>
             <dd class="govuk-summary-list__value">
-            @Model.ApprovalDate
+
+                @if (Model.ApprovalDate.HasValue)
+                {
+                    <span>@Model.ApprovalDate.Value.ToString("d MMMM yyyy")</span>
+                }
             </dd>
         </div>
 
@@ -76,18 +80,18 @@
                 Date from
             </dt>
             <dd class="govuk-summary-list__value">
-                @Model.DateFrom.ToShortDateString()
+                @Model.DateFrom.ToString("d MMMM yyyy")
             </dd>
         </div>
 
-        @if (Model.DateTo != null)
+        @if (Model.DateTo.HasValue)
         {
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
                     Date to
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    @Model.DateTo.Value.ToShortDateString()
+                    @Model.DateTo.Value.ToString("d MMMM yyyy")
                 </dd>
             </div>
         }
@@ -118,10 +122,9 @@
                 Date created
             </dt>
             <dd class="govuk-summary-list__value">
-                @Model.DateCreated.ToShortDateString()
+                @Model.DateCreated.ToString("d MMMM yyyy")
             </dd>
         </div>
         </dl>
     </div>
 </div>
-
