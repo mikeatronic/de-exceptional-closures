@@ -57,7 +57,7 @@ namespace de_exceptional_closures.ViewModels
 
         [Display(Name = "Other reason")]
         [MinLength(5, ErrorMessage = "Reason must be at least 5 characters long")]
-        [MaxLength(1024, ErrorMessage ="Only 1024 characters are allowed")]
+        [MaxLength(1024, ErrorMessage = "Only 1024 characters are allowed")]
         [RequiredIf("ReasonTypeId", (int)OtherReasonType.Other, ErrorMessage = "Please enter other reason")]
         [AlphaNumericLimitedSpecialChars]
         public string OtherReason { get; set; }
