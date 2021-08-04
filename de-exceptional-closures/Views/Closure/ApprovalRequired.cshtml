@@ -105,26 +105,41 @@
                                 Select the reason for the closure
                             </h2>
                         </legend>
-                        <div class="govuk-radios">
+                        <div id="contact-hint" class="govuk-hint">
+                            Select one option.
+                        </div>
+                        <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
                             <span asp-validation-for="ReasonTypeId" class="govuk-error-message"></span>
                             @foreach (var item in Model.ReasonTypeList)
                             {
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" name="ReasonTypeId" value="@item.Id" onchange="showHideOtherReason(@item.Id);" />
-                                    <label class="govuk-label govuk-radios__label" for="@item.Id">
-                                        @item.Description
-                                    </label>
-
-                                </div>
+                                @if (item.Id == 5)
+                                {
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" data-aria-controls="conditional-contact" name="ReasonTypeId" value="@item.Id" />
+                                        <label class="govuk-label govuk-radios__label" for="@item.Id">
+                                            @item.Description
+                                        </label>
+                                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact">
+                                            <div class="govuk-form-group">
+                                                <label asp-for="OtherReason" class="govuk-label"></label>
+                                                <span asp-validation-for="OtherReason" class="govuk-error-message"></span>
+                                                <textarea class="govuk-textarea" rows="8" asp-for="OtherReason"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" name="ReasonTypeId" value="@item.Id" onchange="showHideOtherReason(@item.Id);" />
+                                        <label class="govuk-label govuk-radios__label" for="@item.Id">
+                                            @item.Description
+                                        </label>
+                                    </div>
+                                }
                             }
                         </div>
                     </fieldset>
-                </div>
-
-                <div class="govuk-form-group" id="OtherReasons" style="display:none;">
-                    <label asp-for="OtherReason" class="govuk-label"></label>
-                    <span asp-validation-for="OtherReason" class="govuk-error-message"></span>
-                    <textarea class="govuk-textarea" rows="10" asp-for="OtherReason"></textarea>
                 </div>
 
                 <div class="govuk-form-group">
