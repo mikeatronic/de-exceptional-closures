@@ -232,9 +232,7 @@ namespace de_exceptional_closures.Controllers
 
         internal void LogAudit(string auditAction)
         {
-            string ip = "IPAddress: " + HttpContext.Connection.RemoteIpAddress.ToString() + ", DateTime: " + DateTime.Now;
-
-            Logger.Info(User.Identity.Name + " " + auditAction + ". " + ip);
+            Logger.Info(User.Identity.Name + " " + auditAction + ". " + DateTime.Now);
         }
     }
 }

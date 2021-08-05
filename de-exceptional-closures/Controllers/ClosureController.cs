@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace de_exceptional_closures.Controllers
@@ -60,8 +59,6 @@ namespace de_exceptional_closures.Controllers
 
             if (!ModelState.IsValid)
             {
-                //         model.ErrorClass = "govuk-form-group--error";
-
                 return View(model);
             }
 
@@ -401,11 +398,40 @@ namespace de_exceptional_closures.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditDateTo(EditDateToViewModel model)
+        public async Task<IActionResult> EditDateToAsync(EditDateToViewModel model)
         {
             model.TitleTagName = "Edit date to";
 
-            return View(model);
+            if (!ModelState.IsValid)
+            {
+                LogAudit("Error encountered: " + ModelState.IsValid.ToString() + ". EditDateTo POST view");
+
+                return View(model);
+            }
+
+            DateTime dateTo;
+
+            // Check for valid dates
+            if (DateTime.TryParse(CreateDate(model.DateToYear.ToString(), model.DateToMonth.ToString(), model.DateToDay.ToString()), out dateTo))
+            {
+                model.DateTo = new DateTime(dateTo.Year, dateTo.Month, dateTo.Day);
+            }
+            else
+            {
+                ModelState.AddModelError("DateTo", "Please enter in a valid date");
+                return View(model);
+            }
+
+            var reasonToUpdate = _mapper.Map<ClosureReasonDto>(model);
+
+            var updateReason = await _mediator.Send(new UpdateClosureReasonCommand() { ClosureReasonDto = reasonToUpdate });
+
+            if (updateReason.IsFailure)
+            {
+                return View(model);
+            }
+
+            return RedirectToAction("Edit", "Closure", new { id = model.Id });
         }
 
         [HttpGet]
@@ -427,11 +453,40 @@ namespace de_exceptional_closures.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditDateFrom(EditDateFromViewModel model)
+        public async Task<IActionResult> EditDateFromAsync(EditDateFromViewModel model)
         {
             model.TitleTagName = "Edit date from";
 
-            return View(model);
+            if (!ModelState.IsValid)
+            {
+                LogAudit("Error encountered: " + ModelState.IsValid.ToString() + ". EditDateFrom POST view");
+
+                return View(model);
+            }
+
+            DateTime dateFrom;
+
+            // Check for valid dates
+            if (DateTime.TryParse(CreateDate(model.DateFromYear.ToString(), model.DateFromMonth.ToString(), model.DateFromDay.ToString()), out dateFrom))
+            {
+                model.DateFrom = new DateTime(dateFrom.Year, dateFrom.Month, dateFrom.Day);
+            }
+            else
+            {
+                ModelState.AddModelError("DateFrom", "Please enter in a valid date");
+                return View(model);
+            }
+
+            var reasonToUpdate = _mapper.Map<ClosureReasonDto>(model);
+
+            var updateReason = await _mediator.Send(new UpdateClosureReasonCommand() { ClosureReasonDto = reasonToUpdate });
+
+            if (updateReason.IsFailure)
+            {
+                return View(model);
+            }
+
+            return RedirectToAction("Edit", "Closure", new { id = model.Id });
         }
 
         [HttpGet]
@@ -506,30 +561,6 @@ namespace de_exceptional_closures.Controllers
 
             return getUser.Result.InstitutionName;
         }
-
-        //[HttpGet]
-        //public async Task<string> GetInstitutionName(string referenceNumber)
-        //{
-        //    var client = _client.CreateClient("InstitutionsClient");
-
-        //    client.DefaultRequestHeaders.Accept.Clear();
-        //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-        //    var result = await client.GetAsync("GetByReferenceNumber?refNumber=" + referenceNumber);
-
-        //    Institution institution = new Institution();
-
-        //    if (result.IsSuccessStatusCode)
-        //    {
-        //        using (HttpContent content = result.Content)
-        //        {
-        //            var resp = content.ReadAsStringAsync();
-        //            institution = JsonConvert.DeserializeObject<Institution>(resp.Result);
-        //        }
-        //    }
-
-        //    return institution.Name;
-        //}
 
         internal void LogAudit(string message)
         {

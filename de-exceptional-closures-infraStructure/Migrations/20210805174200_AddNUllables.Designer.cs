@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using de_exceptional_closures_Infrastructure.Data;
 
 namespace de_exceptional_closures_Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210805174200_AddNUllables")]
+    partial class AddNUllables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,10 +206,10 @@ namespace de_exceptional_closures_Infrastructure.Migrations
                     b.Property<bool?>("Approved")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime?>("DateCreated")
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("DateFrom")
+                    b.Property<DateTime>("DateFrom")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("DateTo")
