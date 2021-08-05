@@ -43,7 +43,7 @@ namespace de_exceptional_closures.Controllers
             ForgotPassWordViewModel model = new ForgotPassWordViewModel();
             model.TitleTagName = "Forgot your password?";
 
-            LogAudit("opened Forgot your password GET view");
+            Logger.Info("opened Forgot your password GET view");
 
             return View(model);
         }
@@ -75,7 +75,7 @@ namespace de_exceptional_closures.Controllers
 
                 _notifyService.SendEmail(model.Email, "Reset Password", $"Please reset your password by clicking this link \n \n {HtmlEncoder.Default.Encode(callbackUrl)}");
 
-                LogAudit("opened Forgot your password POST view and being re-directed to ForgotPasswordConfirmation view");
+                Logger.Info("opened Forgot your password POST view and being re-directed to ForgotPasswordConfirmation view");
 
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
@@ -91,7 +91,7 @@ namespace de_exceptional_closures.Controllers
             BaseViewModel model = new BaseViewModel();
             model.TitleTagName = "Forgot password confirmation";
 
-            LogAudit("opened Forgot password confirmation GET view");
+            Logger.Info("opened Forgot password confirmation GET view");
 
             return View(model);
         }
@@ -103,7 +103,7 @@ namespace de_exceptional_closures.Controllers
             RegisterViewModel model = new RegisterViewModel();
             model.TitleTagName = "Register";
 
-            LogAudit("opened Register GET view");
+            Logger.Info("opened Register GET view");
 
             return View(model);
         }
@@ -125,7 +125,7 @@ namespace de_exceptional_closures.Controllers
             {
                 model.TitleTagName = "Register";
 
-                LogAudit("tried to Register with an unauthorised email address. Email address: " + model.Email);
+                Logger.Info("tried to Register with an unauthorised email address. Email address: " + model.Email);
 
                 ModelState.AddModelError("Email", "Only authorised Institution email addresses can be used");
                 return View(model);
@@ -141,7 +141,7 @@ namespace de_exceptional_closures.Controllers
             // Then check if Institute reference is valid
             if (searchInstitution == string.Empty)
             {
-                LogAudit("tried to Register with an unknown Institute: " + model.InstitutionReference);
+                Logger.Info("tried to Register with an unknown Institute: " + model.InstitutionReference);
 
                 ModelState.AddModelError("InstitutionReference", "Cannot find Institute");
                 return View(model);
@@ -165,16 +165,16 @@ namespace de_exceptional_closures.Controllers
 
                     _notifyService.SendEmail(model.Email, "Confirm your email for DE exceptional closures", $"Please confirm your account by clicking this link: '{HtmlEncoder.Default.Encode(callbackUrl)}'");
 
-                    LogAudit("Email sent to confirm account");
+                    Logger.Info("Email sent to confirm account");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        LogAudit("Redirecting to RegisterConfirmation view");
+                        Logger.Info("Redirecting to RegisterConfirmation view");
                         return RedirectToAction("RegisterConfirmation", "Account");
                     }
                     else
                     {
-                        LogAudit("Signing user in");
+                        Logger.Info("Signing user in");
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
@@ -182,7 +182,7 @@ namespace de_exceptional_closures.Controllers
 
                 foreach (var error in result.Errors)
                 {
-                    LogAudit("encountered an error: " + error.Description);
+                    Logger.Info("encountered an error: " + error.Description);
                     ModelState.AddModelError("Password", error.Description);
                 }
             }
@@ -199,7 +199,7 @@ namespace de_exceptional_closures.Controllers
             BaseViewModel model = new BaseViewModel();
             model.TitleTagName = "Register confirmation";
 
-            LogAudit("opened Register confirmation view");
+            Logger.Info("opened Register confirmation view");
 
             return View(model);
         }
@@ -228,11 +228,6 @@ namespace de_exceptional_closures.Controllers
             }
 
             return string.Empty;
-        }
-
-        internal void LogAudit(string auditAction)
-        {
-            Logger.Info(auditAction + ". " + DateTime.Now);
         }
     }
 }
