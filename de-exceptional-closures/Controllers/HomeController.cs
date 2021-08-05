@@ -38,7 +38,7 @@ namespace de_exceptional_closures.Controllers
 
             LogAudit("opened Is the closure for a single day POST view and selected model.IsSingleDay = " + model.IsSingleDay);
 
-            return RedirectToAction("RequestClosure", "Closure", new { isSingleDay = model.IsSingleDay });
+            return RedirectToAction("DateFrom", "Closure", new { isSingleDay = model.IsSingleDay });
         }
 
         [AllowAnonymous]

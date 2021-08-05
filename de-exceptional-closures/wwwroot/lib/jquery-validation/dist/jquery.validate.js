@@ -959,7 +959,8 @@
                     //    //clean up attributes.  remove extra whitespace if exists
                     //    describedBy = describedBy.replace(/\s+(?=\s)/g, '');
 
-                    //    if (describedBy.length) {
+                    //    if (describedBy.length)
+                    //    {
                     //        $(element).attr("aria-describedby", describedBy);
                     //    } else {
                     //        $(element).removeAttr("aria-describedby");

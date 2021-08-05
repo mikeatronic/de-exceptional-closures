@@ -14,5 +14,10 @@
         /// <summary>Gets or sets the name of the title tag.</summary>
         /// <value>The name of the title tag.</value>
         public string TitleTagName { get; set; }
+
+        /// <summary>
+        /// Sets error class for form controls
+        /// </summary>
+        public string ErrorClass { get; set; }
     }
 }
