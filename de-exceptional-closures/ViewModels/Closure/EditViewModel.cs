@@ -71,5 +71,7 @@ namespace de_exceptional_closures.ViewModels.Closure
         public int ApprovalTypeId { get; set; }
 
         public string InstitutionName { get; set; }
+        public string ReasonType { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }

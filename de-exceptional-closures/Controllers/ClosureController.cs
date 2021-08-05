@@ -27,20 +27,17 @@ namespace de_exceptional_closures.Controllers
         private readonly INotifyService _notifyService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IHttpClientFactory _client;
         private static readonly NLog.Logger Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
         public ClosureController(IMediator mediator, IMapper mapper, INotifyService notifyService, SignInManager<ApplicationUser> signInManager,
-             UserManager<ApplicationUser> userManager, IHttpClientFactory client)
+             UserManager<ApplicationUser> userManager)
         {
             _mediator = mediator;
             _mapper = mapper;
             _notifyService = notifyService;
             _signInManager = signInManager;
             _userManager = userManager;
-            _client = client;
         }
-
 
         [HttpGet]
         public IActionResult DateFrom(bool isSingleDay)
@@ -248,11 +245,6 @@ namespace de_exceptional_closures.Controllers
             var model = _mapper.Map<EditViewModel>(getClosure.Value);
             model.TitleTagName = "Edit closure";
 
-            if (!getClosure.Value.DateTo.HasValue)
-            {
-                model.IsSingleDay = true;
-            }
-
             model.ReasonTypeList = await GetReasonTypes();
 
             LogAudit("opened Edit GET view");
@@ -321,6 +313,125 @@ namespace de_exceptional_closures.Controllers
             }
 
             return RedirectToAction("MyClosures", "Closure");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditReasonAsync(int id)
+        {
+            var getClosure = await _mediator.Send(new GetClosureReasonByIdQuery() { Id = id });
+
+            if (getClosure.IsFailure)
+            {
+                return View();
+            }
+
+            var model = _mapper.Map<EditReasonViewModel>(getClosure.Value);
+
+            model.TitleTagName = "Edit reason";
+
+            model.ReasonTypeList = await GetReasonTypes();
+
+            LogAudit("opened EditReason GET view");
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditReason(EditReasonViewModel model)
+        {
+            model.TitleTagName = "Edit reason";
+
+            if (!ModelState.IsValid)
+            {
+                model.ReasonTypeList = await GetReasonTypes();
+                LogAudit("Error encountered: " + ModelState.IsValid.ToString() + ". EditReason POST view");
+
+                return View(model);
+            }
+
+            var reasonToUpdate = _mapper.Map<ClosureReasonDto>(model);
+
+            reasonToUpdate.ApprovalTypeId = reasonToUpdate.ReasonTypeId == (int)OtherReasonType.Other ? (int)ApprovalType.ApprovalRequired : (int)ApprovalType.PreApproved;
+
+            if (reasonToUpdate.ReasonTypeId != (int)OtherReasonType.Other)
+            {
+                reasonToUpdate.Approved = true;
+                reasonToUpdate.ApprovalDate = DateTime.Now;
+            }
+
+            var updateReason = await _mediator.Send(new UpdateClosureReasonCommand() { ClosureReasonDto = reasonToUpdate });
+
+            if (updateReason.IsFailure)
+            {
+                var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
+
+                foreach (var item in getReasons.Value)
+                {
+                    model.ReasonTypeList.Add(item);
+                }
+
+                return View(model);
+            }
+
+            if (reasonToUpdate.ApprovalTypeId == (int)ApprovalType.PreApproved)
+            {
+                return RedirectToAction("View", "Closure", new { id = model.Id });
+            }
+
+            return RedirectToAction("Edit", "Closure", new { id = model.Id });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditDateToAsync(int id)
+        {
+            var getClosure = await _mediator.Send(new GetClosureReasonByIdQuery() { Id = id });
+
+            if (getClosure.IsFailure)
+            {
+                return View();
+            }
+
+            var model = _mapper.Map<EditDateToViewModel>(getClosure.Value);
+
+            model.TitleTagName = "Edit date to";
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditDateTo(EditDateToViewModel model)
+        {
+            model.TitleTagName = "Edit date to";
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditDateFromAsync(int id)
+        {
+            var getClosure = await _mediator.Send(new GetClosureReasonByIdQuery() { Id = id });
+
+            if (getClosure.IsFailure)
+            {
+                return View();
+            }
+
+            var model = _mapper.Map<EditDateFromViewModel>(getClosure.Value);
+
+            model.TitleTagName = "Edit date from";
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditDateFrom(EditDateFromViewModel model)
+        {
+            model.TitleTagName = "Edit date from";
+
+            return View(model);
         }
 
         [HttpGet]
