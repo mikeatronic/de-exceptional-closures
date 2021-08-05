@@ -18,6 +18,9 @@ namespace de_exceptional_closures_infraStructure.Features.ClosureReason.Mapping
 
             CreateMap<de_exceptional_closures_core.Entities.ClosureReason, ReasonTypeDto>()
               .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            CreateMap<ReasonTypeDto, de_exceptional_closures_core.Entities.ClosureReason>()
+              .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }
