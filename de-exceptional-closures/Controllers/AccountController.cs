@@ -125,7 +125,7 @@ namespace de_exceptional_closures.Controllers
             {
                 model.TitleTagName = "Register";
 
-                Logger.Info("tried to Register with an unauthorised email address. Email address: " + model.Email);
+                Logger.Info("tried to Register with an unauthorised email address.");
 
                 ModelState.AddModelError("Email", "Only authorised Institution email addresses can be used");
                 return View(model);
@@ -141,7 +141,7 @@ namespace de_exceptional_closures.Controllers
             // Then check if Institute reference is valid
             if (searchInstitution == string.Empty)
             {
-                Logger.Info("tried to Register with an unknown Institute: " + model.InstitutionReference);
+                Logger.Info("tried to Register with an unknown Institute: ");
 
                 ModelState.AddModelError("InstitutionReference", "Cannot find Institute");
                 return View(model);
