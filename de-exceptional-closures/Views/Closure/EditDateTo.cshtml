@@ -1,19 +1,16 @@
-﻿@model de_exceptional_closures.ViewModels.Closure.DateToViewModel
+﻿@model de_exceptional_closures.ViewModels.Closure.EditDateToViewModel 
 @{
-    ViewData["Title"] = "DateTo";
+    ViewData["Title"] = "EditDateTo";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<form asp-action="DateTo" asp-controller="Closure" method="post" id="approvalForm">
+<form asp-action="EditDateTo" asp-controller="Closure" method="post" id="approvalForm">
     @Html.AntiForgeryToken()
-
-    <input type="hidden" id="DateFrom" name="DateFrom" value="@Model.DateFrom" />
 
     <div class="govuk-width-container">
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
 
-                <a href="javascript:history.go(-1)" class="govuk-back-link">Back</a>
+                <a href="@Url.Action("Edit","Closure", new { id = Model.Id })" class="govuk-back-link">Back</a>
 
                 <partial name="../Components/_errorSummary.cshtml" />
 
@@ -64,7 +61,7 @@
                 </div>
 
                 <div class="govuk-form-group">
-                    <input type="submit" value="Continue" name="save" class="govuk-button" data-module="govuk-button" />
+                    <input type="submit" value="Save and return" name="save" class="govuk-button" data-module="govuk-button" />
                 </div>
             </div>
         </div>
@@ -100,3 +97,4 @@
         }
     });
 </script>
+
