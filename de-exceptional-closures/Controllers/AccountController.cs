@@ -232,7 +232,7 @@ namespace de_exceptional_closures.Controllers
 
         internal void LogAudit(string auditAction)
         {
-            Logger.Info(User.Identity.Name + " " + auditAction + ". " + DateTime.Now);
+            Logger.Info(auditAction + ". " + DateTime.Now);
         }
     }
 }
