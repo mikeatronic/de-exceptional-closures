@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace de_exceptional_closures.Controllers
@@ -60,8 +59,6 @@ namespace de_exceptional_closures.Controllers
 
             if (!ModelState.IsValid)
             {
-                //         model.ErrorClass = "govuk-form-group--error";
-
                 return View(model);
             }
 
@@ -406,7 +403,7 @@ namespace de_exceptional_closures.Controllers
             model.TitleTagName = "Edit date to";
 
             if (!ModelState.IsValid)
-            { 
+            {
                 LogAudit("Error encountered: " + ModelState.IsValid.ToString() + ". EditDateTo POST view");
 
                 return View(model);
@@ -426,7 +423,7 @@ namespace de_exceptional_closures.Controllers
             }
 
             var reasonToUpdate = _mapper.Map<ClosureReasonDto>(model);
-           
+
             var updateReason = await _mediator.Send(new UpdateClosureReasonCommand() { ClosureReasonDto = reasonToUpdate });
 
             if (updateReason.IsFailure)

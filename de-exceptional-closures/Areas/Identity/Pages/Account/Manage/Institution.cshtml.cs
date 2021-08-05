@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using System.Net.Http;
 
 namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
 {
@@ -9,13 +8,11 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
     {
         public readonly string TitleTagName;
         public readonly string SectionName;
-        private readonly IHttpClientFactory _client;
 
-        public InstitutionModel(IHttpClientFactory client)
+        public InstitutionModel()
         {
             TitleTagName = "Manage Institution";
             SectionName = "Manage";
-            _client = client;
         }
 
         [BindProperty]
@@ -27,12 +24,5 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Institution")]
             public string InstitutionName { get; set; }
         }
-
-
-        public void OnGet()
-        {
-        }
-
-
     }
 }
