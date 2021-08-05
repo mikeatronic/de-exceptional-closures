@@ -41,18 +41,120 @@ namespace de_exceptional_closures.Controllers
             _client = client;
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> RequestClosureAsync(bool isSingleDay)
+        public IActionResult DateFrom(bool isSingleDay)
+        {
+            DateFromViewModel model = new DateFromViewModel();
+
+            model.InstitutionName = GetInstitutionName();
+
+            model.TitleTagName = "From what date did you close, or plan to close, " + model.InstitutionName + " ?";
+            model.IsSingleDay = isSingleDay;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DateFrom(DateFromViewModel model)
+        {
+            model.TitleTagName = "From what date did you close, or plan to close, " + model.InstitutionName + " ?";
+
+            if (!ModelState.IsValid)
+            {
+                //         model.ErrorClass = "govuk-form-group--error";
+
+                return View(model);
+            }
+
+            LogAudit("opened DateFrom POST view");
+
+            DateTime datefrom;
+
+            // Check for valid dates
+            if (DateTime.TryParse(CreateDate(model.DateFromYear.ToString(), model.DateFromMonth.ToString(), model.DateFromDay.ToString()), out datefrom))
+            {
+                model.DateFrom = new DateTime(datefrom.Year, datefrom.Month, datefrom.Day);
+            }
+            else
+            {
+                LogAudit("Encountered an error: Please enter in a valid date. DateFrom POST view.");
+                ModelState.AddModelError("DateFrom", "Please enter in a valid date");
+                return View(model);
+            }
+
+
+            if (model.IsSingleDay)
+            {
+                return RedirectToAction("RequestClosure", "Closure", new { dateFrom = model.DateFrom });
+            }
+
+            return RedirectToAction("DateTo", "Closure", new { dateFrom = model.DateFrom });
+        }
+
+        [HttpGet]
+        public IActionResult DateTo(DateTime dateFrom)
+        {
+            DateToViewModel model = new DateToViewModel();
+            model.DateFrom = dateFrom;
+            model.InstitutionName = GetInstitutionName();
+
+            model.TitleTagName = "From what date did you close, or plan to close, " + model.InstitutionName + " ?";
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DateTo(DateToViewModel model)
+        {
+            model.TitleTagName = "From what date did you close, or plan to close " + model.InstitutionName + " ?";
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            DateTime dateTo;
+
+            // Check for valid dates
+            if (DateTime.TryParse(CreateDate(model.DateToYear.ToString(), model.DateToMonth.ToString(), model.DateToDay.ToString()), out dateTo))
+            {
+                model.DateTo = new DateTime(dateTo.Year, dateTo.Month, dateTo.Day);
+            }
+            else
+            {
+                LogAudit("Encountered an error: Please enter in a valid date. DateTo POST view.");
+                ModelState.AddModelError("DateTo", "Please enter in a valid date");
+                return View(model);
+            }
+
+            // Then Check if Date To is less than Date From
+            if (model.DateTo < model.DateFrom)
+            {
+                ModelState.AddModelError("DateTo", "Date To cannot be less than Date From");
+                return View(model);
+            }
+
+            return RedirectToAction("RequestClosure", "Closure", new { dateFrom = model.DateFrom, dateTo = model.DateTo });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RequestClosure(DateTime dateFrom, DateTime? dateTo)
         {
             RequestClosureViewModel model = new RequestClosureViewModel();
             model.TitleTagName = "Request exceptional closure";
-            model.IsSingleDay = isSingleDay;
+            model.DateFrom = dateFrom;
+
+            if (dateTo.HasValue)
+            {
+                model.DateTo = dateTo;
+            }
 
             model.ReasonTypeList = await GetReasonTypes();
 
-            var getUser = _userManager.GetUserAsync(User);
-
-            model.InstitutionName = getUser.Result.InstitutionName;
+            model.InstitutionName = GetInstitutionName();
 
             LogAudit("opened RequestClosure GET view");
 
@@ -67,45 +169,10 @@ namespace de_exceptional_closures.Controllers
 
             if (!ModelState.IsValid)
             {
+                model.ErrorClass = "govuk-form-group--error";
                 model.ReasonTypeList = await GetReasonTypes();
 
                 return View(model);
-            }
-
-            LogAudit("opened RequestClosure POST view");
-
-            DateTime datefrom;
-
-            // Check for valid dates
-            if (DateTime.TryParse(CreateDate(model.DateFromYear.ToString(), model.DateFromMonth.ToString(), model.DateFromDay.ToString()), out datefrom))
-            {
-                model.DateFrom = new DateTime(datefrom.Year, datefrom.Month, datefrom.Day);
-            }
-            else
-            {
-                model.ReasonTypeList = await GetReasonTypes();
-
-                LogAudit("Encountered an error: Please enter in a valid date. Pre-approved exceptional closure POST view.");
-                ModelState.AddModelError("DateFrom", "Please enter in a valid date");
-                return View(model);
-            }
-
-            if (!model.IsSingleDay)
-            {
-                DateTime dateTo;
-
-                // Check for valid dates
-                if (DateTime.TryParse(CreateDate(model.DateToYear.ToString(), model.DateToMonth.ToString(), model.DateToDay.ToString()), out dateTo))
-                {
-                    model.DateTo = new DateTime(dateTo.Year, dateTo.Month, dateTo.Day);
-                }
-                else
-                {
-                    model.ReasonTypeList = await GetReasonTypes();
-                    LogAudit("Encountered an error: Please enter in a valid date. Pre-approved exceptional closure POST view.");
-                    ModelState.AddModelError("DateTo", "Please enter in a valid date");
-                    return View(model);
-                }
             }
 
             // Add code when Database is done to actually save data.
@@ -117,6 +184,13 @@ namespace de_exceptional_closures.Controllers
             {
                 reasonDto.Approved = true;
                 reasonDto.ApprovalDate = DateTime.Now;
+            }
+
+            reasonDto.DateFrom = model.DateFrom;
+
+            if (model.DateTo.HasValue)
+            {
+                reasonDto.DateTo = model.DateTo;
             }
 
             reasonDto.DateCreated = DateTime.Now;
@@ -313,6 +387,13 @@ namespace de_exceptional_closures.Controllers
             var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
 
             return getReasons.Value;
+        }
+
+        public string GetInstitutionName()
+        {
+            var getUser = _userManager.GetUserAsync(User);
+
+            return getUser.Result.InstitutionName;
         }
 
         //[HttpGet]
