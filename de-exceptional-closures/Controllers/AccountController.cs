@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
-using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -85,7 +84,7 @@ namespace de_exceptional_closures.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [RateLimiting(Name = "ForgotPasswordConfirmation", Minutes = 15)]
+        [RateLimiting(Name = "ForgotPasswordConfirmation", Minutes = 5)]
         public IActionResult ForgotPasswordConfirmation()
         {
             BaseViewModel model = new BaseViewModel();
@@ -111,7 +110,7 @@ namespace de_exceptional_closures.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        //   [RateLimiting(Name = "Register", Minutes = 15)]
+        [RateLimiting(Name = "Register", Minutes = 5)]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             model.TitleTagName = "Register";

@@ -2,7 +2,7 @@
 @model de_exceptional_closures.Areas.Identity.Pages.Account.Manage.InstitutionModel
 @{
     ViewData["Title"] = "Institution";
-    //ViewData["ActivePage"] = ManageNavPages.PersonalData;
+    ViewData["ActivePage"] = ManageNavPages.Institution;
 }
 
 
@@ -10,13 +10,52 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
 
-            <h2>@ViewData["Title"]</h2>
-          
+            <h2>Manage Institution</h2>
 
+            <div class="govuk-form-group">
+                <div class="govuk-hint">
+                    To find your Institution, enter an insitution name select find institution.
+                </div>
+
+                <div class="govuk-form-group" id="PostCodeSearchComponent">
+                    <label class="govuk-label" for="SearchPostCode">
+                        Search institution
+                    </label>
+                    <span id="addressError" class="govuk-error-message" style="display:none;">
+                        <span class="govuk-visually-hidden">Error:</span> Institution not found
+                    </span>
+
+                    <input class="govuk-input govuk-input--width-10" type="text">
+
+                    <button class="govuk-button govuk-button--secondary" type="button" data-module="govuk-button" id="btnSearch" onclick="getAddresses();">
+                        Find institution
+                    </button>
+                    @*<div id="loadSpinner" class="govuk-box-highlight" style="display:none;" role="status">
+                    <span class="spinner-border"></span>
+                    Loading, please wait
+                </div>*@
+                </div>
+            </div>
+
+            <div class="govuk-form-group" id="SearchInstitutionList" style="display:none;">
+                <label class="govuk-label">
+                    Select an institution
+                </label>
+                <select class="govuk-select" onchange="fillAddressTextBoxes();">
+                </select>
+            </div>
+
+            <div class="govuk-form-group">
+                <label class="govuk-label">Institution</label>
+                <input class="govuk-input" />
+                <span class="govuk-error-message"></span>
+            </div>
+            <button type="submit" class="govuk-button" data-module="govuk-button">Update institution</button>
         </div>
     </div>
 </div>
 
-@section Scripts {
+@section Scripts 
+{
     <partial name="_ValidationScriptsPartial" />
 }
