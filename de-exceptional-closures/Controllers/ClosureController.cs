@@ -422,6 +422,13 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
+            // Then Check if Date To is less than Date From
+            //if (model.DateTo < model.DateFrom)
+            //{
+            //    ModelState.AddModelError("DateTo", "Date To cannot be less than Date From");
+            //    return View(model);
+            //}
+
             var reasonToUpdate = _mapper.Map<ClosureReasonDto>(model);
 
             var updateReason = await _mediator.Send(new UpdateClosureReasonCommand() { ClosureReasonDto = reasonToUpdate });

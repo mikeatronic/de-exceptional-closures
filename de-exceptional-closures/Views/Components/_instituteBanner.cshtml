@@ -1,0 +1,19 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using de_exceptional_closures_infraStructure.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    var school = @UserManager.GetUserAsync(User).Result;
+
+    <div class="govuk-phase-banner d-print-none" data-html2canvas-ignore="true" role="alert">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">Institute</strong>
+            <span class="govuk-phase-banner__text">
+                You are associated with <strong>@school.InstitutionName</strong> - ref <strong>@school.InstitutionReference</strong> 
+            </span>
+        </p>
+    </div>
+}
