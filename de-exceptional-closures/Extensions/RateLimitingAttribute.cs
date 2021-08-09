@@ -25,7 +25,6 @@ namespace de_exceptional_closures.Extensions
         /// </summary>
         public string Message { get; set; }
 
-
         private static MemoryCache Cache { get; } = new MemoryCache(new MemoryCacheOptions());
 
         public override void OnActionExecuting(ActionExecutingContext context)

@@ -36,11 +36,11 @@ namespace de_exceptional_closures_Infrastructure.Data
         {
 
             builder.Entity<ReasonType>()
-             .HasData(new ReasonType { Id = 1, Description = "Adverse weather" },
-                        new ReasonType { Id = 2, Description = "Use as a polling station" },
-                        new ReasonType { Id = 3, Description = "Utilities failure (e.g. water, electricity)" },
-                        new ReasonType { Id = 4, Description = "Death of a member of staff, pupil or another person working at the school" },
-                        new ReasonType { Id = 5, Description = "Other (inc. COVID-19; please enter start and proposed end date)" }
+             .HasData(new ReasonType { Id = 1, Description = "Adverse weather", ApprovalRequired = false },
+                        new ReasonType { Id = 2, Description = "Use as a polling station", ApprovalRequired = false },
+                        new ReasonType { Id = 3, Description = "Utilities failure (e.g. water, electricity)", ApprovalRequired = false },
+                        new ReasonType { Id = 4, Description = "Death of a member of staff, pupil or another person working at the school", ApprovalRequired = false },
+                        new ReasonType { Id = 5, Description = "Other (inc. COVID-19; please enter start and proposed end date)", ApprovalRequired = true }
                         );
 
             builder.Entity<ApprovalType>()
