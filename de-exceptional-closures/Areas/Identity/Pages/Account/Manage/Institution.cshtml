@@ -10,6 +10,26 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
 
+            <div asp-validation-summary="None" class="govuk-error-summary">
+                <h2 class="govuk-error-summary__title" id="error-summary-title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                        @foreach (var modelStateKey in ViewData.ModelState.Keys)
+                        {
+                            var modelStateVal = ViewData.ModelState[modelStateKey];
+                            foreach (var error in modelStateVal.Errors)
+                            {
+                                <li>
+                                    <a class="error-items" href="#@modelStateKey">@error.ErrorMessage</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+
             <h2>Manage Institution</h2>
 
             <div class="govuk-form-group">
@@ -17,45 +37,53 @@
                     To find your Institution, enter an insitution name select find institution.
                 </div>
 
-                <div class="govuk-form-group" id="PostCodeSearchComponent">
-                    <label class="govuk-label" for="SearchPostCode">
+                <div class="govuk-form-group" id="InstituteSearchComponent">
+                    <label class="govuk-label" asp-for="Input.Search">
                         Search institution
                     </label>
-                    <span id="addressError" class="govuk-error-message" style="display:none;">
+                    <span id="institutionError" class="govuk-error-message" style="display:none;">
                         <span class="govuk-visually-hidden">Error:</span> Institution not found
                     </span>
 
-                    <input class="govuk-input govuk-input--width-10" type="text">
+                    <input class="govuk-input govuk-input--width-10" asp-for="Input.Search" type="text">
 
-                    <button class="govuk-button govuk-button--secondary" type="button" data-module="govuk-button" id="btnSearch" onclick="getAddresses();">
+                    <button class="govuk-button govuk-button--secondary" type="button" data-module="govuk-button" id="btnSearch" onclick="getSchools();">
                         Find institution
                     </button>
-                    @*<div id="loadSpinner" class="govuk-box-highlight" style="display:none;" role="status">
-                    <span class="spinner-border"></span>
-                    Loading, please wait
-                </div>*@
+                    <div id="loadSpinner" class="govuk-box-highlight" style="display:none;" role="status">
+                        <span class="spinner-border"></span>
+                        Loading, please wait
+                    </div>
                 </div>
             </div>
 
             <div class="govuk-form-group" id="SearchInstitutionList" style="display:none;">
-                <label class="govuk-label">
+                <label class="govuk-label" asp-for="Input.SearchInstitutions">
                     Select an institution
                 </label>
-                <select class="govuk-select" onchange="fillAddressTextBoxes();">
+                <select class="govuk-select" asp-for="Input.SearchInstitutions" onchange="fillTextBoxes();">
                 </select>
             </div>
 
             <div class="govuk-form-group">
-                <label class="govuk-label">Institution</label>
-                <input class="govuk-input" />
-                <span class="govuk-error-message"></span>
+                <label class="govuk-label" asp-for="Input.InstitutionName">Institution</label>
+                <input class="govuk-input" asp-for="Input.InstitutionName" />
+                <span class="govuk-error-message" asp-for="Input.InstitutionName"></span>
             </div>
+
+            <div class="govuk-form-group">
+                <label class="govuk-label" asp-for="Input.InstitutionReference">Institution reference</label>
+                <input class="govuk-input" asp-for="Input.InstitutionReference" />
+                <span class="govuk-error-message" asp-for="Input.InstitutionReference"></span>
+            </div>
+
             <button type="submit" class="govuk-button" data-module="govuk-button">Update institution</button>
         </div>
     </div>
 </div>
 
-@section Scripts 
+@section Scripts
 {
+    <script src="~/Scripts/GetInstitutions.js"></script>
     <partial name="_ValidationScriptsPartial" />
 }
