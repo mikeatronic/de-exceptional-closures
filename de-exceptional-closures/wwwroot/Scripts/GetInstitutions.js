@@ -1,17 +1,17 @@
-﻿$('#SearchPostCode').on('keyup keypress', function (e) {
+﻿$('#Input_Search').on('keyup keypress', function (e) {
     var keyCode = e.keyCode || e.which;
     if (keyCode === 13) {
-        getAddresses();
+        getSchools();
         e.preventDefault();
         return false;
     }
 });
 
-function getAddresses()
+function getSchools()
 {
     let name = $("#Input_Search").val();
-    $("#addressError").hide();
-
+    $("#institutionError").hide();
+  
     if (name != "")
     {
         $("#loadSpinner").show();
@@ -26,7 +26,10 @@ function getAddresses()
                 $(".govuk-error-summary").hide();
                 $("#loadSpinner").hide();
                 $("#SearchInstitutionList").show();
-                $("#addressError").hide();
+                $("#institutionError").hide();
+                $("#Input_Search").removeClass("govuk-input--error");
+                $("#InstituteSearchComponent").removeClass("govuk-form-group--error");
+
                 $("#Input_SearchInstitutions").append($("<option></option>").val(this["referenceNumber"]).html(this["name"] + ',' + this["referenceNumber"]));
             });
             if (data.length === 0)
@@ -35,13 +38,12 @@ function getAddresses()
 
                 if ($(".error-items").length === 0)
                 {
-                    $(".govuk-error-summary__list").append("<li><a class='error-items' href='#Input_Search'>Not a real institution. Instiution could not be found.</a></li>");
+                    $(".govuk-error-summary__list").append("<li><a class='error-items' href='#Input_Search'>Institution not found. Institution could not be found.</a></li>");
                 }
 
-                $("#PostCodeSearchComponent").addClass("govuk-form-group--error");
+                $("#InstituteSearchComponent").addClass("govuk-form-group--error");
                 $("#Input_Search").addClass("govuk-input--error");
-                $("#Input_Search").val("Not an institution")
-                $("#addressError").show();
+                $("#institutionError").show();
                 $("#loadSpinner").hide();
                 $("#SearchInstitutionList").hide();
             }
@@ -57,28 +59,25 @@ function getAddresses()
 
             $("#PostCodeSearchComponent").addClass("govuk-form-group--error");
             $("#Input_Search").addClass("govuk-input--error");
-            $("#Input_Search").val("Not an institution")
-            $("#addressError").show();
+            $("#institutionError").show();
             $("#loadSpinner").hide();
             $("#SearchInstitutionList").hide();
         });
     }
 }
 
-//function fillAddressTextBoxes() {
-//    let myText = $("#SearchAddress :selected").text();
+function fillTextBoxes()
+{
+    let myText = $("#Input_SearchInstitutions :selected").text();
 
-//    if (myText != "Select Address") {
-//        let addressArray = myText.split(',');
+    if (myText != "Select institution")
+    {
+        let addressArray = myText.split(',');
 
-//        $("#Address1").val("");
-//        $("#Address2").val("");
-//        $("#Address3").val("");
-//        $("#TownCity").val("");
-//        $("#PostCode").val("");
+        $("#Input_InstitutionName").val("");
+        $("#Input_InstitutionReference").val("");
 
-//        $("#Address1").val(addressArray[0]);
-//        $("#TownCity").val(addressArray[1]);
-//        $("#PostCode").val(addressArray[2]);
-//    }
-//}
+        $("#Input_InstitutionName").val(addressArray[0]);
+        $("#Input_InstitutionReference").val(addressArray[1]);
+    }
+}
