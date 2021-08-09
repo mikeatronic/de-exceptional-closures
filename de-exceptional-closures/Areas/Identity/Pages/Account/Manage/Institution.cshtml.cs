@@ -23,6 +23,13 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
             [Required]
             [Display(Name = "Institution")]
             public string InstitutionName { get; set; }
+
+            public string Search{ get; set; }
+            public string SearchInstitutions { get; set; }
         }
+
+
+
+
     }
 }
