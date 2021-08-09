@@ -56,7 +56,7 @@
                     Date to
                 </dt>
                 <dd class="govuk-summary-list__value">
-                   @Model.DateTo.Value.ToString("d MMMM yyyy")
+                    @Model.DateTo.Value.ToString("d MMMM yyyy")
                 </dd>
             </div>
         }
@@ -91,5 +91,10 @@
             </dd>
         </div>
         </dl>
+
+        <div class="govuk-button-group">
+            <a href="@Url.Action("Index", "Home")" class="govuk-button">Create another closure</a>
+            <a href="@Url.Action("MyClosures", "Closure")" class="govuk-button govuk-button--secondary"> Go to my closures</a>
+        </div>
     </div>
     </div>

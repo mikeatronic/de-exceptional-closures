@@ -3,5 +3,6 @@
     public class ReasonType : BaseEntity<int>
     {
         public string Description { get; set; }
+        public bool? ApprovalRequired { get; set; }
     }
 }
