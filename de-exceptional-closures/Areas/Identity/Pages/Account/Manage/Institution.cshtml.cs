@@ -28,7 +28,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Reference")]
             public string InstitutionReference { get; set; }
 
-            public string Search{ get; set; }
+            public string Search { get; set; }
             public string SearchInstitutions { get; set; }
         }
     }

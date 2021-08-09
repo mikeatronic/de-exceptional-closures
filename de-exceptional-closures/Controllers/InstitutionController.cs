@@ -31,7 +31,7 @@ namespace de_exceptional_closures.Controllers
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-           // client.DefaultRequestHeaders.Add("Authorization", "Bearer " + CreateJwtToken());
+            // client.DefaultRequestHeaders.Add("Authorization", "Bearer " + CreateJwtToken());
 
             var result = await client.GetAsync("SearchByName?name=" + name);
 
