@@ -57,7 +57,7 @@ function getSchools()
                 $(".govuk-error-summary__list").append("<li><a class='error-items' href='#Input_Search'>Not a real inst. Instiution could not be found.</a></li>");
             }
 
-            $("#PostCodeSearchComponent").addClass("govuk-form-group--error");
+            $("#InstituteSearchComponent").addClass("govuk-form-group--error");
             $("#Input_Search").addClass("govuk-input--error");
             $("#institutionError").show();
             $("#loadSpinner").hide();
@@ -72,12 +72,12 @@ function fillTextBoxes()
 
     if (myText != "Select institution")
     {
-        let addressArray = myText.split(',');
+        let schoolArray = myText.split(',');
 
         $("#Input_InstitutionName").val("");
         $("#Input_InstitutionReference").val("");
 
-        $("#Input_InstitutionName").val(addressArray[0]);
-        $("#Input_InstitutionReference").val(addressArray[1]);
+        $("#Input_InstitutionName").val(schoolArray[0]);
+        $("#Input_InstitutionReference").val(schoolArray[1]);
     }
 }
