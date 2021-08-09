@@ -8,16 +8,3 @@ $(document).ready(function () {
         $(".govuk-error-summary").show();
     }
 });
-
-// code for keeping footer at a nice height.
-function adjustFooterHeight() {
-    let docHeight = $(window).height();
-    let footerHeight = $('.nidirect_footer').height();
-    let footerTop = $('.nidirect_footer').position().top + footerHeight;
-
-    if (footerTop < docHeight) {
-        $('.nidirect_footer').css('margin-top', -20 + (docHeight - footerTop) + 'px');
-    }
-}
-
-adjustFooterHeight();

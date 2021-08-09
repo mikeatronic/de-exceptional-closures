@@ -948,3 +948,11 @@ table.dataTable .govuk-link {
 .banner-dangerous-content {
     padding: 10px !important;
 }
+
+.nidirect_footer 
+{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
