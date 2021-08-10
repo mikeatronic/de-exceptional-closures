@@ -1,7 +1,6 @@
 ---
 applications:
 - name: de-exceptional-closures-sandbox
-  instances: 2
   buildpacks:
   - dotnet_core_buildpack
   memory: 256M
