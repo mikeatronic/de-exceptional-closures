@@ -7,4 +7,3 @@ applications:
   services:
   - de-exceptional-closures-mysql
   - de-exceptional-closures-notify
-  - de-exceptional-closures-captcha
