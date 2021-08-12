@@ -23,23 +23,6 @@ namespace de_exceptional_closures.Config
             notifyConfig.emailTemplate = sourceNotifyConfig.emailTemplate;
         }
 
-        public static CaptchaConfig CreateCaptchaConfig(Dictionary<string, Credential> credentials)
-        {
-            return new CaptchaConfig
-            {
-                googleUrl = credentials["googleUrl"].Value,
-                SiteKey = credentials["siteKey"].Value,
-                Secret = credentials["secret"].Value
-            };
-        }
-
-        public static void PopulateCaptchaConfig(this CaptchaConfig captchaConfig, CaptchaConfig sourceCaptchaConfig)
-        {
-            captchaConfig.googleUrl = sourceCaptchaConfig.googleUrl;
-            captchaConfig.SiteKey = sourceCaptchaConfig.SiteKey;
-            captchaConfig.Secret = sourceCaptchaConfig.Secret;
-        }
-
         public static string PopulateLocalConnectionString(IConfiguration configuration)
         {
             var host = configuration["mysql:client:server"];

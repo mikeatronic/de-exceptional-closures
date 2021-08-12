@@ -36,7 +36,6 @@ namespace de_exceptional_closures
         public IConfiguration Configuration { get; }
         protected CloudFoundryServicesOptions CloudFoundryServicesOptions;
         protected NotifyConfig NotifyConfig = new NotifyConfig();
-        protected CaptchaConfig CaptchaConfig = new CaptchaConfig();
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -79,12 +78,6 @@ namespace de_exceptional_closures
             services.Configure<NotifyConfig>(nc => nc.PopulateNotifyConfig(NotifyConfig));
 
             services.AddTransient<INotifyService, NotifyService>();
-
-            CaptchaConfig = ConfigurationFactory.CreateCaptchaConfig(CloudFoundryServicesOptions
-             .Services["user-provided"]
-            .First(s => s.Name == "de-exceptional-closures-captcha").Credentials["Credentials"]);
-
-            services.Configure<CaptchaConfig>(nc => nc.PopulateCaptchaConfig(CaptchaConfig));
 
             services.AddHttpClient("InstitutionsClient", p => p.BaseAddress = new Uri("https://de-institutions-api-sandbox.london.cloudapps.digital/api/v1/Institution/"));
 
