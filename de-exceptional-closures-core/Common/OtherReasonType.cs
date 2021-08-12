@@ -6,6 +6,7 @@
         UseAsPollingStation = 2,
         UtilitiesFailure = 3,
         DeathOfMember = 4,
-        Other = 5
+        Other = 5,
+        Covid = 6
     }
 }
