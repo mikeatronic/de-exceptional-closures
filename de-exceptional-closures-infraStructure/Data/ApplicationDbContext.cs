@@ -40,7 +40,8 @@ namespace de_exceptional_closures_Infrastructure.Data
                         new ReasonType { Id = 2, Description = "Use as a polling station", ApprovalRequired = false },
                         new ReasonType { Id = 3, Description = "Utilities failure (e.g. water, electricity)", ApprovalRequired = false },
                         new ReasonType { Id = 4, Description = "Death of a member of staff, pupil or another person working at the school", ApprovalRequired = false },
-                        new ReasonType { Id = 5, Description = "Other (inc. COVID-19; please enter start and proposed end date)", ApprovalRequired = true }
+                        new ReasonType { Id = 5, Description = "Other", ApprovalRequired = true },
+                         new ReasonType { Id = 6, Description = "Covid", ApprovalRequired = true }
                         );
 
             builder.Entity<ApprovalType>()
