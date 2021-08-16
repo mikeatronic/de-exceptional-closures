@@ -61,50 +61,83 @@ namespace de_exceptional_closures.Controllers
         {
             model.TitleTagName = "Create closure";
 
+            //if (!model.IsSingleDay.HasValue)
+            //{
+            //    model.ReasonTypeList = await GetReasonTypes();
+
+            //    return View(model);
+            //}
+
+            if (model.IsSingleDay.Value)
+            {
+                DateTime datefrom;
+
+                // Check for valid dates
+                if (DateTime.TryParse(CreateDate(model.DateFromYear.ToString(), model.DateFromMonth.ToString(), model.DateFromDay.ToString()), out datefrom))
+                {
+                    model.DateFrom = new DateTime(datefrom.Year, datefrom.Month, datefrom.Day);
+                }
+                else
+                {
+                    LogAudit("Encountered an error: Please enter in a valid date. DateFrom POST view.");
+                    ModelState.AddModelError("DateFromDay", "Please enter in a valid date");
+
+                    model.ReasonTypeList = await GetReasonTypes();
+
+                    return View(model);
+                }
+            }
+         
+
+            if (!model.IsSingleDay.Value)
+            {
+                DateTime datefrom;
+
+                // Check for valid dates
+                if (DateTime.TryParse(CreateDate(model.DateMultipleFromYear.ToString(), model.DateMultipleFromMonth.ToString(), model.DateMultipleFromDay.ToString()), out datefrom))
+                {
+                    model.DateMultipleFrom = new DateTime(datefrom.Year, datefrom.Month, datefrom.Day);
+                }
+                else
+                {
+                    LogAudit("Encountered an error: Please enter in a valid date. DateFrom POST view.");
+                    ModelState.AddModelError("DateFromDay", "Please enter in a valid date");
+
+                    model.ReasonTypeList = await GetReasonTypes();
+
+                    return View(model);
+                }
+
+                DateTime dateTo;
+
+                // Check for valid dates
+                if (DateTime.TryParse(CreateDate(model.DateToYear.ToString(), model.DateToMonth.ToString(), model.DateToDay.ToString()), out dateTo))
+                {
+                    model.DateTo = new DateTime(dateTo.Year, dateTo.Month, dateTo.Day);
+                }
+                else
+                {
+                    LogAudit("Encountered an error: Please enter in a valid date. DateTo POST view.");
+                    ModelState.AddModelError("DateTo", "Please enter in a valid date");
+                    model.ReasonTypeList = await GetReasonTypes();
+                    return View(model);
+                }
+
+                //Then Check if Date To is less than Date From
+                if (model.DateTo < model.DateMultipleFrom)
+                {
+                    ModelState.AddModelError("DateToDay", "Date To cannot be less than Date From");
+                    model.ReasonTypeList = await GetReasonTypes();
+                    return View(model);
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 model.ReasonTypeList = await GetReasonTypes();
 
                 return View(model);
             }
-
-            DateTime datefrom;
-
-            // Check for valid dates
-            if (DateTime.TryParse(CreateDate(model.DateFromYear.ToString(), model.DateFromMonth.ToString(), model.DateFromDay.ToString()), out datefrom))
-            {
-                model.DateFrom = new DateTime(datefrom.Year, datefrom.Month, datefrom.Day);
-            }
-            else
-            {
-                LogAudit("Encountered an error: Please enter in a valid date. DateFrom POST view.");
-                ModelState.AddModelError("DateFromDay", "Please enter in a valid date");
-
-                model.ReasonTypeList = await GetReasonTypes();
-
-                return View(model);
-            }
-
-            //DateTime dateTo;
-
-            //// Check for valid dates
-            //if (DateTime.TryParse(CreateDate(model.DateToYear.ToString(), model.DateToMonth.ToString(), model.DateToDay.ToString()), out dateTo))
-            //{
-            //    model.DateTo = new DateTime(dateTo.Year, dateTo.Month, dateTo.Day);
-            //}
-            //else
-            //{
-            //    LogAudit("Encountered an error: Please enter in a valid date. DateTo POST view.");
-            //    ModelState.AddModelError("DateTo", "Please enter in a valid date");
-            //    return View(model);
-            //}
-
-            // Then Check if Date To is less than Date From
-            //if (model.DateTo < model.DateFrom)
-            //{
-            //    ModelState.AddModelError("DateTo", "Date To cannot be less than Date From");
-            //    return View(model);
-            //}
 
             // Set Approval type
             model.ApprovalTypeId = await GetApprovalType(model.ReasonTypeId);

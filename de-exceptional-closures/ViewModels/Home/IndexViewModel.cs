@@ -21,7 +21,6 @@ namespace de_exceptional_closures.ViewModels.Home
         [DataType(DataType.Date)]
         public DateTime DateFrom { get; set; }
 
-        [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter Date To")]
         [Display(Name = "Date to")]
         [DataType(DataType.Date)]
         public DateTime? DateTo { get; set; }
@@ -85,6 +84,8 @@ namespace de_exceptional_closures.ViewModels.Home
         [RequiredIf("ReasonTypeId", (int)OtherReasonType.Other, ErrorMessage = "Please enter other reason")]
         [AlphaNumericLimitedSpecialChars]
         public string OtherReason { get; set; }
+
+        //[Required(ErrorMessage = "Please enter a day type")]
         public bool? IsSingleDay { get; set; }
         public List<ReasonTypeDto> ReasonTypeList { get; set; }
         public string InstitutionName { get; set; }
