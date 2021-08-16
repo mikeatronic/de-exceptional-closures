@@ -5,6 +5,7 @@ using de_exceptional_closures.ViewModels.Closure;
 using de_exceptional_closures_core.Common;
 using de_exceptional_closures_core.Dtos;
 using de_exceptional_closures_infraStructure.Data;
+using de_exceptional_closures_infraStructure.Features.AdminApprovalList.Queries;
 using de_exceptional_closures_infraStructure.Features.ClosureReason.Commands;
 using de_exceptional_closures_infraStructure.Features.ClosureReason.Queries;
 using de_exceptional_closures_infraStructure.Features.ReasonType.Queries;
@@ -36,6 +37,48 @@ namespace de_exceptional_closures.Controllers
             _notifyService = notifyService;
             _signInManager = signInManager;
             _userManager = userManager;
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            CreateViewModel model = new CreateViewModel();
+            model.TitleTagName = "Create closure";
+            model.InstitutionName = GetInstitutionName();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(CreateViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult CheckAnswers()
+        {
+            CheckAnswersViewModel model = new CheckAnswersViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CheckAnswers(CheckAnswersViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            return View(model);
         }
 
         [HttpGet]
@@ -199,11 +242,11 @@ namespace de_exceptional_closures.Controllers
 
             if (reasonDto.ReasonTypeId != (int)OtherReasonType.Other)
             {
-                await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education has approved this exceptional closure and will sanction a corresponding reduction in the minimum number of days on which your school is required to be in operation during this school year.");
+                await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education has approved this exceptional closure and will sanction a corresponding reduction in the minimum number of days on which your school is required to be in operation during this school year.", false);
             }
             else
             {
-                await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education will be in touch in due course with the outcome.");
+                await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education will be in touch in due course with the outcome.", true);
             }
 
             LogAudit("Completed RequestClosure POST view");
@@ -537,7 +580,7 @@ namespace de_exceptional_closures.Controllers
             return View(model);
         }
 
-        private async Task SendNotification(string subject, string message)
+        private async Task SendNotification(string subject, string message, bool approvalNeeded)
         {
             var getUser = await _userManager.GetUserAsync(User);
 
@@ -545,7 +588,21 @@ namespace de_exceptional_closures.Controllers
 
             LogAudit("email sent: " + subject + ". " + message);
 
+            // Send first to the user
             _notifyService.SendEmail(getUserEmail.Result, subject, message);
+
+            if (approvalNeeded)
+            {
+                string msg = "has requested an exceptional closure. \n \n The school closed on or will close on because of . \n \n Approval is required for this closure.";
+
+                // Get list of approvers to email them the request
+                var getApprovers = await _mediator.Send(new GetAllApproversQuery());
+
+                foreach (var item in getApprovers.Value)
+                {
+                    _notifyService.SendEmail(item.Email, "Request for exceptional closure - approval required", msg);
+                }
+            }
         }
 
         public string CreateDate(string dateOfBirthYear, string dateOfBirthMonth, string dateOfBirthDay)

@@ -1,0 +1,250 @@
+﻿@model de_exceptional_closures.ViewModels.Closure.CreateViewModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="govuk-grid-column-two-thirds">
+
+
+    <h1 class="govuk-heading-xl">
+        Create closure
+        <span class="govuk-caption-l">
+            @Model.InstitutionName, Coronation Rd, Carrickfergus BT38
+            7EZ
+        </span>
+    </h1>
+
+    <!-- Start of controls -->
+
+    <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                Is the closure for a single day or continuous days?
+            </legend>
+            <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="radio-pd" name="radio-pd" type="radio"
+                           value="yes" data-aria-controls="conditional-radio-pd">
+                    <label class="govuk-label govuk-radios__label" for="radio-pd">
+                        Single day
+                    </label>
+                </div>
+                <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
+                     id="conditional-radio-pd">
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group"
+                                  aria-describedby="single-closure-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                Closure date
+                            </legend>
+                            <div id="single-closure-hint" class="govuk-hint">
+                                For example, 27 3 2007
+                            </div>
+                            <div class="govuk-date-input" id="single-closure">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label"
+                                               for="single-closure-day">
+                                            Day
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                                               id="single-closure-day" name="single-closure-day"
+                                               type="text" pattern="[0-9]*" inputmode="numeric">
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label"
+                                               for="single-closure-month">
+                                            Month
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                                               id="single-closure-month" name="single-closure-month"
+                                               type="text" pattern="[0-9]*" inputmode="numeric">
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label"
+                                               for="single-closure-year">
+                                            Year
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-4"
+                                               id="single-closure-year" name="single-closure-year"
+                                               type="text" pattern="[0-9]*" inputmode="numeric">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+
+
+                </div>
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="radio-pd-2" name="radio-pd" type="radio"
+                           value="no" data-aria-controls="conditional-radio-pd2">
+                    <label class="govuk-label govuk-radios__label" for="radio-pd-2">
+                        Continuous days
+                    </label>
+                </div>
+                <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
+                     id="conditional-radio-pd2">
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group"
+                                  aria-describedby="multiple-closure-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                Closure from date
+                            </legend>
+                            <div id="multiple-closure-hint" class="govuk-hint">
+                                For example, 27 3 2007
+                            </div>
+                            <div class="govuk-date-input" id="multiple-closure">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label"
+                                               for="multiple-closure-day">
+                                            Day
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                                               id="multiple-closure-day" name="multiple-closure-day"
+                                               type="text" pattern="[0-9]*" inputmode="numeric">
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label"
+                                               for="multiple-closure-month">
+                                            Month
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                                               id="multiple-closure-month" name="multiple-closure-month"
+                                               type="text" pattern="[0-9]*" inputmode="numeric">
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label"
+                                               for="multiple-closure-year">
+                                            Year
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-4"
+                                               id="multiple-closure-year" name="multiple-closure-year"
+                                               type="text" pattern="[0-9]*" inputmode="numeric">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group"
+                                  aria-describedby="multiple-closure2-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                Closure to date
+                            </legend>
+                            <div id="multiple-closure2-hint" class="govuk-hint">
+                                For example, 27 3 2007
+                            </div>
+                            <div class="govuk-date-input" id="multiple-closure2">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label"
+                                               for="multiple-closure2-day">
+                                            Day
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                                               id="multiple-closure2-day" name="multiple-closure2-day"
+                                               type="text" pattern="[0-9]*" inputmode="numeric">
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label"
+                                               for="multiple-closure2-month">
+                                            Month
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                                               id="multiple-closure2-month" name="multiple-closure2-month"
+                                               type="text" pattern="[0-9]*" inputmode="numeric">
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label"
+                                               for="multiple-closure2-year">
+                                            Year
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-4"
+                                               id="multiple-closure2-year" name="multiple-closure2-year"
+                                               type="text" pattern="[0-9]*" inputmode="numeric">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+        </fieldset>
+    </div>
+
+    <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset" aria-describedby="closure-reason-hint">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                Reason for closure
+            </legend>
+            <div id="closure-reason-hint" class="govuk-hint">
+                Select one option.
+            </div>
+            <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="closure-reason" name="closure-reason"
+                           type="radio" value="bad weather">
+                    <label class="govuk-label govuk-radios__label" for="closure-reason">
+                        Bad weather
+                    </label>
+                </div>
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="closure-reason-2" name="closure-reason"
+                           type="radio" value="coronavirus">
+                    <label class="govuk-label govuk-radios__label" for="closure-reason-2">
+                        Coronavirus
+                    </label>
+                </div>
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="closure-reason-3" name="closure-reason"
+                           type="radio" value="other" data-aria-controls="conditional-closure-reason-3">
+                    <label class="govuk-label govuk-radios__label" for="closure-reason-3">
+                        Other
+                    </label>
+                </div>
+                <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
+                     id="conditional-closure-reason-3">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label govuk-label--s" for="more-detail">
+                            Can you provide more detail?
+                        </label>
+                        <div id="more-detail-hint" class="govuk-hint">
+                            Hint text.
+                        </div>
+<textarea class="govuk-textarea" id="more-detail" name="more-detail" rows="5"
+          aria-describedby="more-detail-hint"></textarea>
+                    </div>
+                </div>
+        </fieldset>
+    </div>
+
+    <!-- End of controls -->
+
+    <button class="govuk-button" data-module="govuk-button">
+        Continue
+    </button>
+
+</div>
