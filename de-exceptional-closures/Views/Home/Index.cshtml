@@ -28,8 +28,21 @@
                 </legend>
                 <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
                     <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="radio-pd" name="radio-pd" type="radio"
-                               value="single" data-aria-controls="conditional-radio-pd" data-group="dateRadios">
+
+
+                        @if (Model.IsSingleDay.HasValue && Model.IsSingleDay.Value)
+                        {
+
+                            <input class="govuk-radios__input" id="radio-pd" name="radio-pd" type="radio"
+                                   value="single" data-aria-controls="conditional-radio-pd" data-group="dateRadios" checked="checked">
+
+                        }
+                        else
+                        {
+                            <input class="govuk-radios__input" id="radio-pd" name="radio-pd" type="radio"
+                                   value="single" data-aria-controls="conditional-radio-pd" data-group="dateRadios">
+                        }
+
 
                         <label class="govuk-label govuk-radios__label" for="radio-pd">
                             Single day
@@ -94,8 +107,19 @@
 
                     </div>
                     <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="radio-pd-2" name="radio-pd" type="radio"
-                               value="multi" data-aria-controls="conditional-radio-pd2" data-group="dateRadios">
+
+                        @if (Model.IsSingleDay.HasValue && !Model.IsSingleDay.Value)
+                        {
+
+                            <input class="govuk-radios__input" id="radio-pd-2" name="radio-pd" type="radio"
+                                   value="multi" data-aria-controls="conditional-radio-pd2" data-group="dateRadios" checked="checked">
+
+                        }
+                        else
+                        {
+                            <input class="govuk-radios__input" id="radio-pd-2" name="radio-pd" type="radio"
+                                   value="multi" data-aria-controls="conditional-radio-pd2" data-group="dateRadios">
+                        }
 
                         <label class="govuk-label govuk-radios__label" for="radio-pd-2">
                             Continuous days
@@ -268,8 +292,6 @@
         </button>
     </div>
 </form>
-
-
 
 <script>
     $('input[type=radio][name=radio-pd]').change(function ()

@@ -16,7 +16,7 @@ namespace de_exceptional_closures.ViewModels.Home
         public int Id { get; set; }
         public int ApprovalTypeId { get; set; }
 
-        [RequiredIf("IsSingleDay", true, ErrorMessage = "Please enter Year To")]
+        [RequiredIf("IsSingleDay", true, ErrorMessage = "Please enter Date from")]
         [Display(Name = "Date from")]
         [DataType(DataType.Date)]
         public DateTime DateFrom { get; set; }
@@ -26,37 +26,37 @@ namespace de_exceptional_closures.ViewModels.Home
         [DataType(DataType.Date)]
         public DateTime? DateTo { get; set; }
 
-        [RequiredIf("IsSingleDay", true, ErrorMessage = "Please enter Year To")]
+        [RequiredIf("IsSingleDay", true, ErrorMessage = "Please enter Date from day")]
         [Display(Name = "Day")]
         [Range(1, 31, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateFromDay { get; set; }
 
-        [RequiredIf("IsSingleDay", true, ErrorMessage = "Please enter Year To")]
+        [RequiredIf("IsSingleDay", true, ErrorMessage = "Please enter Date from month")]
         [Display(Name = "Month")]
         [Range(1, 12, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateFromMonth { get; set; }
 
-        [RequiredIf("IsSingleDay", true, ErrorMessage = "Please enter Year To")]
+        [RequiredIf("IsSingleDay", true, ErrorMessage = "Please enter Date from year")]
         [Display(Name = "Year")]
         [Range(2000, 2100, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateFromYear { get; set; }
 
-        [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter Year To")]
+        [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter Date from")]
         [Display(Name = "Date from")]
         [DataType(DataType.Date)]
         public DateTime DateMultipleFrom { get; set; }
 
-        [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter Year To")]
+        [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter Date from day")]
         [Display(Name = "Day")]
         [Range(1, 31, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateMultipleFromDay { get; set; }
 
-        [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter Year To")]
+        [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter Date from month")]
         [Display(Name = "Month")]
         [Range(1, 12, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateMultipleFromMonth { get; set; }
 
-        [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter Year To")]
+        [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter date from year")]
         [Display(Name = "Year")]
         [Range(2000, 2100, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateMultipleFromYear { get; set; }

@@ -61,8 +61,6 @@ namespace de_exceptional_closures.Controllers
         {
             model.TitleTagName = "Create closure";
 
-            model.IsSingleDay = true;
-
             if (!ModelState.IsValid)
             {
                 model.ReasonTypeList = await GetReasonTypes();
