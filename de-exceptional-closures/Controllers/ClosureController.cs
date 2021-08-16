@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using de_exceptional_closures.Extensions;
 using de_exceptional_closures.Notify;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Closure;
+using de_exceptional_closures.ViewModels.Home;
 using de_exceptional_closures_core.Common;
 using de_exceptional_closures_core.Dtos;
 using de_exceptional_closures_infraStructure.Data;
@@ -15,6 +17,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace de_exceptional_closures.Controllers
@@ -62,23 +65,76 @@ namespace de_exceptional_closures.Controllers
         }
 
         [HttpGet]
-        public IActionResult CheckAnswers()
+        public async Task<IActionResult> CheckAnswersAsync()
         {
             CheckAnswersViewModel model = new CheckAnswersViewModel();
+
+            var mod = HttpContext.Session.Get<IndexViewModel>("CreateClosureObj");
+
+            model.InstitutionName = mod.InstitutionName;
+            model.OtherReason = mod.OtherReason;
+            model.DateFrom = mod.DateFrom;
+            model.DateTo = mod.DateTo;
+            model.OtherReason = mod.OtherReason;
+            model.ReasonType = await GetReasonTypeAsync(mod.ReasonTypeId);
+            model.ApprovalTypeId = mod.ApprovalTypeId;
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CheckAnswers(CheckAnswersViewModel model)
+        public async Task<IActionResult> CheckAnswers()
         {
+            var model = HttpContext.Session.Get<IndexViewModel>("CreateClosureObj");
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            return View(model);
+            // Add code when Database is done to actually save data
+            var reasonDto = _mapper.Map<ClosureReasonDto>(model);
+
+            reasonDto.ApprovalTypeId = await GetApprovalType(model.ReasonTypeId);
+
+            if (reasonDto.ApprovalTypeId  == (int)ApprovalType.PreApproved)
+            {
+                reasonDto.Approved = true;
+                reasonDto.ApprovalDate = DateTime.Now;
+            }
+
+            reasonDto.DateFrom = model.DateFrom;
+
+            if (model.DateTo.HasValue)
+            {
+                reasonDto.DateTo = model.DateTo;
+            }
+
+            reasonDto.DateCreated = DateTime.Now;
+
+            var createClosureReason = await _mediator.Send(new CreateClosureReasonCommand() { ClosureReasonDto = reasonDto });
+
+            if (createClosureReason.IsFailure)
+            {
+                return View(model);
+            }
+
+            if (reasonDto.ApprovalTypeId == (int)ApprovalType.PreApproved)
+            {
+                await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education has approved this exceptional closure and will sanction a corresponding reduction in the minimum number of days on which your school is required to be in operation during this school year.", false);
+            }
+            else
+            {
+                await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education will be in touch in due course with the outcome.", true);
+            }
+
+            LogAudit("Completed RequestClosure POST view");
+
+            // Reset session variable
+            HttpContext.Session.Remove("CreateClosureObj");
+
+            return RedirectToAction("Submitted", "Closure", new { id = createClosureReason.Value });
         }
 
         [HttpGet]
@@ -580,7 +636,7 @@ namespace de_exceptional_closures.Controllers
             return View(model);
         }
 
-        private async Task SendNotification(string subject, string message, bool approvalNeeded)
+        internal async Task SendNotification(string subject, string message, bool approvalNeeded)
         {
             var getUser = await _userManager.GetUserAsync(User);
 
@@ -605,21 +661,40 @@ namespace de_exceptional_closures.Controllers
             }
         }
 
-        public string CreateDate(string dateOfBirthYear, string dateOfBirthMonth, string dateOfBirthDay)
+        internal string CreateDate(string dateOfBirthYear, string dateOfBirthMonth, string dateOfBirthDay)
         {
             string dateToCheck = dateOfBirthYear + "/" + dateOfBirthMonth + "/" + dateOfBirthDay;
 
             return dateToCheck;
         }
 
-        public async Task<List<ReasonTypeDto>> GetReasonTypes()
+        internal async Task<List<ReasonTypeDto>> GetReasonTypes()
         {
             var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
 
             return getReasons.Value;
         }
 
-        public string GetInstitutionName()
+        internal async Task<int> GetApprovalType(int id)
+        {
+            var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
+
+            if (getReasons.Value.SingleOrDefault(i => i.Id == id).ApprovalRequired.HasValue && getReasons.Value.SingleOrDefault(i => i.Id == id).ApprovalRequired.Value)
+            {
+                return (int)ApprovalType.ApprovalRequired;
+            }
+
+            return (int)ApprovalType.PreApproved;
+        }
+
+        internal async Task<string> GetReasonTypeAsync(int id)
+        {
+            var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
+
+            return getReasons.Value.SingleOrDefault(i => i.Id == id).Description;
+        }
+
+        internal string GetInstitutionName()
         {
             var getUser = _userManager.GetUserAsync(User);
 

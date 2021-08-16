@@ -80,14 +80,7 @@
                     @item.ApprovalType
                 </td>
                 <td class="govuk-table__cell">
-                    @if (item.Approved.HasValue)
-                    {
                         <a href="@Url.Action("View","Closure", new { id = item.Id })" class="govuk-link">View</a>
-                    }
-                    else
-                    {
-                        <a href="@Url.Action("Edit","Closure", new { id = item.Id })" class="govuk-link">Edit</a>
-                    }
                 </td>
             </tr>
             }

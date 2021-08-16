@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Closure;
+using de_exceptional_closures.ViewModels.Home;
 using de_exceptional_closures_core.Dtos;
 
 namespace de_exceptional_closures.Mapping
@@ -54,16 +55,17 @@ namespace de_exceptional_closures.Mapping
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
             CreateMap<EditDateToViewModel, ClosureReasonDto>()
-          //.ForMember(d => d.DateTo, o => o.MapFrom(s => s.DateTo.Day))
-          //.ForMember(d => d.DateTo.Value, o => o.MapFrom(s => s.DateTo.Month))
-          //.ForMember(d => d.DateToYear, o => o.MapFrom(s => s.DateTo.Year))
           .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
             CreateMap<EditDateFromViewModel, ClosureReasonDto>()
-            //.ForMember(d => d.DateFromDay, o => o.MapFrom(s => s.DateFrom.Day))
-            //.ForMember(d => d.DateFromMonth, o => o.MapFrom(s => s.DateFrom.Month))
-            //.ForMember(d => d.DateFromYear, o => o.MapFrom(s => s.DateFrom.Year))
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            CreateMap<IndexViewModel, ClosureReasonDto>()
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            CreateMap<ClosureReasonDto, IndexViewModel>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+            
         }
     }
 }

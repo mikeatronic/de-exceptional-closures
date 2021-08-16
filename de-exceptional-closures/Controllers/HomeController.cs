@@ -1,24 +1,54 @@
-﻿using de_exceptional_closures.Models;
+﻿using de_exceptional_closures.Extensions;
+using de_exceptional_closures.Models;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Home;
+using de_exceptional_closures_core.Common;
+using de_exceptional_closures_core.Dtos;
+using de_exceptional_closures_infraStructure.Data;
+using de_exceptional_closures_infraStructure.Features.ReasonType.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace de_exceptional_closures.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
+        private readonly IMediator _mediator;
+        private readonly UserManager<ApplicationUser> _userManager;
         private static readonly NLog.Logger Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
+        public HomeController(IMediator mediator, UserManager<ApplicationUser> userManager)
+        {
+            _mediator = mediator;
+            _userManager = userManager;
+        }
+
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             IndexViewModel model = new IndexViewModel();
 
-            model.TitleTagName = "Is the closure for a single day?";
+            if (HttpContext.Session.Get<IndexViewModel>("CreateClosureObj") == null)
+            {
+                HttpContext.Session.Set("CreateClosureObj", model);
+            }
+            else
+            {
+                model = HttpContext.Session.Get<IndexViewModel>("CreateClosureObj");
+            }
+
+            model.TitleTagName = "Create closure";
+            model.InstitutionName = GetInstitutionName();
+
+            model.ReasonTypeList = await GetReasonTypes();
 
             LogAudit("opened Is the closure for a single day GET view");
 
@@ -27,18 +57,65 @@ namespace de_exceptional_closures.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(IndexViewModel model)
+        public async Task<IActionResult> Index(IndexViewModel model)
         {
-            model.TitleTagName = "Is the closure for a single day?";
+            model.TitleTagName = "Create closure";
+
+            model.IsSingleDay = true;
 
             if (!ModelState.IsValid)
             {
+                model.ReasonTypeList = await GetReasonTypes();
+
                 return View(model);
             }
 
-            LogAudit("opened Is the closure for a single day POST view and selected model.IsSingleDay = " + model.IsSingleDay);
+            DateTime datefrom;
 
-            return RedirectToAction("DateFrom", "Closure", new { isSingleDay = model.IsSingleDay });
+            // Check for valid dates
+            if (DateTime.TryParse(CreateDate(model.DateFromYear.ToString(), model.DateFromMonth.ToString(), model.DateFromDay.ToString()), out datefrom))
+            {
+                model.DateFrom = new DateTime(datefrom.Year, datefrom.Month, datefrom.Day);
+            }
+            else
+            {
+                LogAudit("Encountered an error: Please enter in a valid date. DateFrom POST view.");
+                ModelState.AddModelError("DateFromDay", "Please enter in a valid date");
+                
+                model.ReasonTypeList = await GetReasonTypes();
+
+                return View(model);
+            }
+
+            //DateTime dateTo;
+
+            //// Check for valid dates
+            //if (DateTime.TryParse(CreateDate(model.DateToYear.ToString(), model.DateToMonth.ToString(), model.DateToDay.ToString()), out dateTo))
+            //{
+            //    model.DateTo = new DateTime(dateTo.Year, dateTo.Month, dateTo.Day);
+            //}
+            //else
+            //{
+            //    LogAudit("Encountered an error: Please enter in a valid date. DateTo POST view.");
+            //    ModelState.AddModelError("DateTo", "Please enter in a valid date");
+            //    return View(model);
+            //}
+
+            // Then Check if Date To is less than Date From
+            //if (model.DateTo < model.DateFrom)
+            //{
+            //    ModelState.AddModelError("DateTo", "Date To cannot be less than Date From");
+            //    return View(model);
+            //}
+
+            // Set Approval type
+            model.ApprovalTypeId = await GetApprovalType(model.ReasonTypeId);
+
+            HttpContext.Session.Set("CreateClosureObj", model);
+
+            LogAudit("opened Is the closure for a single day POST view and selected model.IsSingleDay = ");
+
+            return RedirectToAction("CheckAnswers", "Closure");
         }
 
         [AllowAnonymous]
@@ -75,6 +152,39 @@ namespace de_exceptional_closures.Controllers
             LogAudit("opened Cookies GET view");
 
             return View(model);
+        }
+
+        internal string GetInstitutionName()
+        {
+            var getUser = _userManager.GetUserAsync(User);
+
+            return getUser.Result.InstitutionName;
+        }
+
+        internal async Task<List<ReasonTypeDto>> GetReasonTypes()
+        {
+            var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
+
+            return getReasons.Value;
+        }
+
+        internal async Task<int> GetApprovalType(int id)
+        {
+            var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
+
+            if (getReasons.Value.SingleOrDefault(i => i.Id == id).ApprovalRequired.HasValue && getReasons.Value.SingleOrDefault(i => i.Id == id).ApprovalRequired.Value)
+            {
+                return (int)ApprovalType.ApprovalRequired;
+            }
+
+            return (int)ApprovalType.PreApproved;
+        }
+
+        internal string CreateDate(string dateOfBirthYear, string dateOfBirthMonth, string dateOfBirthDay)
+        {
+            string dateToCheck = dateOfBirthYear + "/" + dateOfBirthMonth + "/" + dateOfBirthDay;
+
+            return dateToCheck;
         }
 
         internal void LogAudit(string message)
