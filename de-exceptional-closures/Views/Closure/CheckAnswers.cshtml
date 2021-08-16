@@ -1,0 +1,95 @@
+﻿@model de_exceptional_closures.ViewModels.Closure.CheckAnswersViewModel
+@{
+    ViewData["Title"] = "CheckAnswers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-controller="Closure" asp-action="CheckAnswers">
+    @Html.AntiForgeryToken()
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+
+                <a href="@Url.Action("Index","Home")" class="govuk-back-link">Back</a>
+
+                <partial name="../Components/_errorSummary.cshtml" />
+
+                <h1 class="govuk-heading-l">Check your answers</h1>
+
+                <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+
+                    <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        School
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Html.DisplayFor(model => model.InstitutionName)
+                    </dd>
+            </div>
+
+            <div class="govuk-summary-list__row">
+
+                <dt class="govuk-summary-list__key">
+                    Approval type
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @if (Model.ApprovalTypeId == 1)
+                    {
+                        <strong class="govuk-tag">Pre-approved</strong>
+                    }
+                    else
+                    {
+                        <strong class="govuk-tag">Approval required</strong>
+                    }
+                </dd>
+            </div>
+
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Date from
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.DateFrom.ToString("d MMMM yyyy")
+                </dd>
+              </div>
+
+            @if (Model.DateTo.HasValue)
+            {
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Date to
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.DateTo.Value.ToString("d MMMM yyyy")
+                    </dd>
+                </div>
+            }
+
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Reason
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Html.DisplayFor(model => model.ReasonType)
+                </dd>
+            </div>
+
+            @if (Model.OtherReason != null)
+            {
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Other reason
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Html.DisplayFor(model => model.OtherReason)
+                    </dd>
+                </div>
+            }
+         
+           </dl>
+
+            <button class="govuk-button" data-module="govuk-button">
+                Submit
+            </button>
+        </div>
+</form>

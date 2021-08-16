@@ -1,15 +1,13 @@
-﻿@model de_exceptional_closures.ViewModels.Home.IndexViewModel
+﻿@model de_exceptional_closures.ViewModels.Closure.CreateViewModel
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form method="post" asp-controller="Home" asp-action="Index">
+<form method="post" asp-controller="Closure" asp-action="Create">
+
 
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(x => x.InstitutionName)
-    @Html.HiddenFor(x => x.IsSingleDay)
-
     <div class="govuk-grid-column-two-thirds">
 
         <partial name="../Components/_errorSummary.cshtml" />
@@ -29,8 +27,7 @@
                 <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
                     <div class="govuk-radios__item">
                         <input class="govuk-radios__input" id="radio-pd" name="radio-pd" type="radio"
-                               value="single" data-aria-controls="conditional-radio-pd" data-group="dateRadios">
-
+                               value="yes" data-aria-controls="conditional-radio-pd">
                         <label class="govuk-label govuk-radios__label" for="radio-pd">
                             Single day
                         </label>
@@ -95,8 +92,7 @@
                     </div>
                     <div class="govuk-radios__item">
                         <input class="govuk-radios__input" id="radio-pd-2" name="radio-pd" type="radio"
-                               value="multi" data-aria-controls="conditional-radio-pd2" data-group="dateRadios">
-
+                               value="no" data-aria-controls="conditional-radio-pd2">
                         <label class="govuk-label govuk-radios__label" for="radio-pd-2">
                             Continuous days
                         </label>
@@ -105,50 +101,44 @@
                          id="conditional-radio-pd2">
                         <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset" role="group"
-                                      aria-describedby="single-closure-hint">
+                                      aria-describedby="multiple-closure-hint">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                                    Closure date
+                                    Closure from date
                                 </legend>
-                                <div id="single-closure-hint" class="govuk-hint">
+                                <div id="multiple-closure-hint" class="govuk-hint">
                                     For example, 27 3 2007
                                 </div>
-
-                                <span asp-validation-for="DateMultipleFrom" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateMultipleFromDay" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateMultipleFromMonth" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateMultipleFromYear" class="govuk-error-message"></span>
-                                <div class="govuk-date-input" id="single-closure">
+                                <div class="govuk-date-input" id="multiple-closure">
                                     <div class="govuk-date-input__item">
                                         <div class="govuk-form-group">
                                             <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateMultipleFromDay">
+                                                   for="multiple-closure-day">
                                                 Day
                                             </label>
                                             <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                                   asp-for="DateMultipleFromDay"
+                                                   id="multiple-closure-day" name="multiple-closure-day"
                                                    type="text" pattern="[0-9]*" inputmode="numeric">
-
                                         </div>
                                     </div>
                                     <div class="govuk-date-input__item">
                                         <div class="govuk-form-group">
                                             <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateMultipleFromMonth">
+                                                   for="multiple-closure-month">
                                                 Month
                                             </label>
                                             <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                                   asp-for="DateMultipleFromMonth"
+                                                   id="multiple-closure-month" name="multiple-closure-month"
                                                    type="text" pattern="[0-9]*" inputmode="numeric">
                                         </div>
                                     </div>
                                     <div class="govuk-date-input__item">
                                         <div class="govuk-form-group">
                                             <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateMultipleFromYear">
+                                                   for="multiple-closure-year">
                                                 Year
                                             </label>
                                             <input class="govuk-input govuk-date-input__input govuk-input--width-4"
-                                                   asp-for="DateMultipleFromYear"
+                                                   id="multiple-closure-year" name="multiple-closure-year"
                                                    type="text" pattern="[0-9]*" inputmode="numeric">
                                         </div>
                                     </div>
@@ -156,7 +146,6 @@
 
                             </fieldset>
                         </div>
-
                         <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset" role="group"
                                       aria-describedby="multiple-closure2-hint">
@@ -166,41 +155,37 @@
                                 <div id="multiple-closure2-hint" class="govuk-hint">
                                     For example, 27 3 2007
                                 </div>
-                                <span asp-validation-for="DateTo" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateToDay" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateToMonth" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateToYear" class="govuk-error-message"></span>
                                 <div class="govuk-date-input" id="multiple-closure2">
                                     <div class="govuk-date-input__item">
                                         <div class="govuk-form-group">
                                             <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateToDay">
+                                                   for="multiple-closure2-day">
                                                 Day
                                             </label>
                                             <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                                   asp-for="DateToDay"
+                                                   id="multiple-closure2-day" name="multiple-closure2-day"
                                                    type="text" pattern="[0-9]*" inputmode="numeric">
                                         </div>
                                     </div>
                                     <div class="govuk-date-input__item">
                                         <div class="govuk-form-group">
                                             <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateToMonth">
+                                                   for="multiple-closure2-month">
                                                 Month
                                             </label>
                                             <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                                   asp-for="DateToMonth"
+                                                   id="multiple-closure2-month" name="multiple-closure2-month"
                                                    type="text" pattern="[0-9]*" inputmode="numeric">
                                         </div>
                                     </div>
                                     <div class="govuk-date-input__item">
                                         <div class="govuk-form-group">
                                             <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateToYear">
+                                                   for="multiple-closure2-year">
                                                 Year
                                             </label>
                                             <input class="govuk-input govuk-date-input__input govuk-input--width-4"
-                                                   asp-for="DateToYear"
+                                                   id="multiple-closure2-year" name="multiple-closure2-year"
                                                    type="text" pattern="[0-9]*" inputmode="numeric">
                                         </div>
                                     </div>
@@ -222,66 +207,49 @@
                 <div id="closure-reason-hint" class="govuk-hint">
                     Select one option.
                 </div>
-
                 <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
-                    <span asp-validation-for="ReasonTypeId" class="govuk-error-message"></span>
-                    @foreach (var item in Model.ReasonTypeList)
-                    {
-                        @if (item.ApprovalRequired.HasValue && item.ApprovalRequired.Value)
-                        {
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" data-aria-controls="conditional-contact-@item.Id" name="ReasonTypeId" value="@item.Id" />
-                                <label class="govuk-label govuk-radios__label" for="@item.Id">
-                                    @item.Description
-                                </label>
-                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-@item.Id">
-                                    <div class="govuk-form-group @Model.ErrorClass">
-                                        <label class="govuk-label govuk-label--s" asp-for="OtherReason">
-                                            Can you provide more detail?
-                                        </label>
-                                        <div id="more-detail-hint" class="govuk-hint">
-                                            Hint text.
-                                        </div>
-                                        <span asp-validation-for="OtherReason" class="govuk-error-message"></span>
-                                        <textarea class="govuk-textarea" rows="8" asp-for="OtherReason"></textarea>
-                                    </div>
-                                </div>
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="closure-reason" name="closure-reason"
+                               type="radio" value="bad weather">
+                        <label class="govuk-label govuk-radios__label" for="closure-reason">
+                            Bad weather
+                        </label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="closure-reason-2" name="closure-reason"
+                               type="radio" value="coronavirus">
+                        <label class="govuk-label govuk-radios__label" for="closure-reason-2">
+                            Coronavirus
+                        </label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="closure-reason-3" name="closure-reason"
+                               type="radio" value="other" data-aria-controls="conditional-closure-reason-3">
+                        <label class="govuk-label govuk-radios__label" for="closure-reason-3">
+                            Other
+                        </label>
+                    </div>
+                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
+                         id="conditional-closure-reason-3">
+                        <div class="govuk-form-group">
+                            <label class="govuk-label govuk-label--s" for="more-detail">
+                                Can you provide more detail?
+                            </label>
+                            <div id="more-detail-hint" class="govuk-hint">
+                                Hint text.
                             </div>
-                        }
-                        else
-                        {
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" name="ReasonTypeId" value="@item.Id" />
-                                <label class="govuk-label govuk-radios__label" for="@item.Id">
-                                    @item.Description
-                                </label>
-                            </div>
-                        }
-                    }
-
-                </div>
+                            <textarea class="govuk-textarea" id="more-detail" name="more-detail" rows="5"
+                                aria-describedby="more-detail-hint"></textarea>
+                        </div>
+                    </div>
             </fieldset>
         </div>
+
+        <!-- End of controls -->
 
         <button class="govuk-button" data-module="govuk-button">
             Continue
         </button>
+
     </div>
 </form>
-
-
-
-<script>
-    $('input[type=radio][name=radio-pd]').change(function ()
-    {
-        let value = $('input[name=radio-pd]:checked').val();
-     
-        if (value === 'single')
-        {
-            $('#IsSingleDay').val(true);
-        }
-        else {
-            $('#IsSingleDay').val(false);
-        }
-    });
-</script>
