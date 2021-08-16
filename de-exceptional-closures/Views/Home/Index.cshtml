@@ -8,6 +8,7 @@
 
     @Html.AntiForgeryToken()
     @Html.HiddenFor(x => x.InstitutionName)
+    @Html.HiddenFor(x => x.IsSingleDay)
 
     <div class="govuk-grid-column-two-thirds">
 
@@ -28,7 +29,8 @@
                 <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
                     <div class="govuk-radios__item">
                         <input class="govuk-radios__input" id="radio-pd" name="radio-pd" type="radio"
-                               value="yes" data-aria-controls="conditional-radio-pd">
+                               value="single" data-aria-controls="conditional-radio-pd" data-group="dateRadios">
+
                         <label class="govuk-label govuk-radios__label" for="radio-pd">
                             Single day
                         </label>
@@ -93,7 +95,8 @@
                     </div>
                     <div class="govuk-radios__item">
                         <input class="govuk-radios__input" id="radio-pd-2" name="radio-pd" type="radio"
-                               value="no" data-aria-controls="conditional-radio-pd2">
+                               value="multi" data-aria-controls="conditional-radio-pd2" data-group="dateRadios">
+
                         <label class="govuk-label govuk-radios__label" for="radio-pd-2">
                             Continuous days
                         </label>
@@ -110,19 +113,19 @@
                                     For example, 27 3 2007
                                 </div>
 
-                                <span asp-validation-for="DateFrom" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateFromDay" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateFromMonth" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateFromYear" class="govuk-error-message"></span>
+                                <span asp-validation-for="DateMultipleFrom" class="govuk-error-message"></span>
+                                <span asp-validation-for="DateMultipleFromDay" class="govuk-error-message"></span>
+                                <span asp-validation-for="DateMultipleFromMonth" class="govuk-error-message"></span>
+                                <span asp-validation-for="DateMultipleFromYear" class="govuk-error-message"></span>
                                 <div class="govuk-date-input" id="single-closure">
                                     <div class="govuk-date-input__item">
                                         <div class="govuk-form-group">
                                             <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateFromDay">
+                                                   asp-for="DateMultipleFromDay">
                                                 Day
                                             </label>
                                             <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                                   asp-for="DateFromDay"
+                                                   asp-for="DateMultipleFromDay"
                                                    type="text" pattern="[0-9]*" inputmode="numeric">
 
                                         </div>
@@ -130,22 +133,22 @@
                                     <div class="govuk-date-input__item">
                                         <div class="govuk-form-group">
                                             <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateFromMonth">
+                                                   asp-for="DateMultipleFromMonth">
                                                 Month
                                             </label>
                                             <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                                   asp-for="DateFromMonth"
+                                                   asp-for="DateMultipleFromMonth"
                                                    type="text" pattern="[0-9]*" inputmode="numeric">
                                         </div>
                                     </div>
                                     <div class="govuk-date-input__item">
                                         <div class="govuk-form-group">
                                             <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateFromYear">
+                                                   asp-for="DateMultipleFromYear">
                                                 Year
                                             </label>
                                             <input class="govuk-input govuk-date-input__input govuk-input--width-4"
-                                                   asp-for="DateFromYear"
+                                                   asp-for="DateMultipleFromYear"
                                                    type="text" pattern="[0-9]*" inputmode="numeric">
                                         </div>
                                     </div>
@@ -240,7 +243,7 @@
                                             Hint text.
                                         </div>
                                         <span asp-validation-for="OtherReason" class="govuk-error-message"></span>
-                                        <textarea class="govuk-textarea" rows="8" id="OtherReason-@item" name="OtherReason"></textarea>
+                                        <textarea class="govuk-textarea" rows="8" asp-for="OtherReason"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -265,3 +268,18 @@
         </button>
     </div>
 </form>
+
+<script>
+    $('input[type=radio][name=radio-pd]').change(function ()
+    {
+        let value = $('input[name=radio-pd]:checked').val();
+     
+        if (value === 'single')
+        {
+            $('#IsSingleDay').val(true);
+        }
+        else {
+            $('#IsSingleDay').val(false);
+        }
+    });
+</script>
