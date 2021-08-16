@@ -1,6 +1,10 @@
 ﻿using de_exceptional_closures.Controllers;
+using de_exceptional_closures_infraStructure.Data;
+using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using System.Net;
 using Xunit;
 
@@ -13,7 +17,11 @@ namespace de_exceptional_closures_unitTests.Controllers
         public HomeControllerTest()
         {
             // Arrange
-            controller = new HomeController();
+            var mockMediator = new Mock<IMediator>();
+
+            var userManagerMock = new Mock<UserManager<ApplicationUser>>(Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
+
+            controller = new HomeController(mockMediator.Object, userManagerMock.Object);
 
             // Setup Context
             controller.ControllerContext = new ControllerContext();
