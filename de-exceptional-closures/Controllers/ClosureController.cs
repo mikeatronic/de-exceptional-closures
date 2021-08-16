@@ -98,7 +98,7 @@ namespace de_exceptional_closures.Controllers
 
             reasonDto.ApprovalTypeId = await GetApprovalType(model.ReasonTypeId);
 
-            if (reasonDto.ApprovalTypeId  == (int)ApprovalType.PreApproved)
+            if (reasonDto.ApprovalTypeId == (int)ApprovalType.PreApproved)
             {
                 reasonDto.Approved = true;
                 reasonDto.ApprovalDate = DateTime.Now;

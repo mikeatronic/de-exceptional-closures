@@ -65,7 +65,7 @@ namespace de_exceptional_closures.Mapping
 
             CreateMap<ClosureReasonDto, IndexViewModel>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
-            
+
         }
     }
 }

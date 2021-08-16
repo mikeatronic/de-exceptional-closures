@@ -81,7 +81,7 @@ namespace de_exceptional_closures.Controllers
             {
                 LogAudit("Encountered an error: Please enter in a valid date. DateFrom POST view.");
                 ModelState.AddModelError("DateFromDay", "Please enter in a valid date");
-                
+
                 model.ReasonTypeList = await GetReasonTypes();
 
                 return View(model);
