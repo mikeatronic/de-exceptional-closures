@@ -43,28 +43,6 @@ namespace de_exceptional_closures.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
-        {
-            CreateViewModel model = new CreateViewModel();
-            model.TitleTagName = "Create closure";
-            model.InstitutionName = GetInstitutionName();
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            return View(model);
-        }
-
-        [HttpGet]
         public async Task<IActionResult> CheckAnswersAsync()
         {
             CheckAnswersViewModel model = new CheckAnswersViewModel();
