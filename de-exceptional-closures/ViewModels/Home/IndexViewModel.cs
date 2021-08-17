@@ -21,10 +21,6 @@ namespace de_exceptional_closures.ViewModels.Home
         [DataType(DataType.Date)]
         public DateTime DateFrom { get; set; }
 
-        [Display(Name = "Date to")]
-        [DataType(DataType.Date)]
-        public DateTime? DateTo { get; set; }
-
         [RequiredIf("IsSingleDay", true, ErrorMessage = "Please enter Date from day")]
         [Display(Name = "Day")]
         [Range(1, 31, ErrorMessage = "{0} must be between {1} and {2}")]
@@ -59,6 +55,10 @@ namespace de_exceptional_closures.ViewModels.Home
         [Display(Name = "Year")]
         [Range(2000, 2100, ErrorMessage = "{0} must be between {1} and {2}")]
         public int? DateMultipleFromYear { get; set; }
+
+        [Display(Name = "Date to")]
+        [DataType(DataType.Date)]
+        public DateTime? DateTo { get; set; }
 
         [Display(Name = "Day")]
         [RequiredIf("IsSingleDay", false, ErrorMessage = "Please enter Day To")]
