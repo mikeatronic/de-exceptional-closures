@@ -170,17 +170,6 @@ namespace de_exceptional_closures.Controllers
                 {
                     Logger.Info("encountered an error: " + error.Description);
                     ModelState.AddModelError("Email", error.Description);
-
-
-                    //if (ModelState[error.Code] == null)
-                    //{
-                    //    ModelState.AddModelError(error., error.Description);
-                    //}
-                    //else
-                    //{
-                    //    ModelState[error.PropertyName].Errors.Add(error.Description);
-                    //}
-
                 }
             }
 
