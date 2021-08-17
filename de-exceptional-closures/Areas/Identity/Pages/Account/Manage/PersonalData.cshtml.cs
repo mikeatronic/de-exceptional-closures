@@ -16,7 +16,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
             UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-            TitleTagName = "Personal date";
+            TitleTagName = "Delete account";
             SectionName = "Manage";
         }
 

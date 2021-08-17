@@ -18,7 +18,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            TitleTagName = "Manage Institution";
+            TitleTagName = "Manage school";
             SectionName = "Manage";
         }
 
