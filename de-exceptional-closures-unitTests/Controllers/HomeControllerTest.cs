@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Net;
+using System.Net.Http;
 using Xunit;
 
 namespace de_exceptional_closures_unitTests.Controllers
@@ -21,7 +22,9 @@ namespace de_exceptional_closures_unitTests.Controllers
 
             var userManagerMock = new Mock<UserManager<ApplicationUser>>(Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
 
-            controller = new HomeController(mockMediator.Object, userManagerMock.Object);
+            var mockClient = new Mock<IHttpClientFactory>();
+
+            controller = new HomeController(mockMediator.Object, userManagerMock.Object, mockClient.Object);
 
             // Setup Context
             controller.ControllerContext = new ControllerContext();
