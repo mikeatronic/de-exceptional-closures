@@ -46,7 +46,8 @@
                     </div>
                     <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
                          id="conditional-radio-pd">
-                        <div class="govuk-form-group @Model.ErrorClass">
+                        <div class="govuk-form-group @(ViewData.ModelState["DateFromDay"] != null && ViewData.ModelState["DateFromDay"].Errors.Any() 
+                                                ? " govuk-form-group--error" : "")">
                             <fieldset class="govuk-fieldset" role="group"
                                       aria-describedby="single-closure-hint">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
@@ -118,7 +119,8 @@
                     </div>
                     <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
                          id="conditional-radio-pd2">
-                        <div class="govuk-form-group @Model.ErrorClass">
+                        <div class="govuk-form-group @(ViewData.ModelState["DateMultipleFromDay"] != null && ViewData.ModelState["DateMultipleFromDay"].Errors.Any() 
+                                                ? " govuk-form-group--error" : "")">
                             <fieldset class="govuk-fieldset" role="group"
                                       aria-describedby="multi-closure-hint">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
@@ -172,7 +174,8 @@
                             </fieldset>
                         </div>
 
-                        <div class="govuk-form-group @Model.ErrorClass">
+                        <div class="govuk-form-group @(ViewData.ModelState["DateToDay"] != null && ViewData.ModelState["DateToDay"].Errors.Any() 
+                                                ? " govuk-form-group--error" : "")">
                             <fieldset class="govuk-fieldset" role="group"
                                       aria-describedby="multiple-closure2-hint">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
