@@ -21,7 +21,7 @@ namespace de_exceptional_closures.ViewModels.Account
         public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "School reference is required")]
-        [Display(Name = "School Reference")]
+        [Display(Name = "School reference")]
         public string InstitutionReference { get; set; }
     }
 }

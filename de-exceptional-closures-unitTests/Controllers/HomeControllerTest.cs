@@ -1,4 +1,6 @@
 ﻿using de_exceptional_closures.Controllers;
+using de_exceptional_closures.Extensions;
+using de_exceptional_closures.ViewModels.Home;
 using de_exceptional_closures_infraStructure.Data;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -6,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace de_exceptional_closures_unitTests.Controllers
@@ -30,7 +33,24 @@ namespace de_exceptional_closures_unitTests.Controllers
             // Add fake Ip address for audit
             IPAddress ip = new IPAddress(16885952);
             controller.HttpContext.Connection.RemoteIpAddress = ip;
+           
         }
+
+        //[Fact]
+        //public async Task Index()
+        //{
+        //    //HttpContext.Session.Set("CreateClosureObj", model)
+        //    IndexViewModel model = new IndexViewModel();
+
+        //    controller.HttpContext.Session.Set("CreateClosureObj", model);
+
+        //   //Act
+        //   ViewResult result = await controller.Index() as ViewResult;
+
+        //    // Assert
+        //    Assert.NotNull(result);
+        //}
+
 
         [Fact]
         public void Accessibility()
