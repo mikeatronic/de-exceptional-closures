@@ -110,7 +110,7 @@ namespace de_exceptional_closures.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        [RateLimiting(Name = "Register", Minutes = 5)]
+      //  [RateLimiting(Name = "Register", Minutes = 5)]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             model.TitleTagName = "Register";
@@ -130,7 +130,6 @@ namespace de_exceptional_closures.Controllers
                 Logger.Info("tried to Register with an unknown Institute: ");
 
                 ModelState.AddModelError("InstitutionReference", "Cannot find Institute");
-                model.ErrorClass = "govuk-form-group--error";
                 return View(model);
             }
 
@@ -170,7 +169,18 @@ namespace de_exceptional_closures.Controllers
                 foreach (var error in result.Errors)
                 {
                     Logger.Info("encountered an error: " + error.Description);
-                    ModelState.AddModelError("Password", error.Description);
+                    ModelState.AddModelError("Email", error.Description);
+                 
+
+                    //if (ModelState[error.Code] == null)
+                    //{
+                    //    ModelState.AddModelError(error., error.Description);
+                    //}
+                    //else
+                    //{
+                    //    ModelState[error.PropertyName].Errors.Add(error.Description);
+                    //}
+
                 }
             }
 
