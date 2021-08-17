@@ -110,7 +110,7 @@ namespace de_exceptional_closures.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-      //  [RateLimiting(Name = "Register", Minutes = 5)]
+        //  [RateLimiting(Name = "Register", Minutes = 5)]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             model.TitleTagName = "Register";
@@ -170,7 +170,7 @@ namespace de_exceptional_closures.Controllers
                 {
                     Logger.Info("encountered an error: " + error.Description);
                     ModelState.AddModelError("Email", error.Description);
-                 
+
 
                     //if (ModelState[error.Code] == null)
                     //{

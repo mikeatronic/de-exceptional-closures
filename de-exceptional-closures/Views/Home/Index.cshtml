@@ -57,9 +57,9 @@
                                 </div>
 
                                 <span asp-validation-for="DateFrom" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateFromDay" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateFromMonth" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateFromYear" class="govuk-error-message"></span>
+                                <span asp-validation-for="DateFromDay" id="DateFromDay-error" class="govuk-error-message"></span>
+                                <span asp-validation-for="DateFromMonth" id="DateFromMonth-error" class="govuk-error-message"></span>
+                                <span asp-validation-for="DateFromYear"  id="DateFromYear-error" class="govuk-error-message"></span>
                                 <div class="govuk-date-input" id="single-closure">
                                     <div class="govuk-date-input__item">
                                         <div class="govuk-form-group">
@@ -129,9 +129,9 @@
                                 </div>
 
                                 <span asp-validation-for="DateMultipleFrom" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateMultipleFromDay" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateMultipleFromMonth" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateMultipleFromYear" class="govuk-error-message"></span>
+                                <span asp-validation-for="DateMultipleFromDay" id="DateMultipleFromDay-error"  class="govuk-error-message"></span>
+                                <span asp-validation-for="DateMultipleFromMonth" id="DateMultipleFromMonth-error"  class="govuk-error-message"></span>
+                                <span asp-validation-for="DateMultipleFromYear" id="DateMultipleFromYear-error"  class="govuk-error-message"></span>
                                 <div class="govuk-date-input" id="multi-closure">
                                     <div class="govuk-date-input__item">
                                         <div class="govuk-form-group">
@@ -182,9 +182,9 @@
                                     For example, 27 3 2007
                                 </div>
                                 <span asp-validation-for="DateTo" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateToDay" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateToMonth" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateToYear" class="govuk-error-message"></span>
+                                <span asp-validation-for="DateToDay" id="DateToDay-error" class="govuk-error-message"></span>
+                                <span asp-validation-for="DateToMonth" id="DateToMonth-error" class="govuk-error-message"></span>
+                                <span asp-validation-for="DateToYear" id="DateToYear-error" class="govuk-error-message"></span>
                                 <div class="govuk-date-input" id="multiple-closure2">
                                     <div class="govuk-date-input__item">
                                         <div class="govuk-form-group">
@@ -256,7 +256,7 @@
                                         <label class="govuk-label govuk-label--s" asp-for="OtherReason">
                                             Can you provide more detail?
                                         </label>
-                                        <span asp-validation-for="OtherReason" class="govuk-error-message"></span>
+                                        <span asp-validation-for="OtherReason" id="OtherReason-error" class="govuk-error-message"></span>
                                         <textarea class="govuk-textarea" rows="8" asp-for="OtherReason"></textarea>
                                     </div>
                                 </div>
@@ -268,7 +268,7 @@
                                         <label class="govuk-label govuk-label--s" asp-for="OtherReasonCovid">
                                             Can you provide more detail?
                                         </label> 
-                                        <span asp-validation-for="OtherReasonCovid" class="govuk-error-message"></span>
+                                        <span asp-validation-for="OtherReasonCovid" id="OtherReasonCovid-error" class="govuk-error-message"></span>
                                         <textarea class="govuk-textarea" rows="8" asp-for="OtherReasonCovid"></textarea>
                                     </div>
                                 </div>
