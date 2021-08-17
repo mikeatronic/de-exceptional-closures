@@ -25,7 +25,7 @@
                     <input asp-for="Email" class="govuk-input" />
                 </div>
 
-                <div class="govuk-form-group">
+                <div class="govuk-form-group @Model.ErrorClass">
                     <label asp-for="InstitutionReference" class="govuk-label"></label>
                     <span asp-validation-for="InstitutionReference" class="govuk-error-message"></span>
                     <input asp-for="InstitutionReference" class="govuk-input" />
