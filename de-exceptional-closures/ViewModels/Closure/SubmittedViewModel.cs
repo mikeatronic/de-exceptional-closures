@@ -16,5 +16,6 @@ namespace de_exceptional_closures.ViewModels.Closure
         public DateTime DateCreated { get; set; }
         public int ApprovalTypeId { get; set; }
         public string ApprovalType { get; set; }
+        public string OtherReasonCovid { get; set; }
     }
 }

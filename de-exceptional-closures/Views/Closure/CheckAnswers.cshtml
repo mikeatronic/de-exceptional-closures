@@ -51,7 +51,7 @@
                 <dd class="govuk-summary-list__value">
                     @Model.DateFrom.ToString("d MMMM yyyy")
                 </dd>
-              </div>
+            </div>
 
             @if (Model.DateTo.HasValue)
             {
@@ -85,8 +85,20 @@
                     </dd>
                 </div>
             }
-         
-           </dl>
+
+            @if (Model.OtherReasonCovid != null)
+            {
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Covid - Other reason
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Html.DisplayFor(model => model.OtherReasonCovid)
+                    </dd>
+                </div>
+            }
+
+            </dl>
 
             <button class="govuk-button" data-module="govuk-button">
                 Submit

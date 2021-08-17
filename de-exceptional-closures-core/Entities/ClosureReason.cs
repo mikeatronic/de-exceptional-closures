@@ -18,5 +18,6 @@ namespace de_exceptional_closures_core.Entities
         public ApprovalType ApprovalType { get; set; }
         public int? RejectionReasonId { get; set; }
         public RejectionReason RejectionReason { get; set; }
+        public string OtherReasonCovid { get; set; }
     }
 }

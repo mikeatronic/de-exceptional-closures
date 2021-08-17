@@ -70,7 +70,19 @@
             </dd>
         </div>
 
-        @if (Model.ReasonTypeId == 5)
+        @if (Model.OtherReasonCovid != null)
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Covid - Other reason
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Html.DisplayFor(model => model.OtherReasonCovid)
+                </dd>
+            </div>
+        }
+
+        @if (Model.OtherReason != null)
         {
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">

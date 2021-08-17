@@ -85,7 +85,14 @@ namespace de_exceptional_closures.ViewModels.Home
         [AlphaNumericLimitedSpecialChars]
         public string OtherReason { get; set; }
 
-        //[Required(ErrorMessage = "Please enter a day type")]
+        [Display(Name = "Covid - Other reason")]
+        [MinLength(5, ErrorMessage = "Reason must be at least 5 characters long")]
+        [MaxLength(1024, ErrorMessage = "Only 1024 characters are allowed")]
+        [RequiredIf("ReasonTypeId", (int)OtherReasonType.Covid, ErrorMessage = "Please enter Covid other reason")]
+        [AlphaNumericLimitedSpecialChars]
+        public string OtherReasonCovid { get; set; }
+
+        [Required(ErrorMessage = "Please enter a day type")]
         public bool? IsSingleDay { get; set; }
         public List<ReasonTypeDto> ReasonTypeList { get; set; }
         public string InstitutionName { get; set; }
