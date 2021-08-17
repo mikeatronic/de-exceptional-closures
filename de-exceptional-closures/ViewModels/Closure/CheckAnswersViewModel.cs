@@ -64,6 +64,7 @@ namespace de_exceptional_closures.ViewModels.Closure
         [RequiredIf("ReasonTypeId", (int)OtherReasonType.Other, ErrorMessage = "Please enter other reason")]
         [AlphaNumericLimitedSpecialChars]
         public string OtherReason { get; set; }
+        public string OtherReasonCovid { get; set; }
 
         public bool IsSingleDay { get; set; }
 

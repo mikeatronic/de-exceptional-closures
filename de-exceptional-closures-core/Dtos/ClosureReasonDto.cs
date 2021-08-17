@@ -19,5 +19,6 @@ namespace de_exceptional_closures_core.Dtos
         public int? ApprovalTypeId { get; set; }
         public string ApprovalType { get; set; }
         public string RejectionReason { get; set; }
+        public string OtherReasonCovid { get; set; }
     }
 }

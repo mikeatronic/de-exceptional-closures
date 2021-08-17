@@ -64,6 +64,7 @@ namespace de_exceptional_closures.Controllers
             if (!ModelState.IsValid)
             {
                 model.ReasonTypeList = await GetReasonTypes();
+                model.ErrorClass = "govuk-form-group--error";
 
                 return View(model);
             }
@@ -84,11 +85,12 @@ namespace de_exceptional_closures.Controllers
                     ModelState.AddModelError("DateFromDay", "Please enter in a valid date");
 
                     model.ReasonTypeList = await GetReasonTypes();
+                    model.ErrorClass = "govuk-form-group--error";
 
                     return View(model);
                 }
             }
-         
+
             if (!model.IsSingleDay.Value)
             {
                 DateTime datefrom;
@@ -104,6 +106,7 @@ namespace de_exceptional_closures.Controllers
                     ModelState.AddModelError("DateFromDay", "Please enter in a valid date");
 
                     model.ReasonTypeList = await GetReasonTypes();
+                    model.ErrorClass = "govuk-form-group--error";
 
                     return View(model);
                 }
@@ -120,6 +123,7 @@ namespace de_exceptional_closures.Controllers
                     LogAudit("Encountered an error: Please enter in a valid date. DateTo POST view.");
                     ModelState.AddModelError("DateTo", "Please enter in a valid date");
                     model.ReasonTypeList = await GetReasonTypes();
+                    model.ErrorClass = "govuk-form-group--error";
                     return View(model);
                 }
 
@@ -127,6 +131,7 @@ namespace de_exceptional_closures.Controllers
                 if (model.DateTo < model.DateMultipleFrom)
                 {
                     ModelState.AddModelError("DateToDay", "Date To cannot be less than Date From");
+                    model.ErrorClass = "govuk-form-group--error";
                     model.ReasonTypeList = await GetReasonTypes();
                     return View(model);
                 }

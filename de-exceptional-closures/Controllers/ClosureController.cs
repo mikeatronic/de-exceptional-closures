@@ -56,6 +56,7 @@ namespace de_exceptional_closures.Controllers
             model.OtherReason = mod.OtherReason;
             model.ReasonType = await GetReasonTypeAsync(mod.ReasonTypeId);
             model.ApprovalTypeId = mod.ApprovalTypeId;
+            model.OtherReasonCovid = mod.OtherReasonCovid;
 
             return View(model);
         }

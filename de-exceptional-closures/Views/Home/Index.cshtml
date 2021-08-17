@@ -8,7 +8,6 @@
 
     @Html.AntiForgeryToken()
     @Html.HiddenFor(x => x.InstitutionName)
-    @Html.HiddenFor(x => x.IsSingleDay)
 
     <div class="govuk-grid-column-two-thirds">
 
@@ -26,6 +25,7 @@
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                     Is the closure for a single day or continuous days?
                 </legend>
+                <span asp-validation-for="IsSingleDay" class="govuk-error-message"></span>
                 <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
                     <div class="govuk-radios__item">
                         @if (Model.IsSingleDay != null && Model.IsSingleDay.Value)
@@ -38,7 +38,7 @@
                         {
                             <input class="govuk-radios__input" id="IsSingleDay" name="IsSingleDay" asp-for="IsSingleDay" type="radio"
                                    data-aria-controls="conditional-radio-pd" data-group="dateRadios" value=true>
-                        }              
+                        }
 
                         <label class="govuk-label govuk-radios__label" for="IsSingleDay">
                             Single day
@@ -46,7 +46,7 @@
                     </div>
                     <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
                          id="conditional-radio-pd">
-                        <div class="govuk-form-group">
+                        <div class="govuk-form-group @Model.ErrorClass">
                             <fieldset class="govuk-fieldset" role="group"
                                       aria-describedby="single-closure-hint">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
@@ -105,11 +105,11 @@
                     <div class="govuk-radios__item">
                         @if (Model.IsSingleDay != null && Model.IsSingleDay.Value == false)
                         {
-                            <input class="govuk-radios__input" id="IsSingleDay-No" name="IsSingleDay" asp-for="IsSingleDay" type="radio" data-aria-controls="conditional-radio-pd2" data-group="dateRadios"  value=false checked>
+                            <input class="govuk-radios__input" id="IsSingleDay-No" name="IsSingleDay" asp-for="IsSingleDay" type="radio" data-aria-controls="conditional-radio-pd2" data-group="dateRadios" value=false checked>
                         }
                         else
                         {
-                            <input class="govuk-radios__input" id="IsSingleDay-No" name="IsSingleDay" asp-for="IsSingleDay" type="radio" data-aria-controls="conditional-radio-pd2" data-group="dateRadios"  value=false>
+                            <input class="govuk-radios__input" id="IsSingleDay-No" name="IsSingleDay" asp-for="IsSingleDay" type="radio" data-aria-controls="conditional-radio-pd2" data-group="dateRadios" value=false>
                         }
 
                         <label class="govuk-label govuk-radios__label" for="IsSingleDay-No">
@@ -118,13 +118,13 @@
                     </div>
                     <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
                          id="conditional-radio-pd2">
-                        <div class="govuk-form-group">
+                        <div class="govuk-form-group @Model.ErrorClass">
                             <fieldset class="govuk-fieldset" role="group"
-                                      aria-describedby="single-closure-hint">
+                                      aria-describedby="multi-closure-hint">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                                     Closure date
                                 </legend>
-                                <div id="single-closure-hint" class="govuk-hint">
+                                <div id="multi-closure-hint" class="govuk-hint">
                                     For example, 27 3 2007
                                 </div>
 
@@ -132,7 +132,7 @@
                                 <span asp-validation-for="DateMultipleFromDay" class="govuk-error-message"></span>
                                 <span asp-validation-for="DateMultipleFromMonth" class="govuk-error-message"></span>
                                 <span asp-validation-for="DateMultipleFromYear" class="govuk-error-message"></span>
-                                <div class="govuk-date-input" id="single-closure">
+                                <div class="govuk-date-input" id="multi-closure">
                                     <div class="govuk-date-input__item">
                                         <div class="govuk-form-group">
                                             <label class="govuk-label govuk-date-input__label"
@@ -172,7 +172,7 @@
                             </fieldset>
                         </div>
 
-                        <div class="govuk-form-group">
+                        <div class="govuk-form-group @Model.ErrorClass">
                             <fieldset class="govuk-fieldset" role="group"
                                       aria-describedby="multiple-closure2-hint">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
@@ -244,24 +244,36 @@
                     {
                         @if (item.ApprovalRequired.HasValue && item.ApprovalRequired.Value)
                         {
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" data-aria-controls="conditional-contact-@item.Id" name="ReasonTypeId" value="@item.Id" />
-                                <label class="govuk-label govuk-radios__label" for="@item.Id">
-                                    @item.Description
-                                </label>
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" data-aria-controls="conditional-contact-@item.Id" name="ReasonTypeId" value="@item.Id" />
+                    <label class="govuk-label govuk-radios__label" for="@item.Id">
+                        @item.Description
+                    </label>
+                            @if (item.Id == 5)
+                            {
                                 <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-@item.Id">
                                     <div class="govuk-form-group @Model.ErrorClass">
                                         <label class="govuk-label govuk-label--s" asp-for="OtherReason">
                                             Can you provide more detail?
                                         </label>
-                                        <div id="more-detail-hint" class="govuk-hint">
-                                            Hint text.
-                                        </div>
                                         <span asp-validation-for="OtherReason" class="govuk-error-message"></span>
                                         <textarea class="govuk-textarea" rows="8" asp-for="OtherReason"></textarea>
                                     </div>
                                 </div>
-                            </div>
+                            }
+                            else
+                            {
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-@item.Id">
+                                    <div class="govuk-form-group @Model.ErrorClass">
+                                        <label class="govuk-label govuk-label--s" asp-for="OtherReasonCovid">
+                                            Can you provide more detail?
+                                        </label> 
+                                        <span asp-validation-for="OtherReasonCovid" class="govuk-error-message"></span>
+                                        <textarea class="govuk-textarea" rows="8" asp-for="OtherReasonCovid"></textarea>
+                                    </div>
+                                </div>
+                            }
+                </div>
                         }
                         else
                         {
@@ -285,10 +297,10 @@
 </form>
 
 <script>
-    $('input[type=radio][name=IsSingleDay]').change(function ()
-    {
-        let value = $('input[name=IsSingleDay]:checked').val();
+    //$('input[type=radio][name=IsSingleDay]').change(function ()
+    //{
+    //    let value = $('input[name=IsSingleDay]:checked').val();
 
-        $('#IsSingleDay').val(value);
-    });
+    //    $('#IsSingleDay').val(value);
+    //});
 </script>
