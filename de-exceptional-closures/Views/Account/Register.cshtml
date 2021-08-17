@@ -19,13 +19,15 @@
                     Create a new account. Only authorised school staff should use this service
                 </p>
 
-                <div class="govuk-form-group">
+                <div class="govuk-form-group @(ViewData.ModelState["Email"] != null && ViewData.ModelState["Email"].Errors.Any() 
+                                                ? " govuk-form-group--error" : "")">
                     <label asp-for="Email" class="govuk-label"></label>
                     <span asp-validation-for="Email" class="govuk-error-message"></span>
                     <input asp-for="Email" class="govuk-input" />
                 </div>
 
-                <div class="govuk-form-group @Model.ErrorClass">
+                <div class="govuk-form-group @(ViewData.ModelState["InstitutionReference"] != null && ViewData.ModelState["InstitutionReference"].Errors.Any() 
+                                                ? " govuk-form-group--error" : "")">
                     <label asp-for="InstitutionReference" class="govuk-label"></label>
                     <span asp-validation-for="InstitutionReference" class="govuk-error-message"></span>
                     <input asp-for="InstitutionReference" class="govuk-input" />
