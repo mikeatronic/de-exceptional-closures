@@ -61,12 +61,13 @@ namespace de_exceptional_closures.Controllers
         {
             model.TitleTagName = "Create closure";
 
-            //if (!model.IsSingleDay.HasValue)
-            //{
-            //    model.ReasonTypeList = await GetReasonTypes();
+            if (!ModelState.IsValid)
+            {
+                model.ReasonTypeList = await GetReasonTypes();
 
-            //    return View(model);
-            //}
+                return View(model);
+            }
+
 
             if (model.IsSingleDay.Value)
             {
@@ -88,7 +89,6 @@ namespace de_exceptional_closures.Controllers
                 }
             }
          
-
             if (!model.IsSingleDay.Value)
             {
                 DateTime datefrom;
@@ -130,13 +130,6 @@ namespace de_exceptional_closures.Controllers
                     model.ReasonTypeList = await GetReasonTypes();
                     return View(model);
                 }
-            }
-
-            if (!ModelState.IsValid)
-            {
-                model.ReasonTypeList = await GetReasonTypes();
-
-                return View(model);
             }
 
             // Set Approval type

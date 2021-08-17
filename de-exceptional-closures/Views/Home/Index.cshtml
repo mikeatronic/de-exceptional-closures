@@ -28,23 +28,19 @@
                 </legend>
                 <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
                     <div class="govuk-radios__item">
-
-
-                        @if (Model.IsSingleDay.HasValue && Model.IsSingleDay.Value)
+                        @if (Model.IsSingleDay != null && Model.IsSingleDay.Value)
                         {
 
-                            <input class="govuk-radios__input" id="radio-pd" name="radio-pd" type="radio"
-                                   value="single" data-aria-controls="conditional-radio-pd" data-group="dateRadios" checked="checked">
-
+                            <input class="govuk-radios__input" id="IsSingleDay" name="IsSingleDay" asp-for="IsSingleDay" type="radio"
+                                   data-aria-controls="conditional-radio-pd" data-group="dateRadios" value=true checked>
                         }
                         else
                         {
-                            <input class="govuk-radios__input" id="radio-pd" name="radio-pd" type="radio"
-                                   value="single" data-aria-controls="conditional-radio-pd" data-group="dateRadios">
-                        }
+                            <input class="govuk-radios__input" id="IsSingleDay" name="IsSingleDay" asp-for="IsSingleDay" type="radio"
+                                   data-aria-controls="conditional-radio-pd" data-group="dateRadios" value=true>
+                        }              
 
-
-                        <label class="govuk-label govuk-radios__label" for="radio-pd">
+                        <label class="govuk-label govuk-radios__label" for="IsSingleDay">
                             Single day
                         </label>
                     </div>
@@ -107,21 +103,16 @@
 
                     </div>
                     <div class="govuk-radios__item">
-
-                        @if (Model.IsSingleDay.HasValue && !Model.IsSingleDay.Value)
+                        @if (Model.IsSingleDay != null && Model.IsSingleDay.Value == false)
                         {
-
-                            <input class="govuk-radios__input" id="radio-pd-2" name="radio-pd" type="radio"
-                                   value="multi" data-aria-controls="conditional-radio-pd2" data-group="dateRadios" checked="checked">
-
+                            <input class="govuk-radios__input" id="IsSingleDay-No" name="IsSingleDay" asp-for="IsSingleDay" type="radio" data-aria-controls="conditional-radio-pd2" data-group="dateRadios"  value=false checked>
                         }
                         else
                         {
-                            <input class="govuk-radios__input" id="radio-pd-2" name="radio-pd" type="radio"
-                                   value="multi" data-aria-controls="conditional-radio-pd2" data-group="dateRadios">
+                            <input class="govuk-radios__input" id="IsSingleDay-No" name="IsSingleDay" asp-for="IsSingleDay" type="radio" data-aria-controls="conditional-radio-pd2" data-group="dateRadios"  value=false>
                         }
 
-                        <label class="govuk-label govuk-radios__label" for="radio-pd-2">
+                        <label class="govuk-label govuk-radios__label" for="IsSingleDay-No">
                             Continuous days
                         </label>
                     </div>
@@ -294,16 +285,10 @@
 </form>
 
 <script>
-    $('input[type=radio][name=radio-pd]').change(function ()
+    $('input[type=radio][name=IsSingleDay]').change(function ()
     {
-        let value = $('input[name=radio-pd]:checked').val();
-     
-        if (value === 'single')
-        {
-            $('#IsSingleDay').val(true);
-        }
-        else {
-            $('#IsSingleDay').val(false);
-        }
+        let value = $('input[name=IsSingleDay]:checked').val();
+
+        $('#IsSingleDay').val(value);
     });
 </script>
