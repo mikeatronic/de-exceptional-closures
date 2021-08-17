@@ -10,10 +10,13 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace de_exceptional_closures.Controllers
@@ -23,12 +26,14 @@ namespace de_exceptional_closures.Controllers
     {
         private readonly IMediator _mediator;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHttpClientFactory _client;
         private static readonly NLog.Logger Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
-        public HomeController(IMediator mediator, UserManager<ApplicationUser> userManager)
+        public HomeController(IMediator mediator, UserManager<ApplicationUser> userManager, IHttpClientFactory client)
         {
             _mediator = mediator;
             _userManager = userManager;
+            _client = client;
         }
 
         [HttpGet]
@@ -46,7 +51,7 @@ namespace de_exceptional_closures.Controllers
             }
 
             model.TitleTagName = "Create closure";
-            model.InstitutionName = GetInstitutionName();
+            model.InstitutionName = await GetInstitution();
 
             model.ReasonTypeList = await GetReasonTypes();
 
@@ -182,11 +187,41 @@ namespace de_exceptional_closures.Controllers
             return View(model);
         }
 
+        public async Task<string> GetInstitution()
+        {
+            var client = _client.CreateClient("InstitutionsClient");
+
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var result = await client.GetAsync("GetByReferenceNumber?refNumber=" + GetInstitutionRef());
+
+            Institution institution = new Institution();
+
+            if (result.IsSuccessStatusCode)
+            {
+                using (HttpContent content = result.Content)
+                {
+                    var resp = content.ReadAsStringAsync();
+                    institution = JsonConvert.DeserializeObject<Institution>(resp.Result);
+                }
+            }
+
+            return $"{institution.Name}, {institution.address.address1}, {institution.address.townCity}, {institution.address.postCode}";
+        }
+
         internal string GetInstitutionName()
         {
             var getUser = _userManager.GetUserAsync(User);
 
             return getUser.Result.InstitutionName;
+        }
+
+        internal string GetInstitutionRef()
+        {
+            var getUser = _userManager.GetUserAsync(User);
+
+            return getUser.Result.InstitutionReference;
         }
 
         internal async Task<List<ReasonTypeDto>> GetReasonTypes()
