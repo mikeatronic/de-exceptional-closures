@@ -69,7 +69,6 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
-
             if (model.IsSingleDay.Value)
             {
                 DateTime datefrom;

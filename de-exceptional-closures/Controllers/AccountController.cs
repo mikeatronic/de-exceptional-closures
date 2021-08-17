@@ -117,19 +117,6 @@ namespace de_exceptional_closures.Controllers
 
             returnUrl = returnUrl ?? Url.Content("~/");
 
-            // Check for valid emails
-            if (!model.Email.EndsWith("@finance-ni.gov.uk") && !model.Email.EndsWith("@c2kni.net")
-                && !model.Email.EndsWith(".ni.sch.uk") && !model.Email.EndsWith(".ni.sch.co.uk")
-                && !model.Email.EndsWith("@c2ken.net") && !model.Email.EndsWith("@education-ni.gov.uk"))
-            {
-                model.TitleTagName = "Register";
-
-                Logger.Info("tried to Register with an unauthorised email address.");
-
-                ModelState.AddModelError("Email", "Only authorised Institution email addresses can be used");
-                return View(model);
-            }
-
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -143,6 +130,7 @@ namespace de_exceptional_closures.Controllers
                 Logger.Info("tried to Register with an unknown Institute: ");
 
                 ModelState.AddModelError("InstitutionReference", "Cannot find Institute");
+                model.ErrorClass = "govuk-form-group--error";
                 return View(model);
             }
 

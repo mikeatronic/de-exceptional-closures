@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using de_exceptional_closures.Helpers;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Closure;
 using de_exceptional_closures.ViewModels.Home;
@@ -27,7 +28,7 @@ namespace de_exceptional_closures.Mapping
 
             CreateMap<ClosureReasonDto, ViewViewModel>()
                  .ForMember(d => d.Approved,
-                    o => o.MapFrom(s => s.Approved.Value ? "Yes" : "No"))
+                    o => o.MapFrom(s => HelperMethods.ApprovedOrNot(s.Approved)))
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
             CreateMap<RequestClosureViewModel, ClosureReasonDto>()
