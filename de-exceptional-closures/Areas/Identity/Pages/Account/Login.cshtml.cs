@@ -101,7 +101,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError("Input.Email", "Invalid login attempt.");
+                    ModelState.AddModelError("Input.Email", "Invalid login attempt. Wrong email / password combination.");
                     return Page();
                 }
             }

@@ -171,7 +171,7 @@ namespace de_exceptional_closures.Controllers
                 foreach (var error in result.Errors)
                 {
                     Logger.Info("encountered an error: " + error.Description);
-                    ModelState.AddModelError("Email", error.Description);
+                    ModelState.AddModelError("Password", error.Description);
                 }
             }
 
