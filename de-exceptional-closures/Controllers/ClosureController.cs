@@ -127,7 +127,15 @@ namespace de_exceptional_closures.Controllers
             }
 
             var model = _mapper.Map<SubmittedViewModel>(getClosure.Value);
-            model.TitleTagName = "Exceptional closure submitted";
+
+            if (model.ApprovalTypeId == 1)
+            {
+                model.TitleTagName = "Exceptional closure approved";
+            }
+            else
+            {
+                model.TitleTagName = "Exceptional closure submitted";
+            }
 
             LogAudit("opened Submitted GET view");
 
