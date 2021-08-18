@@ -40,6 +40,7 @@ namespace de_exceptional_closures.Controllers
         public async Task<IActionResult> Index()
         {
             IndexViewModel model = new IndexViewModel();
+            model.SectionName = "Home";
 
             if (HttpContext.Session.Get<IndexViewModel>("CreateClosureObj") == null)
             {

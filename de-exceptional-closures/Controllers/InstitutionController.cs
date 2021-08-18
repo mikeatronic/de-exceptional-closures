@@ -31,8 +31,6 @@ namespace de_exceptional_closures.Controllers
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            // client.DefaultRequestHeaders.Add("Authorization", "Bearer " + CreateJwtToken());
-
             var result = await client.GetAsync("SearchByName?name=" + name);
 
             List<Institution> institutions = new List<Institution>();
@@ -48,27 +46,5 @@ namespace de_exceptional_closures.Controllers
 
             return Json(institutions);
         }
-
-
-        //private string CreateJwtToken()
-        //{
-        //    var unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        //    var iat = Math.Round((DateTime.UtcNow - unixEpoch).TotalSeconds);
-
-        //    var payload = new Dictionary<string, object>
-        //    {
-        //        { "iat", iat },
-        //        { "kid", _pointerConfig.Value.kid }
-        //    };
-
-        //    IJwtAlgorithm algorithm = new HMACSHA256Algorithm();
-        //    IJsonSerializer serializer = new JsonNetSerializer();
-        //    IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
-        //    IJwtEncoder encoder = new JwtEncoder(algorithm, serializer, urlEncoder);
-
-        //    var jwtToken = encoder.Encode(payload, _pointerConfig.Value.secret);
-        //    return jwtToken;
-        //}
-
     }
 }

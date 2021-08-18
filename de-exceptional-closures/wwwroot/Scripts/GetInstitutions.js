@@ -30,7 +30,7 @@ function getSchools()
                 $("#Input_Search").removeClass("govuk-input--error");
                 $("#InstituteSearchComponent").removeClass("govuk-form-group--error");
 
-                $("#Input_SearchInstitutions").append($("<option></option>").val(this["referenceNumber"]).html(this["name"] + ',' + this["referenceNumber"]));
+                $("#Input_SearchInstitutions").append($("<option></option>").val(this["referenceNumber"]).html(this["name"] + ',' + this.address.address1 + ',' + this.address.townCity + ',' + this["referenceNumber"]));
             });
             if (data.length === 0)
             {
@@ -78,6 +78,6 @@ function fillTextBoxes()
         $("#Input_InstitutionReference").val("");
 
         $("#Input_InstitutionName").val(schoolArray[0]);
-        $("#Input_InstitutionReference").val(schoolArray[1]);
+        $("#Input_InstitutionReference").val(schoolArray[3]);
     }
 }
