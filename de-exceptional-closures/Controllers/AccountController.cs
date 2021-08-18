@@ -40,7 +40,7 @@ namespace de_exceptional_closures.Controllers
         public IActionResult ForgotPassword()
         {
             ForgotPassWordViewModel model = new ForgotPassWordViewModel();
-            model.TitleTagName = "Forgot your password?";
+            model.TitleTagName = "Forgot password";
 
             Logger.Info("opened Forgot your password GET view");
 
@@ -52,6 +52,8 @@ namespace de_exceptional_closures.Controllers
         [RateLimiting(Name = "ForgotPassword", Minutes = 15)]
         public async Task<IActionResult> ForgotPassword(ForgotPassWordViewModel model)
         {
+            model.TitleTagName = "Forgot password";
+
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
@@ -149,7 +151,7 @@ namespace de_exceptional_closures.Controllers
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    _notifyService.SendEmail(model.Email, "Confirm your email for DE exceptional closures", $"Please confirm your account by clicking this link: '{HtmlEncoder.Default.Encode(callbackUrl)}'");
+                    _notifyService.SendEmail(model.Email, "Reporting your school's exceptional closure", "Thank you for registering to complete exceptional closure returns for your school. This email contains further information to enable you to complete the process. " + " \n \n Clicking on the following link will enable you to confirm your email address authenticate your registration: \n \n " + $"'{HtmlEncoder.Default.Encode(callbackUrl)}'" + "\n \n When you have authenticated your account, you can log in to complete an exceptional closure return for your school. \n \n You should log in using your email address and password.");
 
                     Logger.Info("Email sent to confirm account");
 
@@ -198,7 +200,7 @@ namespace de_exceptional_closures.Controllers
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var result = await client.GetAsync("GetByReferenceNumber?refNumber=" + referenceNumber);
+            var result = await client.GetAsync("GetSchoolByReferenceNumber?refNumber=" + referenceNumber);
 
             if (result.IsSuccessStatusCode)
             {
