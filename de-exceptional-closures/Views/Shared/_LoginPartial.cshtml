@@ -4,12 +4,16 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-
 <ul id="navigation" class="govuk-header__navigation nidirect-header__navigation">
-
 
     @if (SignInManager.IsSignedIn(User))
     {
+        <li class="govuk-header__navigation-item nidirect-header__navigation-item @(Model.SectionName == "Home" ? "nidirect-header__navigation-item--active" : string.Empty)">
+            <a class="govuk-header__link" asp-controller="Home" asp-action="Index">
+                Create
+            </a>
+        </li>
+
         <li class="govuk-header__navigation-item nidirect-header__navigation-item @(Model.SectionName == "My closures" ? "nidirect-header__navigation-item--active" : string.Empty)">
             <a class="govuk-header__link" asp-controller="Closure" asp-action="MyClosures">
                 My closures
