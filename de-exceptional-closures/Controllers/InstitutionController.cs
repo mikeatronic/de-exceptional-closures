@@ -31,7 +31,7 @@ namespace de_exceptional_closures.Controllers
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var result = await client.GetAsync("SearchByName?name=" + name);
+            var result = await client.GetAsync("SearchSchoolByName?name=" + name);
 
             List<Institution> institutions = new List<Institution>();
 
