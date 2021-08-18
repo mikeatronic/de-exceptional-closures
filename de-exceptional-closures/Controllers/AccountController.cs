@@ -40,7 +40,7 @@ namespace de_exceptional_closures.Controllers
         public IActionResult ForgotPassword()
         {
             ForgotPassWordViewModel model = new ForgotPassWordViewModel();
-            model.TitleTagName = "Forgot your password?";
+            model.TitleTagName = "Forgot password";
 
             Logger.Info("opened Forgot your password GET view");
 
@@ -52,6 +52,8 @@ namespace de_exceptional_closures.Controllers
         [RateLimiting(Name = "ForgotPassword", Minutes = 15)]
         public async Task<IActionResult> ForgotPassword(ForgotPassWordViewModel model)
         {
+            model.TitleTagName = "Forgot password";
+
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
@@ -198,7 +200,7 @@ namespace de_exceptional_closures.Controllers
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var result = await client.GetAsync("GetByReferenceNumber?refNumber=" + referenceNumber);
+            var result = await client.GetAsync("GetSchoolByReferenceNumber?refNumber=" + referenceNumber);
 
             if (result.IsSuccessStatusCode)
             {
