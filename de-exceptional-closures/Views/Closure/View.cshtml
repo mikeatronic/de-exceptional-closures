@@ -120,17 +120,66 @@
             </div>
         }
 
-        @if (Model.OtherReasonCovid != null)
+        @if (Model.CovidQ1 != null)
         {
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                    Covid - other reason
+                    Covid - question 1
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    @Html.DisplayFor(model => model.OtherReasonCovid)
+                    @Html.DisplayFor(model => model.CovidQ1)
                 </dd>
             </div>
         }
+
+        @if (Model.CovidQ2 != null)
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Covid - question 2
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Html.DisplayFor(model => model.CovidQ2)
+                </dd>
+            </div>
+        }
+
+        @if (Model.CovidQ3 != null)
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Covid - question 3
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Html.DisplayFor(model => model.CovidQ3)
+                </dd>
+            </div>
+        }
+
+        @if (Model.CovidQ4 != null)
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Covid - question 4
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Html.DisplayFor(model => model.CovidQ4)
+                </dd>
+            </div>
+        }
+
+        @if (Model.CovidQ5 != null)
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Covid - question 2
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Html.DisplayFor(model => model.CovidQ5)
+                </dd>
+            </div>
+        }
+
 
         <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">

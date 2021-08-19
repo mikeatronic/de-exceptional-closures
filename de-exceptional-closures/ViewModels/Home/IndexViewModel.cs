@@ -85,12 +85,40 @@ namespace de_exceptional_closures.ViewModels.Home
         [AlphaNumericLimitedSpecialChars]
         public string OtherReason { get; set; }
 
-        [Display(Name = "Covid - Other reason")]
+        [Display(Name = "Covid - question 1")]
         [MinLength(5, ErrorMessage = "Reason must be at least 5 characters long")]
         [MaxLength(1024, ErrorMessage = "Only 1024 characters are allowed")]
-        [RequiredIf("ReasonTypeId", (int)OtherReasonType.Covid, ErrorMessage = "Please enter Covid other reason")]
+        [RequiredIf("ReasonTypeId", (int)OtherReasonType.Covid, ErrorMessage = "Please answer covid question 1")]
         [AlphaNumericLimitedSpecialChars]
-        public string OtherReasonCovid { get; set; }
+        public string CovidQ1 { get; set; }
+
+        [Display(Name = "Covid - question 2")]
+        [MinLength(5, ErrorMessage = "Reason must be at least 5 characters long")]
+        [MaxLength(1024, ErrorMessage = "Only 1024 characters are allowed")]
+        [RequiredIf("ReasonTypeId", (int)OtherReasonType.Covid, ErrorMessage = "Please answer covid question 2")]
+        [AlphaNumericLimitedSpecialChars]
+        public string CovidQ2 { get; set; }
+
+        [Display(Name = "Covid - question 3")]
+        [MinLength(5, ErrorMessage = "Reason must be at least 5 characters long")]
+        [MaxLength(1024, ErrorMessage = "Only 1024 characters are allowed")]
+        [RequiredIf("ReasonTypeId", (int)OtherReasonType.Covid, ErrorMessage = "Please answer covid question 3")]
+        [AlphaNumericLimitedSpecialChars]
+        public string CovidQ3 { get; set; }
+
+        [Display(Name = "Covid - question 4")]
+        [MinLength(5, ErrorMessage = "Reason must be at least 5 characters long")]
+        [MaxLength(1024, ErrorMessage = "Only 1024 characters are allowed")]
+        [RequiredIf("ReasonTypeId", (int)OtherReasonType.Covid, ErrorMessage = "Please answer covid question 4")]
+        [AlphaNumericLimitedSpecialChars]
+        public string CovidQ4 { get; set; }
+
+        [Display(Name = "Covid - question 5")]
+        [MinLength(5, ErrorMessage = "Reason must be at least 5 characters long")]
+        [MaxLength(1024, ErrorMessage = "Only 1024 characters are allowed")]
+        [RequiredIf("ReasonTypeId", (int)OtherReasonType.Covid, ErrorMessage = "Please answer covid question 5")]
+        [AlphaNumericLimitedSpecialChars]
+        public string CovidQ5 { get; set; }
 
         [Required(ErrorMessage = "Please enter a day type")]
         public bool? IsSingleDay { get; set; }

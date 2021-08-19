@@ -19,5 +19,10 @@ namespace de_exceptional_closures_core.Entities
         public int? RejectionReasonId { get; set; }
         public RejectionReason RejectionReason { get; set; }
         public string OtherReasonCovid { get; set; }
+        public string CovidQ1 { get; set; }
+        public string CovidQ2 { get; set; }
+        public string CovidQ3 { get; set; }
+        public string CovidQ4 { get; set; }
+        public string CovidQ5 { get; set; }
     }
 }
