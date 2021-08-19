@@ -91,6 +91,14 @@ namespace de_exceptional_closures.Controllers
 
                     return View(model);
                 }
+
+                // Then Check if the retrospective period is greater than 14 days
+                if ((DateTime.Now - model.DateFrom).TotalDays > 14)
+                {
+                    ModelState.AddModelError("DateFromDay", "Retrospective closures cannot be more than 14 days in the past. Please contact attendance@education-ni.gov.uk for further advice if necessary");
+                    model.ReasonTypeList = await GetReasonTypes();
+                    return View(model);
+                }
             }
 
             if (!model.IsSingleDay.Value)
@@ -126,10 +134,26 @@ namespace de_exceptional_closures.Controllers
                     return View(model);
                 }
 
-                //Then Check if Date To is less than Date From
+                // Then Check if Date To is less than Date From
                 if (model.DateTo < model.DateMultipleFrom)
                 {
                     ModelState.AddModelError("DateToDay", "Date To cannot be less than Date From");
+                    model.ReasonTypeList = await GetReasonTypes();
+                    return View(model);
+                }
+
+                // Then Check if the period is greater than 5 days
+                if ((model.DateTo - model.DateMultipleFrom).Value.TotalDays > 5)
+                {
+                    ModelState.AddModelError("DateToDay", "Closure cannot be more than 5 days maximum");
+                    model.ReasonTypeList = await GetReasonTypes();
+                    return View(model);
+                }
+
+                // Then Check if the retrospective period is greater than 14 days
+                if ((DateTime.Now - model.DateMultipleFrom).TotalDays > 14)
+                {
+                    ModelState.AddModelError("DateMultipleFromDay", "Retrospective closures cannot be more than 14 days in the past. Please contact attendance@education-ni.gov.uk for further advice if necessary");
                     model.ReasonTypeList = await GetReasonTypes();
                     return View(model);
                 }
