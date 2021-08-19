@@ -101,6 +101,7 @@ namespace de_exceptional_closures.Controllers
             if (model.DateTo.HasValue)
             {
                 reasonDto.DateTo = model.DateTo;
+                reasonDto.DateFrom = model.DateMultipleFrom;
             }
 
             reasonDto.DateCreated = DateTime.Now;
