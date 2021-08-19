@@ -268,14 +268,52 @@
                             else
                             {
                                 <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-@item.Id">
-                                    <div class="govuk-form-group @(ViewData.ModelState["OtherReasonCovid"] != null && ViewData.ModelState["OtherReasonCovid"].Errors.Any() 
+                                 
+                                    <div class="govuk-form-group @(ViewData.ModelState["CovidQ1"] != null && ViewData.ModelState["CovidQ1"].Errors.Any() 
                                                 ? " govuk-form-group--error" : "")">
-                                        <label class="govuk-label govuk-label--s" asp-for="OtherReasonCovid">
-                                            Can you provide more detail?
+                                        <label class="govuk-label govuk-label--s" asp-for="CovidQ1">
+                                            Q1
                                         </label> 
-                                        <span asp-validation-for="OtherReasonCovid" id="OtherReasonCovid-error" class="govuk-error-message"></span>
-                                        <textarea class="govuk-textarea" rows="8" asp-for="OtherReasonCovid"></textarea>
+                                        <span asp-validation-for="CovidQ1" id="CovidQ1-error" class="govuk-error-message"></span>
+                                        <textarea class="govuk-textarea" rows="8" asp-for="CovidQ1"></textarea>
                                     </div>
+
+                                    <div class="govuk-form-group @(ViewData.ModelState["CovidQ2"] != null && ViewData.ModelState["CovidQ2"].Errors.Any() 
+                                                ? " govuk-form-group--error" : "")">
+                                        <label class="govuk-label govuk-label--s" asp-for="CovidQ2">
+                                            Q2
+                                        </label> 
+                                        <span asp-validation-for="CovidQ2" id="CovidQ2-error" class="govuk-error-message"></span>
+                                        <textarea class="govuk-textarea" rows="8" asp-for="CovidQ2"></textarea>
+                                    </div>
+
+                                    <div class="govuk-form-group @(ViewData.ModelState["CovidQ3"] != null && ViewData.ModelState["CovidQ3"].Errors.Any() 
+                                                ? " govuk-form-group--error" : "")">
+                                        <label class="govuk-label govuk-label--s" asp-for="CovidQ3">
+                                            Q3
+                                        </label> 
+                                        <span asp-validation-for="CovidQ3" id="CovidQ3-error" class="govuk-error-message"></span>
+                                        <textarea class="govuk-textarea" rows="8" asp-for="CovidQ3"></textarea>
+                                    </div>
+
+                                    <div class="govuk-form-group @(ViewData.ModelState["CovidQ4"] != null && ViewData.ModelState["CovidQ4"].Errors.Any() 
+                                                ? " govuk-form-group--error" : "")">
+                                        <label class="govuk-label govuk-label--s" asp-for="CovidQ4">
+                                            Q4
+                                        </label> 
+                                        <span asp-validation-for="CovidQ4" id="CovidQ4-error" class="govuk-error-message"></span>
+                                        <textarea class="govuk-textarea" rows="8" asp-for="CovidQ4"></textarea>
+                                    </div>
+
+                                    <div class="govuk-form-group @(ViewData.ModelState["CovidQ5"] != null && ViewData.ModelState["CovidQ5"].Errors.Any() 
+                                                ? " govuk-form-group--error" : "")">
+                                        <label class="govuk-label govuk-label--s" asp-for="CovidQ5">
+                                            Q5
+                                        </label> 
+                                        <span asp-validation-for="CovidQ5" id="CovidQ5-error" class="govuk-error-message"></span>
+                                        <textarea class="govuk-textarea" rows="8" asp-for="CovidQ5"></textarea>
+                                    </div>
+
                                 </div>
                             }
                 </div>

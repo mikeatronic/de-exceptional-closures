@@ -51,12 +51,25 @@ namespace de_exceptional_closures.Controllers
 
             model.InstitutionName = mod.InstitutionName;
             model.OtherReason = mod.OtherReason;
-            model.DateFrom = mod.DateFrom;
+
+            if (mod.IsSingleDay.Value)
+            {
+                model.DateFrom = mod.DateFrom;
+            }
+            else
+            {
+                model.DateFrom = mod.DateMultipleFrom;
+            }
+
             model.DateTo = mod.DateTo;
             model.OtherReason = mod.OtherReason;
             model.ReasonType = await GetReasonTypeAsync(mod.ReasonTypeId);
             model.ApprovalTypeId = mod.ApprovalTypeId;
-            model.OtherReasonCovid = mod.OtherReasonCovid;
+            model.CovidQ1 = mod.CovidQ1;
+            model.CovidQ2 = mod.CovidQ2;
+            model.CovidQ3 = mod.CovidQ3;
+            model.CovidQ4 = mod.CovidQ4;
+            model.CovidQ5 = mod.CovidQ5;
 
             return View(model);
         }
@@ -88,6 +101,7 @@ namespace de_exceptional_closures.Controllers
             if (model.DateTo.HasValue)
             {
                 reasonDto.DateTo = model.DateTo;
+                reasonDto.DateFrom = model.DateMultipleFrom;
             }
 
             reasonDto.DateCreated = DateTime.Now;
