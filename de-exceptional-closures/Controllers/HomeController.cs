@@ -191,7 +191,7 @@ namespace de_exceptional_closures.Controllers
 
             var result = await client.GetAsync("GetByReferenceNumber?refNumber=" + GetInstitutionRef());
 
-            Institution institution = new Institution();
+            Institution institution;
 
             if (result.IsSuccessStatusCode)
             {
@@ -200,6 +200,10 @@ namespace de_exceptional_closures.Controllers
                     var resp = content.ReadAsStringAsync();
                     institution = JsonConvert.DeserializeObject<Institution>(resp.Result);
                 }
+            }
+            else
+            {
+                return string.Empty;
             }
 
             return $"{institution.Name}, {institution.address.address1}, {institution.address.townCity}, {institution.address.postCode}";
