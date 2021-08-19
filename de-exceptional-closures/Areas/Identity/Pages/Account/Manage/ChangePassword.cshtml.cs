@@ -87,7 +87,14 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
             {
                 foreach (var error in changePasswordResult.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    if (error.Code == "PasswordMismatch")
+                    {
+                        ModelState.AddModelError("Input.OldPassword", error.Description);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Input.NewPassword", error.Description);
+                    }
                 }
                 return Page();
             }
