@@ -209,13 +209,6 @@ namespace de_exceptional_closures.Controllers
             return $"{institution.Name}, {institution.address.address1}, {institution.address.townCity}, {institution.address.postCode}";
         }
 
-        internal string GetInstitutionName()
-        {
-            var getUser = _userManager.GetUserAsync(User);
-
-            return getUser.Result.InstitutionName;
-        }
-
         internal string GetInstitutionRef()
         {
             var getUser = _userManager.GetUserAsync(User);
