@@ -255,7 +255,8 @@
                             @if (item.Id == 5)
                             {
                                 <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-@item.Id">
-                                    <div class="govuk-form-group @Model.ErrorClass">
+                                    <div class="govuk-form-group @(ViewData.ModelState["OtherReason"] != null && ViewData.ModelState["OtherReason"].Errors.Any() 
+                                                ? " govuk-form-group--error" : "")">
                                         <label class="govuk-label govuk-label--s" asp-for="OtherReason">
                                             Can you provide more detail?
                                         </label>
@@ -267,7 +268,8 @@
                             else
                             {
                                 <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-@item.Id">
-                                    <div class="govuk-form-group @Model.ErrorClass">
+                                    <div class="govuk-form-group @(ViewData.ModelState["OtherReasonCovid"] != null && ViewData.ModelState["OtherReasonCovid"].Errors.Any() 
+                                                ? " govuk-form-group--error" : "")">
                                         <label class="govuk-label govuk-label--s" asp-for="OtherReasonCovid">
                                             Can you provide more detail?
                                         </label> 
