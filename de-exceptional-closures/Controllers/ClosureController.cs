@@ -115,11 +115,11 @@ namespace de_exceptional_closures.Controllers
 
             if (reasonDto.ApprovalTypeId == (int)ApprovalType.PreApproved)
             {
-                await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education has approved this exceptional closure and will sanction a corresponding reduction in the minimum number of days on which your school is required to be in operation during this school year.", false);
+                await SendNotification("Request for exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education has approved this exceptional closure and will sanction a corresponding reduction in the minimum number of days on which your school is required to be in operation during this school year.", false, reasonDto.InstitutionName);
             }
             else
             {
-                await SendNotification("Thank you for your request for an exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education will be in touch in due course with the outcome.", true);
+                await SendNotification("Request for exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education will be in touch in due course with the outcome.", true, reasonDto.InstitutionName);
             }
 
             LogAudit("Completed RequestClosure POST view");
@@ -197,7 +197,7 @@ namespace de_exceptional_closures.Controllers
             return View(model);
         }
 
-        internal async Task SendNotification(string subject, string message, bool approvalNeeded)
+        internal async Task SendNotification(string subject, string message, bool approvalNeeded, string school)
         {
             var getUser = await _userManager.GetUserAsync(User);
 
@@ -210,7 +210,7 @@ namespace de_exceptional_closures.Controllers
 
             if (approvalNeeded)
             {
-                string msg = "has requested an exceptional closure. \n \n The school closed on or will close on because of . \n \n Approval is required for this closure.";
+                string msg = school + " has requested an exceptional closure. \n \n The school closed on or will close on because of . \n \n Approval is required for this closure.";
 
                 // Get list of approvers to email them the request
                 var getApprovers = await _mediator.Send(new GetAllApproversQuery());
@@ -222,7 +222,7 @@ namespace de_exceptional_closures.Controllers
             }
         }
 
-        internal async Task<int> GetApprovalType(int id)
+        private async Task<int> GetApprovalType(int id)
         {
             var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
 
@@ -234,14 +234,14 @@ namespace de_exceptional_closures.Controllers
             return (int)ApprovalType.PreApproved;
         }
 
-        internal async Task<string> GetReasonTypeAsync(int id)
+        private async Task<string> GetReasonTypeAsync(int id)
         {
             var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
 
             return getReasons.Value.SingleOrDefault(i => i.Id == id).Description;
         }
 
-        internal void LogAudit(string message)
+        private void LogAudit(string message)
         {
             string ip = "IPAddress: " + HttpContext.Connection.RemoteIpAddress.ToString() + ", DateTime: " + DateTime.Now;
 
