@@ -1,0 +1,9 @@
+---
+applications:
+- name: de-exceptional-closures-production
+  buildpacks:
+  - dotnet_core_buildpack
+  memory: 1G
+  instances: 1
+  services:
+  - de-exceptional-closures-mysql
