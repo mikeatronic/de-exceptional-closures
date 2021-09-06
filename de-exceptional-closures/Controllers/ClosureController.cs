@@ -115,7 +115,7 @@ namespace de_exceptional_closures.Controllers
 
             if (reasonDto.ApprovalTypeId == (int)ApprovalType.PreApproved)
             {
-                await SendNotification("Request for exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education has approved this exceptional closure and will sanction a corresponding reduction in the minimum number of days on which your school is required to be in operation during this school year.", false, reasonDto.InstitutionName);
+                await SendNotification("Request for exceptional closure", reasonDto.InstitutionName + " has requested an exceptional closure. The school closed on or will close <start date> (optional “to “ <end date>) because of <reason>. The request has been approved.", false, reasonDto.InstitutionName);
             }
             else
             {
