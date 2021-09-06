@@ -8,6 +8,7 @@ using de_exceptional_closures_core.Common;
 using de_exceptional_closures_core.Dtos;
 using de_exceptional_closures_infraStructure.Data;
 using de_exceptional_closures_infraStructure.Features.AdminApprovalList.Queries;
+using de_exceptional_closures_infraStructure.Features.AutoApprovalList.Queries;
 using de_exceptional_closures_infraStructure.Features.ClosureReason.Commands;
 using de_exceptional_closures_infraStructure.Features.ClosureReason.Queries;
 using de_exceptional_closures_infraStructure.Features.ReasonType.Queries;
@@ -115,11 +116,11 @@ namespace de_exceptional_closures.Controllers
 
             if (reasonDto.ApprovalTypeId == (int)ApprovalType.PreApproved)
             {
-                await SendNotification("Request for exceptional closure", reasonDto.InstitutionName + " has requested an exceptional closure. The school closed on or will close <start date> (optional “to “ <end date>) because of <reason>. The request has been approved.", false, reasonDto.InstitutionName);
+                await SendNotification("Request for exceptional closure", reasonDto.InstitutionName + " has requested an exceptional closure. The school closed on or will close <start date> (optional “to “ <end date>) because of <reason>. The request has been approved.", false,  reasonDto);
             }
             else
             {
-                await SendNotification("Request for exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education will be in touch in due course with the outcome.", true, reasonDto.InstitutionName);
+                await SendNotification("Request for exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education will be in touch in due course with the outcome.", true, reasonDto);
             }
 
             LogAudit("Completed RequestClosure POST view");
@@ -197,7 +198,7 @@ namespace de_exceptional_closures.Controllers
             return View(model);
         }
 
-        internal async Task SendNotification(string subject, string message, bool approvalNeeded, string school)
+        internal async Task SendNotification(string subject, string message, bool approvalNeeded, ClosureReasonDto reasonDto)
         {
             var getUser = await _userManager.GetUserAsync(User);
 
@@ -205,12 +206,12 @@ namespace de_exceptional_closures.Controllers
 
             LogAudit("email sent: " + subject + ". " + message);
 
-            // Send first to the user
+            // Send email first to the citizen
             _notifyService.SendEmail(getUserEmail.Result, subject, message);
 
             if (approvalNeeded)
             {
-                string msg = school + " has requested an exceptional closure. \n \n The school closed on or will close on because of . \n \n Approval is required for this closure.";
+                string msg = reasonDto.InstitutionName + "(" + reasonDto.Srn + ") has requested an exceptional closure. \n \n The school closed on or will close on because of . \n \n Approval is required for this closure.";
 
                 // Get list of approvers to email them the request
                 var getApprovers = await _mediator.Send(new GetAllApproversQuery());
@@ -218,6 +219,18 @@ namespace de_exceptional_closures.Controllers
                 foreach (var item in getApprovers.Value)
                 {
                     _notifyService.SendEmail(item.Email, "Request for exceptional closure - approval required", msg);
+                }
+            }
+            else
+            {
+                string msg = reasonDto.InstitutionName + " (" + reasonDto.Srn +") has requested an exceptional closure. The school closed on or will close "+ reasonDto.DateFrom + "(optional to  <end date>) because of "+ reasonDto.ReasonType + ". The request has been approved.";
+
+                // Get AutoApprover list
+                var getApprovers = await _mediator.Send(new GetAllApprovalListQuery());
+
+                foreach (var item in getApprovers.Value)
+                {
+                    _notifyService.SendEmail(item.Email, "Request for exceptional closure", msg);
                 }
             }
         }
