@@ -8,6 +8,7 @@ using de_exceptional_closures_core.Common;
 using de_exceptional_closures_core.Dtos;
 using de_exceptional_closures_infraStructure.Data;
 using de_exceptional_closures_infraStructure.Features.AdminApprovalList.Queries;
+using de_exceptional_closures_infraStructure.Features.AutoApprovalList.Queries;
 using de_exceptional_closures_infraStructure.Features.ClosureReason.Commands;
 using de_exceptional_closures_infraStructure.Features.ClosureReason.Queries;
 using de_exceptional_closures_infraStructure.Features.ReasonType.Queries;
@@ -205,7 +206,7 @@ namespace de_exceptional_closures.Controllers
 
             LogAudit("email sent: " + subject + ". " + message);
 
-            // Send first to the user
+            // Send email first to the citizen
             _notifyService.SendEmail(getUserEmail.Result, subject, message);
 
             if (approvalNeeded)
@@ -218,6 +219,18 @@ namespace de_exceptional_closures.Controllers
                 foreach (var item in getApprovers.Value)
                 {
                     _notifyService.SendEmail(item.Email, "Request for exceptional closure - approval required", msg);
+                }
+            }
+            else
+            {
+                string msg = school + " () has requested an exceptional closure. The school closed on or will close <start date> (optional to  <end date>) because of <reason>. The request has been approved.";
+
+                // Get AutoApprover list
+                var getApprovers = await _mediator.Send(new GetAllApprovalListQuery());
+
+                foreach (var item in getApprovers.Value)
+                {
+                    _notifyService.SendEmail(item.Email, "Request for exceptional closure", msg);
                 }
             }
         }
