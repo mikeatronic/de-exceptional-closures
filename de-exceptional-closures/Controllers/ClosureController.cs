@@ -114,7 +114,7 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
-            var getNewClosureDetails = await _mediator.Send(new GetClosureReasonByIdQuery() { Id = createClosureReason .Value});
+            var getNewClosureDetails = await _mediator.Send(new GetClosureReasonByIdQuery() { Id = createClosureReason.Value });
 
             if (reasonDto.ApprovalTypeId == (int)ApprovalType.PreApproved)
             {
@@ -213,7 +213,7 @@ namespace de_exceptional_closures.Controllers
 
             foreach (var item in getApprovers.Value)
             {
-                _notifyService.SendEmail(item.Email, "Request for exceptional closure - approval required", msg);
+                await _notifyService.SendEmailAsync(item.Email, "Request for exceptional closure - approval required", msg);
             }
         }
 
@@ -230,7 +230,7 @@ namespace de_exceptional_closures.Controllers
 
             foreach (var item in getApprovers.Value)
             {
-                _notifyService.SendEmail(item.Email, "Request for exceptional closure", subject);
+                await _notifyService.SendEmailAsync(item.Email, "Request for exceptional closure", subject);
             }
         }
 
@@ -250,7 +250,7 @@ namespace de_exceptional_closures.Controllers
 
             var getUserEmail = _signInManager.UserManager.GetEmailAsync(getUser);
 
-            _notifyService.SendEmail(getUserEmail.Result, "Request for exceptional closure", subject);
+            await _notifyService.SendEmailAsync(getUserEmail.Result, "Request for exceptional closure", subject);
         }
 
         private async Task<int> GetApprovalType(int id)
