@@ -14,11 +14,15 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        public readonly string TitleTagName;
+        public readonly string SectionName;
 
         public ConfirmEmailChangeModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            TitleTagName = "Confirm email change";
+            SectionName = "Manage";
         }
 
         [TempData]

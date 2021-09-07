@@ -1,4 +1,5 @@
-﻿using de_exceptional_closures_infraStructure.Data;
+﻿using de_exceptional_closures.Notify;
+using de_exceptional_closures_infraStructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -15,15 +16,17 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly INotifyService _notifyService;
         public readonly string TitleTagName;
         public readonly string SectionName;
 
         public EmailModel(
             UserManager<ApplicationUser> userManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender, INotifyService notifyService)
         {
             _userManager = userManager;
             _emailSender = emailSender;
+            _notifyService = notifyService;
             TitleTagName = "Manage email";
             SectionName = "Manage";
         }
@@ -88,16 +91,19 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
             }
 
             var email = await _userManager.GetEmailAsync(user);
+
             if (Input.NewEmail != email)
             {
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
+              
                 var callbackUrl = Url.Page(
                     "/Account/ConfirmEmailChange",
                     pageHandler: null,
                     values: new { userId = userId, email = Input.NewEmail, code = code },
                     protocol: Request.Scheme);
-                await _emailSender.SendEmailAsync(
+             
+                 _notifyService.SendEmail(
                     Input.NewEmail,
                     "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
@@ -133,6 +139,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
                 pageHandler: null,
                 values: new { area = "Identity", userId = userId, code = code },
                 protocol: Request.Scheme);
+          
             await _emailSender.SendEmailAsync(
                 email,
                 "Confirm your email",
