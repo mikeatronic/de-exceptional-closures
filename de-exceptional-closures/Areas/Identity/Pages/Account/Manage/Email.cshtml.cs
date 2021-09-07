@@ -106,7 +106,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
                 await _notifyService.SendEmailAsync(
                     Input.NewEmail,
                     "Confirm your email",
-                    $"Please confirm your account by {HtmlEncoder.Default.Encode(callbackUrl)}");
+                    $"Please confirm your account by clicking this link \n \n {HtmlEncoder.Default.Encode(callbackUrl)}");
 
                 StatusMessage = "Confirmation link to change email sent. Please check your email.";
                 return RedirectToPage();
@@ -143,7 +143,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
             await _notifyService.SendEmailAsync(
                 email,
                 "Confirm your email",
-                $"Please confirm your account by {HtmlEncoder.Default.Encode(callbackUrl)}");
+                $"Please confirm your account by clicking this link \n \n {HtmlEncoder.Default.Encode(callbackUrl)}");
 
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();

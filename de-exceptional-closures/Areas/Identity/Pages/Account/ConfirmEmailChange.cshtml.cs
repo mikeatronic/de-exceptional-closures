@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace de_exceptional_closures.Areas.Identity.Pages.Account
@@ -41,8 +39,10 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
                 return NotFound($"Unable to load user with ID '{userId}'.");
             }
 
-            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-            var result = await _userManager.ChangeEmailAsync(user, email, code);
+            var decoded = System.Web.HttpUtility.HtmlDecode(code);
+
+            var result = await _userManager.ChangeEmailAsync(user, email, decoded);
+
             if (!result.Succeeded)
             {
                 StatusMessage = "Error changing email.";
