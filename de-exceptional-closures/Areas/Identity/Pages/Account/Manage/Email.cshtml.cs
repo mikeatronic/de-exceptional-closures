@@ -96,17 +96,17 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
             {
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
-              
+
                 var callbackUrl = Url.Page(
                     "/Account/ConfirmEmailChange",
                     pageHandler: null,
-                    values: new { userId = userId, email = Input.NewEmail, code = code },
+                    values: new { area = "Identity", userId = userId, email = Input.NewEmail, code = code },
                     protocol: Request.Scheme);
-             
-                 _notifyService.SendEmail(
+
+                await _notifyService.SendEmailAsync(
                     Input.NewEmail,
                     "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    $"Please confirm your account by clicking this link \n \n {HtmlEncoder.Default.Encode(callbackUrl)}");
 
                 StatusMessage = "Confirmation link to change email sent. Please check your email.";
                 return RedirectToPage();
@@ -139,11 +139,11 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
                 pageHandler: null,
                 values: new { area = "Identity", userId = userId, code = code },
                 protocol: Request.Scheme);
-          
-            await _emailSender.SendEmailAsync(
+
+            await _notifyService.SendEmailAsync(
                 email,
                 "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                $"Please confirm your account by clicking this link \n \n {HtmlEncoder.Default.Encode(callbackUrl)}");
 
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();

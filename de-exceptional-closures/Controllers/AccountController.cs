@@ -49,7 +49,7 @@ namespace de_exceptional_closures.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [RateLimiting(Name = "ForgotPassword", Minutes = 15)]
+        [RateLimiting(Name = "ForgotPassword", Minutes = 1)]
         public async Task<IActionResult> ForgotPassword(ForgotPassWordViewModel model)
         {
             model.TitleTagName = "Forgot password";
@@ -74,7 +74,7 @@ namespace de_exceptional_closures.Controllers
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                _notifyService.SendEmail(model.Email, "Reset Password", $"Please reset your password by clicking this link \n \n {HtmlEncoder.Default.Encode(callbackUrl)}");
+                await _notifyService.SendEmailAsync(model.Email, "Reset Password", $"Please reset your password by clicking this link \n \n {HtmlEncoder.Default.Encode(callbackUrl)}");
 
                 Logger.Info("opened Forgot your password POST view and being re-directed to ForgotPasswordConfirmation view");
 
@@ -86,7 +86,7 @@ namespace de_exceptional_closures.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [RateLimiting(Name = "ForgotPasswordConfirmation", Minutes = 5)]
+        [RateLimiting(Name = "ForgotPasswordConfirmation", Minutes = 1)]
         public IActionResult ForgotPasswordConfirmation()
         {
             BaseViewModel model = new BaseViewModel();
@@ -112,7 +112,7 @@ namespace de_exceptional_closures.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        //  [RateLimiting(Name = "Register", Minutes = 5)]
+        [RateLimiting(Name = "Register", Minutes = 5)]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             model.TitleTagName = "Register";
@@ -151,7 +151,7 @@ namespace de_exceptional_closures.Controllers
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    _notifyService.SendEmail(model.Email, "Reporting your school's exceptional closure", "Thank you for registering to complete exceptional closure returns for your school. This email contains further information to enable you to complete the process. " + " \n \n Clicking on the following link will enable you to confirm your email address authenticate your registration: \n \n " + $"'{HtmlEncoder.Default.Encode(callbackUrl)}'" + "\n \n When you have authenticated your account, you can log in to complete an exceptional closure return for your school. \n \n You should log in using your email address and password.");
+                    await _notifyService.SendEmailAsync(model.Email, "Reporting your school's exceptional closure", "Thank you for registering to complete exceptional closure returns for your school. This email contains further information to enable you to complete the process. " + " \n \n Clicking on the following link will enable you to confirm your email address authenticate your registration: \n \n " + $"'{HtmlEncoder.Default.Encode(callbackUrl)}'" + "\n \n When you have authenticated your account, you can log in to complete an exceptional closure return for your school. \n \n You should log in using your email address and password.");
 
                     Logger.Info("Email sent to confirm account");
 
