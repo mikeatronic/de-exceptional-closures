@@ -145,7 +145,7 @@ namespace de_exceptional_closures.Controllers
                 // Then Check if the period is greater than 30 days
                 if ((model.DateTo - model.DateMultipleFrom).Value.TotalDays > 30)
                 {
-                    ModelState.AddModelError("DateToDay", "Closure cannot be more than 5 days maximum");
+                    ModelState.AddModelError("DateToDay", "Closure cannot be more than 30 days maximum");
                     model.ReasonTypeList = await GetReasonTypes();
                     return View(model);
                 }
@@ -153,7 +153,7 @@ namespace de_exceptional_closures.Controllers
                 // Then Check if the retrospective period is greater than 365 days
                 if ((DateTime.Now - model.DateMultipleFrom).TotalDays > 365)
                 {
-                    ModelState.AddModelError("DateMultipleFromDay", "Retrospective closures cannot be more than 14 days in the past. Please contact attendance@education-ni.gov.uk for further advice if necessary");
+                    ModelState.AddModelError("DateMultipleFromDay", "Retrospective closures cannot be more than 365 days in the past. Please contact attendance@education-ni.gov.uk for further advice if necessary");
                     model.ReasonTypeList = await GetReasonTypes();
                     return View(model);
                 }

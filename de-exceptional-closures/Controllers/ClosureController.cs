@@ -114,13 +114,15 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
+            var getNewClosureDetails = await _mediator.Send(new GetClosureReasonByIdQuery() { Id = createClosureReason .Value});
+
             if (reasonDto.ApprovalTypeId == (int)ApprovalType.PreApproved)
             {
-                await SendNotification("Request for exceptional closure", reasonDto.InstitutionName + " has requested an exceptional closure. The school closed on or will close <start date> (optional “to “ <end date>) because of <reason>. The request has been approved.", false,  reasonDto);
+                await SendApprovalNotRequiredNotification(getNewClosureDetails.Value);
             }
             else
             {
-                await SendNotification("Request for exceptional closure", "Thank you for your request for an exceptional closure. \n \n The Department of Education will be in touch in due course with the outcome.", true, reasonDto);
+                await SendApprovalRequiredNotification(getNewClosureDetails.Value);
             }
 
             LogAudit("Completed RequestClosure POST view");
@@ -198,41 +200,57 @@ namespace de_exceptional_closures.Controllers
             return View(model);
         }
 
-        internal async Task SendNotification(string subject, string message, bool approvalNeeded, ClosureReasonDto reasonDto)
+        private async Task SendApprovalRequiredNotification(ClosureReasonDto reasonDto)
+        {
+            // Send email first to the citizen
+            await SendCitizenEmailAsync("Thank you for your request for an exceptional closure. \n \n The Department of Education will be in touch in due course with the outcome.");
+
+            // Then send an email to the other parties
+            string msg = reasonDto.InstitutionName + " (" + reasonDto.Srn + ") has requested an exceptional closure. \n \n The school closed on or will close on " + reasonDto.DateFrom.Value.ToShortDateString() + GetDateFrom(reasonDto.DateTo) + " because of " + reasonDto.ReasonType + ". \n \n Approval is required for this closure.";
+
+            // Get list of approvers to email them the request
+            var getApprovers = await _mediator.Send(new GetAllApproversQuery());
+
+            foreach (var item in getApprovers.Value)
+            {
+                _notifyService.SendEmail(item.Email, "Request for exceptional closure - approval required", msg);
+            }
+        }
+
+        private async Task SendApprovalNotRequiredNotification(ClosureReasonDto reasonDto)
+        {
+            // Send email first to the citizen
+            await SendCitizenEmailAsync(reasonDto.InstitutionName + " has requested an exceptional closure. The school closed on or will close " + reasonDto.DateFrom + "  because of" + reasonDto.ReasonType + ". \n \n The request has been approved.");
+
+            // Then send an email to the other parties
+            string subject = reasonDto.InstitutionName + " (" + reasonDto.Srn + ") has requested an exceptional closure. \n \n The school closed on or will close " + reasonDto.DateFrom.Value.ToShortDateString() + GetDateFrom(reasonDto.DateTo) + " because of " + reasonDto.ReasonType + ". \n \n The request has been approved.";
+
+            // Get AutoApprover list
+            var getApprovers = await _mediator.Send(new GetAllApprovalListQuery());
+
+            foreach (var item in getApprovers.Value)
+            {
+                _notifyService.SendEmail(item.Email, "Request for exceptional closure", subject);
+            }
+        }
+
+        private string GetDateFrom(DateTime? dateTo)
+        {
+            if (dateTo.HasValue)
+            {
+                return " to " + dateTo.Value.ToShortDateString();
+            }
+
+            return string.Empty;
+        }
+
+        private async Task SendCitizenEmailAsync(string subject)
         {
             var getUser = await _userManager.GetUserAsync(User);
 
             var getUserEmail = _signInManager.UserManager.GetEmailAsync(getUser);
 
-            LogAudit("email sent: " + subject + ". " + message);
-
-            // Send email first to the citizen
-            _notifyService.SendEmail(getUserEmail.Result, subject, message);
-
-            if (approvalNeeded)
-            {
-                string msg = reasonDto.InstitutionName + "(" + reasonDto.Srn + ") has requested an exceptional closure. \n \n The school closed on or will close on because of . \n \n Approval is required for this closure.";
-
-                // Get list of approvers to email them the request
-                var getApprovers = await _mediator.Send(new GetAllApproversQuery());
-
-                foreach (var item in getApprovers.Value)
-                {
-                    _notifyService.SendEmail(item.Email, "Request for exceptional closure - approval required", msg);
-                }
-            }
-            else
-            {
-                string msg = reasonDto.InstitutionName + " (" + reasonDto.Srn +") has requested an exceptional closure. The school closed on or will close "+ reasonDto.DateFrom + "(optional to  <end date>) because of "+ reasonDto.ReasonType + ". The request has been approved.";
-
-                // Get AutoApprover list
-                var getApprovers = await _mediator.Send(new GetAllApprovalListQuery());
-
-                foreach (var item in getApprovers.Value)
-                {
-                    _notifyService.SendEmail(item.Email, "Request for exceptional closure", msg);
-                }
-            }
+            _notifyService.SendEmail(getUserEmail.Result, "Request for exceptional closure", subject);
         }
 
         private async Task<int> GetApprovalType(int id)
