@@ -1,7 +1,6 @@
 ﻿using de_exceptional_closures.Notify;
 using de_exceptional_closures_infraStructure.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
@@ -15,17 +14,14 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
     public partial class EmailModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IEmailSender _emailSender;
         private readonly INotifyService _notifyService;
         public readonly string TitleTagName;
         public readonly string SectionName;
 
         public EmailModel(
-            UserManager<ApplicationUser> userManager,
-            IEmailSender emailSender, INotifyService notifyService)
+            UserManager<ApplicationUser> userManager, INotifyService notifyService)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
             _notifyService = notifyService;
             TitleTagName = "Manage email";
             SectionName = "Manage";

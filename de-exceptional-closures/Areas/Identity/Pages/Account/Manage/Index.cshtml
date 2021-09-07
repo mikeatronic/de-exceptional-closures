@@ -29,7 +29,7 @@
                         <div class="govuk-form-group">
                             <label asp-for="Input.PhoneNumber" class="govuk-label"></label>
                             <input asp-for="Input.PhoneNumber" class="govuk-input" />
-                            <span asp-validation-for="Input.PhoneNumber" class="govuk-error-message"></span>
+                            <span asp-validation-for="Input.PhoneNumber" id="Input_PhoneNumber-error"  class="govuk-error-message"></span>
                         </div>
                         <button id="update-profile-button" type="submit" class="govuk-button" data-module="govuk-button">Save</button>
                     </form>
