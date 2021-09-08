@@ -68,16 +68,23 @@ function getSchools()
 
 function fillTextBoxes()
 {
-    let myText = $("#Input_SearchInstitutions :selected").text();
+    let mySelection = $("#Input_SearchInstitutions :selected").text();
 
-    if (myText != "Select institution")
+    if (mySelection != "Select institution")
     {
-        let schoolArray = myText.split(',');
+        let schoolArray = mySelection.split(',');
 
         $("#Input_InstitutionName").val("");
         $("#Input_InstitutionReference").val("");
 
+        $("#InstitutionNameLabel").text("");
+        $("#InstitutionReferenceLabel").text("");
+
         $("#Input_InstitutionName").val(schoolArray[0]);
         $("#Input_InstitutionReference").val(schoolArray[3]);
+
+        $("#InstitutionNameLabel").append(schoolArray[0]);
+        $("#InstitutionReferenceLabel").append(schoolArray[3]);
+
     }
 }

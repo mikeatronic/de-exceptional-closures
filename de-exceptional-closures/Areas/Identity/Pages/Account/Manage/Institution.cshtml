@@ -70,14 +70,14 @@
 
                 <div class="govuk-form-group">
                     <label class="govuk-label" asp-for="Input.InstitutionName">School</label>
-                    <span class="govuk-error-message" id="Input_InstitutionName-error" asp-validation-for="Input.InstitutionName"></span>
-                    <input class="govuk-input" asp-for="Input.InstitutionName" />
+                    <span class="govuk-label" id="InstitutionNameLabel">@Model.Input.InstitutionNameLabel</span>
+                    <input class="govuk-input" type="hidden" asp-for="Input.InstitutionName" />
                 </div>
 
                 <div class="govuk-form-group">
                     <label class="govuk-label" asp-for="Input.InstitutionReference">School reference</label>
-                    <span class="govuk-error-message" id="Input_InstitutionReference-error" asp-validation-for="Input.InstitutionReference"></span>
-                    <input class="govuk-input" asp-for="Input.InstitutionReference" />
+                    <span class="govuk-label" id="InstitutionReferenceLabel">@Model.Input.InstitutionReferenceLabel</span>
+                    <input class="govuk-input" type="hidden" asp-for="Input.InstitutionReference" />
                 </div>
 
                 <button type="submit" class="govuk-button" data-module="govuk-button">Update school</button>
