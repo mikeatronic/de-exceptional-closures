@@ -93,9 +93,9 @@ namespace de_exceptional_closures.Controllers
                 }
 
                 // Then Check if the retrospective period is greater than 14 days
-                if ((DateTime.Now - model.DateFrom).TotalDays > 14)
+                if ((DateTime.Now - model.DateFrom).TotalDays > 365)
                 {
-                    ModelState.AddModelError("DateFromDay", "Retrospective closures cannot be more than 14 days in the past. Please contact attendance@education-ni.gov.uk for further advice if necessary");
+                    ModelState.AddModelError("DateFromDay", "Retrospective closures cannot be more than 365 days in the past. Please contact attendance@education-ni.gov.uk for further advice if necessary");
                     model.ReasonTypeList = await GetReasonTypes();
                     return View(model);
                 }

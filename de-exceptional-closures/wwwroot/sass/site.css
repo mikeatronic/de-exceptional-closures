@@ -6332,120 +6332,6 @@
   }
 }
 
-footer.nidirect_footer {
-  /* font-size: 1.1875rem;
-    line-height: 1.31579; */
-  background-color: #f0f0f0;
-  height: auto;
-  /* width:100%; */
-  /*  flex-shrink:0; */
-  margin-top: 0;
-  padding: 0.5625rem 0;
-  border-top: 1px solid #e6e6e6;
-}
-
-footer.nidirect_footer ul {
-  list-style: none;
-  padding-left: 0rem;
-  /*      padding-bottom:3.3rem;
- */
-  margin-bottom: 0rem;
-  /* height:auto; */
-}
-
-footer.nidirect_footer ul li {
-  display: inline-block;
-  border-right-width: 1px;
-  border-right-style: solid;
-  border-right-color: #555555;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-right: 0.5625rem;
-  padding-left: 0;
-  margin-right: 0.5625rem;
-  margin-bottom: 0.5625rem;
-}
-
-footer.nidirect_footer ul li:last-child {
-  padding-right: 0;
-  margin-right: 0;
-  border-right-width: 0rem;
-  border-right-style: none;
-}
-
-header .nidirect-header {
-  background-color: #0a78cd;
-  color: #ffffff;
-}
-
-header .nidirect-header nav .nidirect-header__navigation-item {
-  height: auto;
-  padding: 0;
-  margin: 0;
-  font-size: 1rem;
-}
-
-header .nidirect-header nav .nidirect-header__navigation-item:focus {
-  height: 100%;
-}
-
-header .nidirect-header nav .nidirect-header__navigation-item a {
-  padding: 0 1rem;
-  display: block;
-  line-height: 57px;
-  text-align: me;
-}
-
-header .nidirect-header nav .nidirect-header__navigation-item a:visited {
-  color: #ffffff;
-}
-
-header .nidirect-header nav .nidirect-header__navigation-item a:focus {
-  background-color: #ffdd00;
-  color: black;
-}
-
-header .nidirect-header nav .nidirect-header__navigation-item--active {
-  background-color: #032f50;
-  border-bottom-width: 4px;
-  border-bottom: 3px solid;
-  border-color: #ffffff;
-  height: calc(100% - 3px);
-}
-
-header .nidirect-header nav .nidirect-header__navigation {
-  margin-bottom: 0;
-  height: auto;
-  font-size: 0;
-}
-
-header .nidirect-header__logo {
-  padding: 0;
-  border: 0;
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
-  margin: 0;
-  display: block;
-  padding: 0.74625rem 0;
-}
-
-.nidirect-logo__container {
-  margin: 0;
-}
-
-.nidirect-servicename-container {
-  background-color: #e6e6e6;
-  padding: 1.125rem 0;
-  border-bottom: 1px solid #e6e6e6;
-}
-
-.nidirect-servicename-container .nidirect-servicename {
-  color: #0867af;
-  font-weight: 400;
-  padding: 0;
-  margin: 0;
-}
 
 @media screen and (min-width: 880px) {
   .flex-parent {
@@ -6456,23 +6342,6 @@ header .nidirect-header__logo {
         -ms-flex-pack: justify;
             justify-content: space-between;
   }
-}
-
-/* styling fix for navigation menu button */
-header div.nidirect-header div.flex-parent {
-  position: relative;
-}
-
-.nidirect-element {
-  color: #900b18;
-}
-
-.nidirect-selector {
-  color: #1D8000;
-}
-
-.nidirect-attribute {
-  color: #005ea5;
 }
 
 pre {
@@ -6495,30 +6364,6 @@ pre.language-markup {
   word-wrap: break-word;
   padding-left: 2.5em;
   position: relative;
-}
-
-/* progressive enhancment adding line numbers to code using a span - nidirect-codeLine*/
-code.language-markup {
-  counter-reset: code-line-number;
-}
-
-pre.language-markup code.language-markup span.nidirect-codeLine {
-  margin-right: .75em;
-  width: 2em;
-  text-align: right;
-  position: absolute;
-  left: 0;
-  color: #647178;
-}
-
-pre.language-markup code.language-markup span.nidirect-codeLine::before {
-  counter-increment: code-line-number;
-  content: counter(code-line-number) " ";
-}
-
-.nidirect-uxg--image {
-  display: block;
-  width: 100%;
 }
 
 .govuk-error-summary {

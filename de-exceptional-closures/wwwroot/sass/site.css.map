@@ -4148,8 +4148,6 @@
         "../../node_modules/govuk-frontend/govuk/helpers/_typography.scss",
         "../../node_modules/govuk-frontend/govuk/tools/_px-to-rem.scss",
         "../../node_modules/govuk-frontend/govuk/helpers/_visually-hidden.scss",
-        "../../node_modules/nidirect-frontend/nidirect-all.scss",
-        "../../node_modules/nidirect-frontend/nidirect-frontend/layout/_global-overrides.scss",
         "../../node_modules/govuk-frontend/govuk/all.scss",
         "../../node_modules/govuk-frontend/govuk/settings/_all.scss",
         "../../node_modules/govuk-frontend/govuk/settings/_assets.scss",
@@ -8294,12 +8292,7 @@
         "../../node_modules/govuk-frontend/govuk/helpers/_spacing.scss",
         "../../node_modules/govuk-frontend/govuk/helpers/_typography.scss",
         "../../node_modules/govuk-frontend/govuk/tools/_px-to-rem.scss",
-        "../../node_modules/govuk-frontend/govuk/helpers/_visually-hidden.scss",
-        "../../node_modules/nidirect-frontend/nidirect-frontend/base/_colours.scss",
-        "../../node_modules/nidirect-frontend/nidirect-frontend/layout/_footer.scss",
-        "../../node_modules/nidirect-frontend/nidirect-frontend/layout/_header.scss",
-        "../../node_modules/nidirect-frontend/nidirect-frontend/layout/_snippets.scss",
-        "../../node_modules/nidirect-frontend/nidirect-frontend/layout/_miscellaneous.scss"
+        "../../node_modules/govuk-frontend/govuk/helpers/_visually-hidden.scss"
     ],
     "names": [],
     "file": "site.css"
