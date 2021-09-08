@@ -16,11 +16,28 @@ namespace de_exceptional_closures.Config
             };
         }
 
+        public static SchoolsApiConfig CreateSchoolsApiConfig(Dictionary<string, Credential> credentials)
+        {
+            return new SchoolsApiConfig
+            {
+                ApiUrl = credentials["apiUrl"].Value,
+                Kid = credentials["kid"].Value,
+                Secret = credentials["secret"].Value
+            };
+        }
+
         public static void PopulateNotifyConfig(this NotifyConfig notifyConfig, NotifyConfig sourceNotifyConfig)
         {
             notifyConfig.apiKey = sourceNotifyConfig.apiKey;
             notifyConfig.textTemplate = sourceNotifyConfig.textTemplate;
             notifyConfig.emailTemplate = sourceNotifyConfig.emailTemplate;
+        }
+
+        public static void PopulateSchoolsApiConfig(this SchoolsApiConfig schoolsApiConfig, SchoolsApiConfig sourceSchoolsApiConfig)
+        {
+            schoolsApiConfig.ApiUrl = sourceSchoolsApiConfig.ApiUrl;
+            schoolsApiConfig.Kid = sourceSchoolsApiConfig.Kid;
+            schoolsApiConfig.Secret = sourceSchoolsApiConfig.Secret;
         }
 
         public static string PopulateLocalConnectionString(IConfiguration configuration)
