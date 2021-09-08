@@ -42,6 +42,8 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
 
             public string Search { get; set; }
             public string SearchInstitutions { get; set; }
+            public string InstitutionNameLabel { get; set; }
+            public string InstitutionReferenceLabel { get; set; }
         }
 
         private void Load(ApplicationUser user)
@@ -49,7 +51,9 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 InstitutionName = user.InstitutionName,
-                InstitutionReference = user.InstitutionReference
+                InstitutionReference = user.InstitutionReference,
+                InstitutionNameLabel = user.InstitutionName,
+                InstitutionReferenceLabel = user.InstitutionReference
             };
         }
 

@@ -8,12 +8,6 @@
 
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="govuk-header__navigation-item govuk-header__navigation-item @(Model.SectionName == "Home" ? "govuk-header__navigation-item--active" : string.Empty)">
-            <a class="govuk-header__link" asp-controller="Home" asp-action="Index">
-                Create
-            </a>
-        </li>
-
         <li class="govuk-header__navigation-item govuk-header__navigation-item @(Model.SectionName == "My closures" ? "govuk-header__navigation-item--active" : string.Empty)">
             <a class="govuk-header__link" asp-controller="Closure" asp-action="MyClosures">
                 My closures
