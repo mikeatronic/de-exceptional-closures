@@ -78,7 +78,7 @@ namespace de_exceptional_closures.Controllers
             model.SectionName = "My closures";
             model.TitleTagName = "My closures";
 
-            //            LogAudit("opened MyClosures view");
+            LogAudit("opened MyClosures view");
 
             var getAllClosures = await _mediator.Send(new GetAllClosuresQuery());
 
