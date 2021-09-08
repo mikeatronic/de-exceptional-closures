@@ -41,17 +41,6 @@ namespace de_exceptional_closures
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add Session
-            services.AddDistributedMemoryCache();
-
-            services.AddSession(options =>
-            {
-                options.Cookie.Name = "DeSessionCookie";
-                options.IdleTimeout = TimeSpan.FromMinutes(60);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
-
             services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetAllReasonTypesQueryValidator>());
             services.AddSingleton(services);
             services.AddOptions();
