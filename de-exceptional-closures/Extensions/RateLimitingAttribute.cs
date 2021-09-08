@@ -40,7 +40,7 @@ namespace de_exceptional_closures.Extensions
             else
             {
                 if (string.IsNullOrEmpty(Message))
-                    Message = "You may only perform this action every {n} minutes.";
+                    Message = "You may only perform this action every {n} minute.";
 
                 context.Result = new ContentResult { Content = Message.Replace("{n}", Minutes.ToString()) };
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Conflict;

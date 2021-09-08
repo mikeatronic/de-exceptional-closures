@@ -949,10 +949,9 @@ table.dataTable .govuk-link {
     padding: 10px !important;
 }
 
-.nidirect_footer 
-{
+/*.footer-bottom {
     width: 100%;
-    position: absolute;
+    position: relative;
     bottom: 0;
     left: 0;
-}
+}*/

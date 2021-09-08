@@ -8,3 +8,15 @@ $(document).ready(function () {
         $(".govuk-error-summary").show();
     }
 });
+
+function adjustFooterHeight() {
+    let docHeight = $(window).height();
+    let footerHeight = $('.govuk-footer').height();
+    let footerTop = $('.govuk-footer').position().top + footerHeight;
+
+    if (footerTop < docHeight) {
+        $('.govuk-footer').css('margin-top', -20 + (docHeight - footerTop) + 'px');
+    }
+}
+
+adjustFooterHeight();

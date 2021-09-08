@@ -18,24 +18,21 @@
     <link rel="icon" sizes="16x16 32x32 48x48" href="~/images/favicon.ico" type="image/x-icon">
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </head>
-<body>
+<body class="govuk-template__body ">
 
     <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
     <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
     <partial name="../Components/_cookieConsentBanner.cshtml" />
     <partial name="../Components/_header.cshtml" />
-
-    <div class="govuk-width-container app-width-container">
-
-        <partial name="../Components/_instituteBanner.cshtml" />
-        <div class="govuk__container">
-            <main role="main" class="govuk-main-wrapper" id="main-content">
+     
+        <div class="govuk-width-container ">
+            <main class="govuk-main-wrapper" id="main-content" role="main">
                 <div class="govuk-grid-row">
                     @RenderBody()
                 </div>
             </main>
         </div>
-    </div>
+ 
     <partial name="../Shared/_TimeOutControl.cshtml" />
     <partial name="../Components/_footer.cshtml" />
     <script src="~/lib/DataTables/datatables.min.js"></script>
