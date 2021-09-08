@@ -1,16 +1,13 @@
 ﻿using AutoMapper;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Closure;
-using de_exceptional_closures_core.Common;
 using de_exceptional_closures_core.Dtos;
 using de_exceptional_closures_infraStructure.Features.ClosureReason.Queries;
-using de_exceptional_closures_infraStructure.Features.ReasonType.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace de_exceptional_closures.Controllers
@@ -81,7 +78,7 @@ namespace de_exceptional_closures.Controllers
             model.SectionName = "My closures";
             model.TitleTagName = "My closures";
 
-            LogAudit("opened MyClosures view");
+            //            LogAudit("opened MyClosures view");
 
             var getAllClosures = await _mediator.Send(new GetAllClosuresQuery());
 
