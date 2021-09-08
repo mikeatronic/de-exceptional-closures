@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using de_exceptional_closures.Extensions;
 using de_exceptional_closures.Models;
 using de_exceptional_closures.Notify;
 using de_exceptional_closures.ViewModels;

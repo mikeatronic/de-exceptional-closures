@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using de_exceptional_closures.Controllers;
 using de_exceptional_closures.Notify;
-using de_exceptional_closures.ViewModels.Home;
 using de_exceptional_closures_infraStructure.Data;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace de_exceptional_closures_unitTests.Controllers

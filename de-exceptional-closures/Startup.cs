@@ -1,5 +1,6 @@
 using de_exceptional_closures.Config;
 using de_exceptional_closures.Notify;
+using de_exceptional_closures_infraStructure.Behaviours;
 using de_exceptional_closures_infraStructure.Data;
 using de_exceptional_closures_infraStructure.Features.ReasonType.Validation;
 using de_exceptional_closures_Infrastructure.Data;
@@ -20,6 +21,7 @@ using Steeltoe.Extensions.Configuration.CloudFoundry;
 using System;
 using System.Linq;
 using System.Reflection;
+using static de_exceptional_closures_infraStructure.Behaviours.ExceptionBehaviour;
 
 namespace de_exceptional_closures
 {
@@ -138,6 +140,8 @@ namespace de_exceptional_closures
             services.AddAutoMapper(typeof(Startup).GetTypeInfo().Assembly, typeof(ApplicationDbContext).GetTypeInfo().Assembly);
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(ApplicationDbContext).GetTypeInfo().Assembly);
 
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionBehavior<,>));
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -176,8 +180,6 @@ namespace de_exceptional_closures
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
