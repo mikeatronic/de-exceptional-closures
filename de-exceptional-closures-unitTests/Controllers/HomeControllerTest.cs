@@ -1,4 +1,7 @@
-﻿using de_exceptional_closures.Controllers;
+﻿using AutoMapper;
+using de_exceptional_closures.Controllers;
+using de_exceptional_closures.Notify;
+using de_exceptional_closures.ViewModels.Home;
 using de_exceptional_closures_infraStructure.Data;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace de_exceptional_closures_unitTests.Controllers
@@ -23,8 +27,13 @@ namespace de_exceptional_closures_unitTests.Controllers
             var userManagerMock = new Mock<UserManager<ApplicationUser>>(Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
 
             var mockClient = new Mock<IHttpClientFactory>();
+            var mockMapper = new Mock<IMapper>();
+            var mockNotify = new Mock<INotifyService>();
+            var mockSignInManager = new Mock<SignInManager<ApplicationUser>>(
+            userManagerMock.Object, Mock.Of<IHttpContextAccessor>(), Mock.Of<IUserClaimsPrincipalFactory<ApplicationUser>>(),
+            null, null, null, null);
 
-            controller = new HomeController(mockMediator.Object, userManagerMock.Object, mockClient.Object);
+            controller = new HomeController(mockMediator.Object, userManagerMock.Object, mockClient.Object, mockMapper.Object, mockNotify.Object, mockSignInManager.Object);
 
             // Setup Context
             controller.ControllerContext = new ControllerContext();
@@ -33,24 +42,7 @@ namespace de_exceptional_closures_unitTests.Controllers
             // Add fake Ip address for audit
             IPAddress ip = new IPAddress(16885952);
             controller.HttpContext.Connection.RemoteIpAddress = ip;
-
         }
-
-        //[Fact]
-        //public async Task Index()
-        //{
-        //    //HttpContext.Session.Set("CreateClosureObj", model)
-        //    IndexViewModel model = new IndexViewModel();
-
-        //    controller.HttpContext.Session.Set("CreateClosureObj", model);
-
-        //   //Act
-        //   ViewResult result = await controller.Index() as ViewResult;
-
-        //    // Assert
-        //    Assert.NotNull(result);
-        //}
-
 
         [Fact]
         public void Accessibility()

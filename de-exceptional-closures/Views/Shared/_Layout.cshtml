@@ -22,9 +22,7 @@
 
     <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
     <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
-    <partial name="../Components/_cookieConsentBanner.cshtml" />
     <partial name="../Components/_header.cshtml" />
-     
         <div class="govuk-width-container ">
             <main class="govuk-main-wrapper" id="main-content" role="main">
                 <div class="govuk-grid-row">
@@ -32,7 +30,6 @@
                 </div>
             </main>
         </div>
- 
     <partial name="../Shared/_TimeOutControl.cshtml" />
     <partial name="../Components/_footer.cshtml" />
     <script src="~/lib/DataTables/datatables.min.js"></script>
@@ -41,7 +38,6 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
     <partial name="../Shared/_initializeGOVUKFrontend.cshtml" />
-
     <script src="~/js/moment.js" asp-append-version="true"></script>
     <script src="~/js/jquery-modal.js" asp-append-version="true"></script>
     <script src="~/js/inactivity-alert.js" asp-append-version="true"></script>

@@ -1,10 +1,16 @@
-﻿using de_exceptional_closures.Extensions;
+﻿using AutoMapper;
+using de_exceptional_closures.Extensions;
 using de_exceptional_closures.Models;
+using de_exceptional_closures.Notify;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Home;
 using de_exceptional_closures_core.Common;
 using de_exceptional_closures_core.Dtos;
 using de_exceptional_closures_infraStructure.Data;
+using de_exceptional_closures_infraStructure.Features.AdminApprovalList.Queries;
+using de_exceptional_closures_infraStructure.Features.AutoApprovalList.Queries;
+using de_exceptional_closures_infraStructure.Features.ClosureReason.Commands;
+using de_exceptional_closures_infraStructure.Features.ClosureReason.Queries;
 using de_exceptional_closures_infraStructure.Features.ReasonType.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -27,13 +33,19 @@ namespace de_exceptional_closures.Controllers
         private readonly IMediator _mediator;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpClientFactory _client;
+        private readonly IMapper _mapper;
+        private readonly INotifyService _notifyService;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private static readonly NLog.Logger Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
-        public HomeController(IMediator mediator, UserManager<ApplicationUser> userManager, IHttpClientFactory client)
+        public HomeController(IMediator mediator, UserManager<ApplicationUser> userManager, IHttpClientFactory client, IMapper mapper, INotifyService notifyService, SignInManager<ApplicationUser> signInManager)
         {
             _mediator = mediator;
             _userManager = userManager;
             _client = client;
+            _notifyService = notifyService;
+            _mapper = mapper;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -41,15 +53,6 @@ namespace de_exceptional_closures.Controllers
         {
             IndexViewModel model = new IndexViewModel();
             model.SectionName = "Home";
-
-            if (HttpContext.Session.Get<IndexViewModel>("CreateClosureObj") == null)
-            {
-                HttpContext.Session.Set("CreateClosureObj", model);
-            }
-            else
-            {
-                model = HttpContext.Session.Get<IndexViewModel>("CreateClosureObj");
-            }
 
             model.TitleTagName = "Create closure";
             model.InstitutionName = await GetInstitution();
@@ -178,11 +181,46 @@ namespace de_exceptional_closures.Controllers
                 model.OtherReason = null;
             }
 
-            HttpContext.Session.Set("CreateClosureObj", model);
+            // Add code when Database is done to actually save data
+            var reasonDto = _mapper.Map<ClosureReasonDto>(model);
+
+            if (reasonDto.ApprovalTypeId == (int)ApprovalType.PreApproved)
+            {
+                reasonDto.Approved = true;
+                reasonDto.ApprovalDate = DateTime.Now;
+            }
+
+            reasonDto.DateFrom = model.DateFrom;
+
+            if (model.DateTo.HasValue)
+            {
+                reasonDto.DateTo = model.DateTo;
+                reasonDto.DateFrom = model.DateMultipleFrom;
+            }
+
+            reasonDto.DateCreated = DateTime.Now;
+
+            var createClosureReason = await _mediator.Send(new CreateClosureReasonCommand() { ClosureReasonDto = reasonDto });
+
+            if (createClosureReason.IsFailure)
+            {
+                return View(model);
+            }
+
+            var getNewClosureDetails = await _mediator.Send(new GetClosureReasonByIdQuery() { Id = createClosureReason.Value });
+
+            if (reasonDto.ApprovalTypeId == (int)ApprovalType.PreApproved)
+            {
+                await SendApprovalNotRequiredNotification(getNewClosureDetails.Value);
+            }
+            else
+            {
+                await SendApprovalRequiredNotification(getNewClosureDetails.Value);
+            }
 
             LogAudit("opened Is the closure for a single day POST view and selected model.IsSingleDay = ");
 
-            return RedirectToAction("CheckAnswers", "Closure");
+            return RedirectToAction("Submitted", "Closure", new { id = createClosureReason.Value });
         }
 
         [AllowAnonymous]
@@ -221,7 +259,7 @@ namespace de_exceptional_closures.Controllers
             return View(model);
         }
 
-        public async Task<string> GetInstitution()
+        private async Task<string> GetInstitution()
         {
             var client = _client.CreateClient("InstitutionsClient");
 
@@ -248,21 +286,74 @@ namespace de_exceptional_closures.Controllers
             return $"{institution.Name}, {institution.address.address1}, {institution.address.townCity}, {institution.address.postCode}";
         }
 
-        internal string GetInstitutionRef()
+        private string GetDateFrom(DateTime? dateTo)
+        {
+            if (dateTo.HasValue)
+            {
+                return " to " + dateTo.Value.ToShortDateString();
+            }
+
+            return string.Empty;
+        }
+
+        private async Task SendCitizenEmailAsync(string subject)
+        {
+            var getUser = await _userManager.GetUserAsync(User);
+
+            var getUserEmail = _signInManager.UserManager.GetEmailAsync(getUser);
+
+            await _notifyService.SendEmailAsync(getUserEmail.Result, "Request for exceptional closure", subject);
+        }
+
+        private async Task SendApprovalRequiredNotification(ClosureReasonDto reasonDto)
+        {
+            // Send email first to the citizen
+            await SendCitizenEmailAsync("Thank you for your request for an exceptional closure. \n \n The Department of Education will be in touch in due course with the outcome.");
+
+            // Then send an email to the other parties
+            string msg = reasonDto.InstitutionName + " (" + reasonDto.Srn + ") has requested an exceptional closure. \n \n The school closed on or will close on " + reasonDto.DateFrom.Value.ToShortDateString() + GetDateFrom(reasonDto.DateTo) + " because of " + reasonDto.ReasonType + ". \n \n Approval is required for this closure.";
+
+            // Get list of approvers to email them the request
+            var getApprovers = await _mediator.Send(new GetAllApproversQuery());
+
+            foreach (var item in getApprovers.Value)
+            {
+                await _notifyService.SendEmailAsync(item.Email, "Request for exceptional closure - approval required", msg);
+            }
+        }
+
+        private async Task SendApprovalNotRequiredNotification(ClosureReasonDto reasonDto)
+        {
+            // Send email first to the citizen
+            await SendCitizenEmailAsync(reasonDto.InstitutionName + " has requested an exceptional closure. The school closed on or will close " + reasonDto.DateFrom.Value.ToShortDateString() + "  because of " + reasonDto.ReasonType + ". \n \n The request has been approved.");
+
+            // Then send an email to the other parties
+            string subject = reasonDto.InstitutionName + " (" + reasonDto.Srn + ") has requested an exceptional closure. \n \n The school closed on or will close " + reasonDto.DateFrom.Value.ToShortDateString() + GetDateFrom(reasonDto.DateTo) + " because of " + reasonDto.ReasonType + ". \n \n The request has been approved.";
+
+            // Get AutoApprover list
+            var getApprovers = await _mediator.Send(new GetAllApprovalListQuery());
+
+            foreach (var item in getApprovers.Value)
+            {
+                await _notifyService.SendEmailAsync(item.Email, "Request for exceptional closure", subject);
+            }
+        }
+
+        private string GetInstitutionRef()
         {
             var getUser = _userManager.GetUserAsync(User);
 
             return getUser.Result.InstitutionReference;
         }
 
-        internal async Task<List<ReasonTypeDto>> GetReasonTypes()
+        private async Task<List<ReasonTypeDto>> GetReasonTypes()
         {
             var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
 
             return getReasons.Value;
         }
 
-        internal async Task<int> GetApprovalType(int id)
+        private async Task<int> GetApprovalType(int id)
         {
             var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
 
@@ -274,14 +365,14 @@ namespace de_exceptional_closures.Controllers
             return (int)ApprovalType.PreApproved;
         }
 
-        internal string CreateDate(string dateOfBirthYear, string dateOfBirthMonth, string dateOfBirthDay)
+        private string CreateDate(string dateOfBirthYear, string dateOfBirthMonth, string dateOfBirthDay)
         {
             string dateToCheck = dateOfBirthYear + "/" + dateOfBirthMonth + "/" + dateOfBirthDay;
 
             return dateToCheck;
         }
 
-        internal void LogAudit(string message)
+        private void LogAudit(string message)
         {
             string ip = "IPAddress: " + HttpContext.Connection.RemoteIpAddress.ToString() + ", DateTime: " + DateTime.Now;
 
