@@ -4,34 +4,34 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<ul id="navigation" class="govuk-header__navigation nidirect-header__navigation">
+ <ul id="navigation" class="govuk-header__navigation " aria-label="Navigation menu">
 
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="govuk-header__navigation-item nidirect-header__navigation-item @(Model.SectionName == "Home" ? "nidirect-header__navigation-item--active" : string.Empty)">
+        <li class="govuk-header__navigation-item govuk-header__navigation-item @(Model.SectionName == "Home" ? "govuk-header__navigation-item--active" : string.Empty)">
             <a class="govuk-header__link" asp-controller="Home" asp-action="Index">
                 Create
             </a>
         </li>
 
-        <li class="govuk-header__navigation-item nidirect-header__navigation-item @(Model.SectionName == "My closures" ? "nidirect-header__navigation-item--active" : string.Empty)">
+        <li class="govuk-header__navigation-item govuk-header__navigation-item @(Model.SectionName == "My closures" ? "govuk-header__navigation-item--active" : string.Empty)">
             <a class="govuk-header__link" asp-controller="Closure" asp-action="MyClosures">
                 My closures
             </a>
         </li>
-        <li class="govuk-header__navigation-item nidirect-header__navigation-item @(Model.SectionName == "Manage" ? "nidirect-header__navigation-item--active" : string.Empty)">
+        <li class="govuk-header__navigation-item govuk-header__navigation-item @(Model.SectionName == "Manage" ? "govuk-header__navigation-item--active" : string.Empty)">
             <a class="govuk-header__link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage account</a>
         </li>
-        <li class="govuk-header__navigation-item nidirect-header__navigation-item @(Model.SectionName == "Log out" ? "nidirect-header__navigation-item--active" : string.Empty)">
+        <li class="govuk-header__navigation-item govuk-header__navigation-item @(Model.SectionName == "Log out" ? "govuk-header__navigation-item--active" : string.Empty)">
             <a class="govuk-header__link" asp-area="Identity" asp-page="/Account/Logout" title="Manage">Log out</a>
         </li>
     }
     else
     {
-        <li class="govuk-header__navigation-item nidirect-header__navigation-item">
+        <li class="govuk-header__navigation-item">
             <a class="govuk-header__link" asp-controller="Account" asp-action="Register">Register</a>
         </li>
-        <li class="govuk-header__navigation-item nidirect-header__navigation-item">
+        <li class="govuk-header__navigation-item">
             <a class="govuk-header__link" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
