@@ -20,7 +20,6 @@
 
     @if (Model.ApprovalTypeId == 1)
     {
-
         <p class="govuk-body">
             Thank you for the below request for an exceptional closure. Your request has been approved. Your request has been forwarded to the Tackling Educational
             Disadvantage team in the Department of Education.
@@ -30,7 +29,7 @@
     {
         <p class="govuk-body">
             Thank you for the below request for an exceptional closure. Your request has been forwarded to the Tackling Educational
-            Disadvantage team in the Department of Education.
+            Disadvantage team in the Department of Education and they will be in touch in due course.
         </p>
     }
 
@@ -163,7 +162,6 @@
     </div>
 }
 
-
 <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
         Date created
@@ -175,6 +173,5 @@
         </dl>
 
 <div class="govuk-button-group">
-
     <a href="@Url.Action("MyClosures", "Closure")" class="govuk-button govuk-button--secondary"> Go to my closures</a>
 </div>
