@@ -36,6 +36,7 @@ namespace de_exceptional_closures
         public IConfiguration Configuration { get; }
         protected CloudFoundryServicesOptions CloudFoundryServicesOptions;
         protected NotifyConfig NotifyConfig = new NotifyConfig();
+        protected SchoolsApiConfig SchoolsApiConfig = new SchoolsApiConfig();
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -90,8 +91,14 @@ namespace de_exceptional_closures
 
             services.AddTransient<INotifyService, NotifyService>();
 
-            services.AddHttpClient("InstitutionsClient", p => p.BaseAddress = new Uri("https://de-institutions-api-sandbox.london.cloudapps.digital/api/v1/Institution/"));
+            // Schools api config
+            SchoolsApiConfig = ConfigurationFactory.CreateSchoolsApiConfig(CloudFoundryServicesOptions
+           .Services["user-provided"]
+           .First(s => s.Name == "de-institution-api-secrets").Credentials["Credentials"]);
 
+            services.Configure<SchoolsApiConfig>(s => s.PopulateSchoolsApiConfig(SchoolsApiConfig));
+
+            services.AddHttpClient("InstitutionsClient", p => p.BaseAddress = new Uri(SchoolsApiConfig.ApiUrl));
 
             services.Configure<CookiePolicyOptions>(options =>
             {

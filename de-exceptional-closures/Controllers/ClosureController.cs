@@ -220,7 +220,7 @@ namespace de_exceptional_closures.Controllers
         private async Task SendApprovalNotRequiredNotification(ClosureReasonDto reasonDto)
         {
             // Send email first to the citizen
-            await SendCitizenEmailAsync(reasonDto.InstitutionName + " has requested an exceptional closure. The school closed on or will close " + reasonDto.DateFrom + "  because of" + reasonDto.ReasonType + ". \n \n The request has been approved.");
+            await SendCitizenEmailAsync(reasonDto.InstitutionName + " has requested an exceptional closure. The school closed on or will close " + reasonDto.DateFrom.Value.ToShortDateString() + "  because of " + reasonDto.ReasonType + ". \n \n The request has been approved.");
 
             // Then send an email to the other parties
             string subject = reasonDto.InstitutionName + " (" + reasonDto.Srn + ") has requested an exceptional closure. \n \n The school closed on or will close " + reasonDto.DateFrom.Value.ToShortDateString() + GetDateFrom(reasonDto.DateTo) + " because of " + reasonDto.ReasonType + ". \n \n The request has been approved.";
