@@ -44,19 +44,7 @@ namespace de_exceptional_closures_infraStructure.Features.ClosureReason.Queries
                 }
             }
 
-
             // bool overlap = a.start < b.end && b.start < a.end;
-
-
-            //var maybeClosure = (await ApplicationDbContext.ClosureReason.Include(c => c.ReasonType)
-            //    .Include(c => c.ApprovalType)
-            //    .Include(c => c.RejectionReason)
-            //    .SingleOrDefaultAsync(p => p.Id == request.Id, cancellationToken: cancellationToken)).ToMaybe();
-
-            //if (!getAllClosuresDatesForSchool)
-            //    return Result.Fail<bool>("Closure reason not found");
-
-            //  var closureReasonDto = Mapper.Map<ClosureReasonDto>(maybeClosure.Value);
 
             return Result.Ok(false);
         }
