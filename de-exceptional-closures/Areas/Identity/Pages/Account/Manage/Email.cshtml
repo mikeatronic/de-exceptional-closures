@@ -23,7 +23,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Email" class="govuk-label"></label>
+                            <label asp-for="Email" class="govuk-label govuk-label--s"></label>
                             @if (Model.IsEmailConfirmed)
                             {
                                 <div class="govuk-form-group">
@@ -37,7 +37,7 @@
                             }
                         </div>
                         <div class="govuk-form-group">
-                            <label asp-for="Input.NewEmail" class="govuk-label"></label>
+                            <label asp-for="Input.NewEmail" class="govuk-label govuk-label--s"></label>
 
                             <span asp-validation-for="Input.NewEmail" id="Input_NewEmail-error" class="govuk-error-message"></span>
                             <input asp-for="Input.NewEmail" class="govuk-input" />

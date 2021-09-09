@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="govuk-form-group" id="InstituteSearchComponent">
-                        <label class="govuk-label" asp-for="Input.Search">
+                        <label class="govuk-label govuk-label--s" asp-for="Input.Search">
                             Search school
                         </label>
                         <span id="institutionError" class="govuk-error-message" style="display:none;">
@@ -69,13 +69,13 @@
                 </div>
 
                 <div class="govuk-form-group">
-                    <label class="govuk-label" asp-for="Input.InstitutionName">School</label>
+                    <label class="govuk-label govuk-label--s" asp-for="Input.InstitutionName">School</label>
                     <span class="govuk-label" id="InstitutionNameLabel">@Model.Input.InstitutionNameLabel</span>
                     <input class="govuk-input" type="hidden" asp-for="Input.InstitutionName" />
                 </div>
 
                 <div class="govuk-form-group">
-                    <label class="govuk-label" asp-for="Input.InstitutionReference">School reference</label>
+                    <label class="govuk-label govuk-label--s" asp-for="Input.InstitutionReference">School reference</label>
                     <span class="govuk-label" id="InstitutionReferenceLabel">@Model.Input.InstitutionReferenceLabel</span>
                     <input class="govuk-input" type="hidden" asp-for="Input.InstitutionReference" />
                 </div>
