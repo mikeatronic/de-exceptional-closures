@@ -1,51 +1,55 @@
-﻿@model de_exceptional_closures.ViewModels.Account.RegisterViewModel 
+﻿@model de_exceptional_closures.ViewModels.Account.RegisterViewModel
 @{
     ViewData["Title"] = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="govuk-width-container">
+<a asp-controller="Home" asp-action="Index" class="govuk-back-link">Back</a>
+
+<main class="govuk-main-wrapper" id="main-content" role="main">
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
+        <div class="govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
 
-            <a asp-controller="Home" asp-action="Index" class="govuk-back-link">Back</a>
+                    <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
 
-            <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+                    <form asp-controller="Account" asp-action="Register" method="post">
+                        <partial name="../Components/_errorSummary.cshtml" />
 
-            <form asp-controller="Account" asp-action="Register" method="post">
-                <partial name="../Components/_errorSummary.cshtml" />
+                        <p class="govuk-inset-text">
+                            Create a new account. Only authorised school staff should use this service
+                        </p>
 
-                <p class="govuk-inset-text">
-                    Create a new account. Only authorised school staff should use this service
-                </p>
-
-                <div class="govuk-form-group @(ViewData.ModelState["Email"] != null && ViewData.ModelState["Email"].Errors.Any() 
+                        <div class="govuk-form-group @(ViewData.ModelState["Email"] != null && ViewData.ModelState["Email"].Errors.Any()
                                                 ? " govuk-form-group--error" : "")">
-                    <label asp-for="Email" class="govuk-label"></label>
-                    <span asp-validation-for="Email" id="Email-error" class="govuk-error-message"></span>
-                    <input asp-for="Email" class="govuk-input" />
-                </div>
+                            <label asp-for="Email" class="govuk-label"></label>
+                            <span asp-validation-for="Email" id="Email-error" class="govuk-error-message"></span>
+                            <input asp-for="Email" class="govuk-input" />
+                        </div>
 
-                <div class="govuk-form-group @(ViewData.ModelState["InstitutionReference"] != null && ViewData.ModelState["InstitutionReference"].Errors.Any() 
+                        <div class="govuk-form-group @(ViewData.ModelState["InstitutionReference"] != null && ViewData.ModelState["InstitutionReference"].Errors.Any()
                                                 ? " govuk-form-group--error" : "")">
-                    <label asp-for="InstitutionReference" class="govuk-label"></label>
-                    <span asp-validation-for="InstitutionReference" id="InstitutionReference-error" class="govuk-error-message"></span>
-                    <input asp-for="InstitutionReference" class="govuk-input" />
-                </div>
+                            <label asp-for="InstitutionReference" class="govuk-label"></label>
+                            <span asp-validation-for="InstitutionReference" id="InstitutionReference-error" class="govuk-error-message"></span>
+                            <input asp-for="InstitutionReference" class="govuk-input" />
+                        </div>
 
-                <div class="govuk-form-group">
-                    <label asp-for="Password" class="govuk-label"></label>
-                    <span asp-validation-for="Password" id="Password-error" class="govuk-error-message"></span>
-                    <input asp-for="Password" class="govuk-input" />
-                </div>
-                <div class="govuk-form-group">
-                    <label asp-for="ConfirmPassword" class="govuk-label"></label>
-                    <span asp-validation-for="ConfirmPassword" id="ConfirmPassword-error" class="govuk-error-message"></span>
-                    <input asp-for="ConfirmPassword" class="govuk-input" />
-                </div>
+                        <div class="govuk-form-group">
+                            <label asp-for="Password" class="govuk-label"></label>
+                            <span asp-validation-for="Password" id="Password-error" class="govuk-error-message"></span>
+                            <input asp-for="Password" class="govuk-input" />
+                        </div>
+                        <div class="govuk-form-group">
+                            <label asp-for="ConfirmPassword" class="govuk-label"></label>
+                            <span asp-validation-for="ConfirmPassword" id="ConfirmPassword-error" class="govuk-error-message"></span>
+                            <input asp-for="ConfirmPassword" class="govuk-input" />
+                        </div>
 
-                <button type="submit" class="govuk-button" data-module="govuk-button">Register</button>
-            </form>
+                        <button type="submit" class="govuk-button" data-module="govuk-button">Register</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</main>

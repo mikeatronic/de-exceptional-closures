@@ -4,10 +4,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="govuk-grid-column-full">
-    <h1 class="govuk-heading-l">Session timed out</h1>
-    <p class="govuk-body">
-        Your session automatically ends if you don't use this service for 20 minutes.
-    </p>
-    <a asp-area="" asp-controller="Closure" asp-action="MyClosures" role="button" draggable="false" class="govuk-button" data-module="govuk-button">Start again</a>
-</div>
+<main class="govuk-main-wrapper" id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l">Session timed out</h1>
+            <p class="govuk-body">
+                Your session automatically ends if you don't use this service for 20 minutes.
+            </p>
+            <a asp-area="" asp-controller="Closure" asp-action="MyClosures" role="button" draggable="false" class="govuk-button" data-module="govuk-button">Start again</a>
+        </div>
+        </div>
+</main>

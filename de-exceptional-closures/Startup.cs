@@ -91,17 +91,6 @@ namespace de_exceptional_closures
 
             services.AddHttpClient("InstitutionsClient", p => p.BaseAddress = new Uri(SchoolsApiConfig.ApiUrl));
 
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential 
-                // cookies is needed for a given request.
-                options.ConsentCookie.Name = "DECconsentCookie";
-                options.CheckConsentNeeded = context => true;
-                options.ConsentCookie.Expiration = TimeSpan.FromDays(90);
-                options.MinimumSameSitePolicy = SameSiteMode.Lax;
-                options.Secure = CookieSecurePolicy.Always;
-            });
-
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
@@ -144,6 +133,7 @@ namespace de_exceptional_closures
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionBehavior<,>));
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
