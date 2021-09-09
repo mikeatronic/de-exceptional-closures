@@ -161,6 +161,8 @@ namespace de_exceptional_closures.Controllers
                 }
             }
 
+
+
             // Set Approval type
             model.ApprovalTypeId = await GetApprovalType(model.ReasonTypeId);
 
@@ -198,6 +200,19 @@ namespace de_exceptional_closures.Controllers
             }
 
             reasonDto.DateCreated = DateTime.Now;
+            reasonDto.Srn = "4011654";
+            // Check overlapping dates
+
+            // bool overlap = a.start < b.end && b.start < a.end;
+
+            var getOverlaps = await _mediator.Send(new GetOverlappingClosuresQuery() { ClosureReasonDto = reasonDto });
+
+            if (getOverlaps.Value)
+            {
+                ModelState.AddModelError("DateFromDay", "This date overlaps with other closures");
+                model.ReasonTypeList = await GetReasonTypes();
+                return View(model);
+            }
 
             var createClosureReason = await _mediator.Send(new CreateClosureReasonCommand() { ClosureReasonDto = reasonDto });
 
