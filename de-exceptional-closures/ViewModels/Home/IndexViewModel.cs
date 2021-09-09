@@ -124,5 +124,6 @@ namespace de_exceptional_closures.ViewModels.Home
         public bool? IsSingleDay { get; set; }
         public List<ReasonTypeDto> ReasonTypeList { get; set; }
         public string InstitutionName { get; set; }
+        public string Srn { get; set; }
     }
 }
