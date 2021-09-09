@@ -24,13 +24,14 @@
     <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
     <partial name="../Components/_cookieConsentBanner.cshtml" />
     <partial name="../Components/_header.cshtml" />
-    <div class="govuk-width-container ">
-        <main class="govuk-main-wrapper" id="main-content" role="main">
-            <div class="govuk-grid-row">
+
+
+    <div class="govuk-width-container app-width-container">
+
                 @RenderBody()
-            </div>
-        </main>
+ 
     </div>
+
     <partial name="../Shared/_TimeOutControl.cshtml" />
     <partial name="../Components/_footer.cshtml" />
     <script src="~/lib/DataTables/datatables.min.js"></script>

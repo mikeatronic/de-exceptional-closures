@@ -8,342 +8,336 @@
 
     @Html.AntiForgeryToken()
     @Html.HiddenFor(x => x.InstitutionName)
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
 
-    <div class="govuk-grid-column-two-thirds">
+                <partial name="../Components/_errorSummary.cshtml" />
 
-        <partial name="../Components/_errorSummary.cshtml" />
+                <h1 class="govuk-heading-xl">
+                    Create closure
+                    <span class="govuk-caption-l">
+                        @Model.InstitutionName
+                    </span>
+                </h1>
 
-        <h1 class="govuk-heading-xl">
-            Create closure
-            <span class="govuk-caption-l">
-                @Model.InstitutionName
-            </span>
-        </h1>
-
-        <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset">
-                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                    Is the closure for a single day or continuous days?
-                </legend>
-                <span asp-validation-for="IsSingleDay" class="govuk-error-message"></span>
-                <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
-                    <div class="govuk-radios__item">
-                        @if (Model.IsSingleDay != null && Model.IsSingleDay.Value)
-                        {
-
-                            <input class="govuk-radios__input" id="IsSingleDay" name="IsSingleDay" asp-for="IsSingleDay" type="radio"
-                                   data-aria-controls="conditional-radio-pd" data-group="dateRadios" value=true checked>
-                        }
-                        else
-                        {
-                            <input class="govuk-radios__input" id="IsSingleDay" name="IsSingleDay" asp-for="IsSingleDay" type="radio"
-                                   data-aria-controls="conditional-radio-pd" data-group="dateRadios" value=true>
-                        }
-
-                        <label class="govuk-label govuk-radios__label" for="IsSingleDay">
-                            Single day
-                        </label>
-                    </div>
-                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
-                         id="conditional-radio-pd">
-                        <div class="govuk-form-group @(ViewData.ModelState["DateFromDay"] != null && ViewData.ModelState["DateFromDay"].Errors.Any() 
-                                                ? " govuk-form-group--error" : "")">
-                            <fieldset class="govuk-fieldset" role="group"
-                                      aria-describedby="single-closure-hint">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                                    Closure date
-                                </legend>
-                                <div id="single-closure-hint" class="govuk-hint">
-                                    For example, 27 3 2007
-                                </div>
-
-                                <span asp-validation-for="DateFrom" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateFromDay" id="DateFromDay-error" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateFromMonth" id="DateFromMonth-error" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateFromYear"  id="DateFromYear-error" class="govuk-error-message"></span>
-                                <div class="govuk-date-input" id="single-closure">
-                                    <div class="govuk-date-input__item">
-                                        <div class="govuk-form-group">
-                                            <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateFromDay">
-                                                Day
-                                            </label>
-                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                                   asp-for="DateFromDay"
-                                                   type="text" pattern="[0-9]*" inputmode="numeric">
-
-                                        </div>
-                                    </div>
-                                    <div class="govuk-date-input__item">
-                                        <div class="govuk-form-group">
-                                            <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateFromMonth">
-                                                Month
-                                            </label>
-                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                                   asp-for="DateFromMonth"
-                                                   type="text" pattern="[0-9]*" inputmode="numeric">
-                                        </div>
-                                    </div>
-                                    <div class="govuk-date-input__item">
-                                        <div class="govuk-form-group">
-                                            <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateFromYear">
-                                                Year
-                                            </label>
-                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4"
-                                                   asp-for="DateFromYear"
-                                                   type="text" pattern="[0-9]*" inputmode="numeric">
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </fieldset>
-                        </div>
-
-
-                    </div>
-                    <div class="govuk-radios__item">
-                        @if (Model.IsSingleDay != null && Model.IsSingleDay.Value == false)
-                        {
-                            <input class="govuk-radios__input" id="IsSingleDay-No" name="IsSingleDay" asp-for="IsSingleDay" type="radio" data-aria-controls="conditional-radio-pd2" data-group="dateRadios" value=false checked>
-                        }
-                        else
-                        {
-                            <input class="govuk-radios__input" id="IsSingleDay-No" name="IsSingleDay" asp-for="IsSingleDay" type="radio" data-aria-controls="conditional-radio-pd2" data-group="dateRadios" value=false>
-                        }
-
-                        <label class="govuk-label govuk-radios__label" for="IsSingleDay-No">
-                            Continuous days
-                        </label>
-                    </div>
-                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
-                         id="conditional-radio-pd2">
-                        <div class="govuk-form-group @(ViewData.ModelState["DateMultipleFromDay"] != null && ViewData.ModelState["DateMultipleFromDay"].Errors.Any() 
-                                                ? " govuk-form-group--error" : "")">
-                            <fieldset class="govuk-fieldset" role="group"
-                                      aria-describedby="multi-closure-hint">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                                    Closure date
-                                </legend>
-                                <div id="multi-closure-hint" class="govuk-hint">
-                                    For example, 27 3 2007
-                                </div>
-
-                                <span asp-validation-for="DateMultipleFrom" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateMultipleFromDay" id="DateMultipleFromDay-error"  class="govuk-error-message"></span>
-                                <span asp-validation-for="DateMultipleFromMonth" id="DateMultipleFromMonth-error"  class="govuk-error-message"></span>
-                                <span asp-validation-for="DateMultipleFromYear" id="DateMultipleFromYear-error"  class="govuk-error-message"></span>
-                                <div class="govuk-date-input" id="multi-closure">
-                                    <div class="govuk-date-input__item">
-                                        <div class="govuk-form-group">
-                                            <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateMultipleFromDay">
-                                                Day
-                                            </label>
-                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                                   asp-for="DateMultipleFromDay"
-                                                   type="text" pattern="[0-9]*" inputmode="numeric">
-
-                                        </div>
-                                    </div>
-                                    <div class="govuk-date-input__item">
-                                        <div class="govuk-form-group">
-                                            <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateMultipleFromMonth">
-                                                Month
-                                            </label>
-                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                                   asp-for="DateMultipleFromMonth"
-                                                   type="text" pattern="[0-9]*" inputmode="numeric">
-                                        </div>
-                                    </div>
-                                    <div class="govuk-date-input__item">
-                                        <div class="govuk-form-group">
-                                            <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateMultipleFromYear">
-                                                Year
-                                            </label>
-                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4"
-                                                   asp-for="DateMultipleFromYear"
-                                                   type="text" pattern="[0-9]*" inputmode="numeric">
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </fieldset>
-                        </div>
-
-                        <div class="govuk-form-group @(ViewData.ModelState["DateToDay"] != null && ViewData.ModelState["DateToDay"].Errors.Any() 
-                                                ? " govuk-form-group--error" : "")">
-                            <fieldset class="govuk-fieldset" role="group"
-                                      aria-describedby="multiple-closure2-hint">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                                    Closure to date
-                                </legend>
-                                <div id="multiple-closure2-hint" class="govuk-hint">
-                                    For example, 27 3 2007
-                                </div>
-                                <span asp-validation-for="DateTo" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateToDay" id="DateToDay-error" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateToMonth" id="DateToMonth-error" class="govuk-error-message"></span>
-                                <span asp-validation-for="DateToYear" id="DateToYear-error" class="govuk-error-message"></span>
-                                <div class="govuk-date-input" id="multiple-closure2">
-                                    <div class="govuk-date-input__item">
-                                        <div class="govuk-form-group">
-                                            <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateToDay">
-                                                Day
-                                            </label>
-                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                                   asp-for="DateToDay"
-                                                   type="text" pattern="[0-9]*" inputmode="numeric">
-                                        </div>
-                                    </div>
-                                    <div class="govuk-date-input__item">
-                                        <div class="govuk-form-group">
-                                            <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateToMonth">
-                                                Month
-                                            </label>
-                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                                   asp-for="DateToMonth"
-                                                   type="text" pattern="[0-9]*" inputmode="numeric">
-                                        </div>
-                                    </div>
-                                    <div class="govuk-date-input__item">
-                                        <div class="govuk-form-group">
-                                            <label class="govuk-label govuk-date-input__label"
-                                                   asp-for="DateToYear">
-                                                Year
-                                            </label>
-                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4"
-                                                   asp-for="DateToYear"
-                                                   type="text" pattern="[0-9]*" inputmode="numeric">
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </fieldset>
-                        </div>
-                    </div>
-                </div>
-
-            </fieldset>
-        </div>
-
-        <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset" aria-describedby="closure-reason-hint">
-                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                    Reason for closure
-                </legend>
-                <div id="closure-reason-hint" class="govuk-hint">
-                    Select one option.
-                </div>
-
-                <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
-                    <span asp-validation-for="ReasonTypeId" class="govuk-error-message"></span>
-                    @foreach (var item in Model.ReasonTypeList)
-                    {
-                        @if (item.ApprovalRequired.HasValue && item.ApprovalRequired.Value)
-                        {
-                <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" data-aria-controls="conditional-contact-@item.Id" name="ReasonTypeId" value="@item.Id" />
-                    <label class="govuk-label govuk-radios__label" for="@item.Id">
-                        @item.Description
-                    </label>
-                            @if (item.Id == 5)
-                            {
-                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-@item.Id">
-                                    <div class="govuk-form-group @(ViewData.ModelState["OtherReason"] != null && ViewData.ModelState["OtherReason"].Errors.Any() 
-                                                ? " govuk-form-group--error" : "")">
-                                        <label class="govuk-label govuk-label--s" asp-for="OtherReason">
-                                            Can you provide more detail?
-                                        </label>
-                                        <span asp-validation-for="OtherReason" id="OtherReason-error" class="govuk-error-message"></span>
-                                        <textarea class="govuk-textarea" rows="8" asp-for="OtherReason"></textarea>
-                                    </div>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-@item.Id">
-                                 
-                                    <div class="govuk-form-group @(ViewData.ModelState["CovidQ1"] != null && ViewData.ModelState["CovidQ1"].Errors.Any() 
-                                                ? " govuk-form-group--error" : "")">
-                                        <label class="govuk-label govuk-label--s" asp-for="CovidQ1">
-                                            Q1
-                                        </label> 
-                                        <span asp-validation-for="CovidQ1" id="CovidQ1-error" class="govuk-error-message"></span>
-                                        <textarea class="govuk-textarea" rows="8" asp-for="CovidQ1"></textarea>
-                                    </div>
-
-                                    <div class="govuk-form-group @(ViewData.ModelState["CovidQ2"] != null && ViewData.ModelState["CovidQ2"].Errors.Any() 
-                                                ? " govuk-form-group--error" : "")">
-                                        <label class="govuk-label govuk-label--s" asp-for="CovidQ2">
-                                            Q2
-                                        </label> 
-                                        <span asp-validation-for="CovidQ2" id="CovidQ2-error" class="govuk-error-message"></span>
-                                        <textarea class="govuk-textarea" rows="8" asp-for="CovidQ2"></textarea>
-                                    </div>
-
-                                    <div class="govuk-form-group @(ViewData.ModelState["CovidQ3"] != null && ViewData.ModelState["CovidQ3"].Errors.Any() 
-                                                ? " govuk-form-group--error" : "")">
-                                        <label class="govuk-label govuk-label--s" asp-for="CovidQ3">
-                                            Q3
-                                        </label> 
-                                        <span asp-validation-for="CovidQ3" id="CovidQ3-error" class="govuk-error-message"></span>
-                                        <textarea class="govuk-textarea" rows="8" asp-for="CovidQ3"></textarea>
-                                    </div>
-
-                                    <div class="govuk-form-group @(ViewData.ModelState["CovidQ4"] != null && ViewData.ModelState["CovidQ4"].Errors.Any() 
-                                                ? " govuk-form-group--error" : "")">
-                                        <label class="govuk-label govuk-label--s" asp-for="CovidQ4">
-                                            Q4
-                                        </label> 
-                                        <span asp-validation-for="CovidQ4" id="CovidQ4-error" class="govuk-error-message"></span>
-                                        <textarea class="govuk-textarea" rows="8" asp-for="CovidQ4"></textarea>
-                                    </div>
-
-                                    <div class="govuk-form-group @(ViewData.ModelState["CovidQ5"] != null && ViewData.ModelState["CovidQ5"].Errors.Any() 
-                                                ? " govuk-form-group--error" : "")">
-                                        <label class="govuk-label govuk-label--s" asp-for="CovidQ5">
-                                            Q5
-                                        </label> 
-                                        <span asp-validation-for="CovidQ5" id="CovidQ5-error" class="govuk-error-message"></span>
-                                        <textarea class="govuk-textarea" rows="8" asp-for="CovidQ5"></textarea>
-                                    </div>
-
-                                </div>
-                            }
-                </div>
-                        }
-                        else
-                        {
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                            Is the closure for a single day or continuous days?
+                        </legend>
+                        <span asp-validation-for="IsSingleDay" class="govuk-error-message"></span>
+                        <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" name="ReasonTypeId" value="@item.Id" />
-                                <label class="govuk-label govuk-radios__label" for="@item.Id">
-                                    @item.Description
+                                @if (Model.IsSingleDay != null && Model.IsSingleDay.Value)
+                                {
+
+                                    <input class="govuk-radios__input" id="IsSingleDay" name="IsSingleDay" asp-for="IsSingleDay" type="radio"
+                                           data-aria-controls="conditional-radio-pd" data-group="dateRadios" value=true checked>
+                                }
+                                else
+                                {
+                                    <input class="govuk-radios__input" id="IsSingleDay" name="IsSingleDay" asp-for="IsSingleDay" type="radio"
+                                           data-aria-controls="conditional-radio-pd" data-group="dateRadios" value=true>
+                                }
+
+                                <label class="govuk-label govuk-radios__label" for="IsSingleDay">
+                                    Single day
                                 </label>
                             </div>
-                        }
-                    }
+                            <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
+                                 id="conditional-radio-pd">
+                                <div class="govuk-form-group @(ViewData.ModelState["DateFromDay"] != null && ViewData.ModelState["DateFromDay"].Errors.Any()
+                                                ? " govuk-form-group--error" : "")">
+                                    <fieldset class="govuk-fieldset" role="group"
+                                              aria-describedby="single-closure-hint">
+                                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                            Closure date
+                                        </legend>
+                                        <div id="single-closure-hint" class="govuk-hint">
+                                            For example, 27 3 2007
+                                        </div>
 
+                                        <span asp-validation-for="DateFrom" class="govuk-error-message"></span>
+                                        <span asp-validation-for="DateFromDay" id="DateFromDay-error" class="govuk-error-message"></span>
+                                        <span asp-validation-for="DateFromMonth" id="DateFromMonth-error" class="govuk-error-message"></span>
+                                        <span asp-validation-for="DateFromYear" id="DateFromYear-error" class="govuk-error-message"></span>
+                                        <div class="govuk-date-input" id="single-closure">
+                                            <div class="govuk-date-input__item">
+                                                <div class="govuk-form-group">
+                                                    <label class="govuk-label govuk-date-input__label"
+                                                           asp-for="DateFromDay">
+                                                        Day
+                                                    </label>
+                                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                                                           asp-for="DateFromDay"
+                                                           type="text" pattern="[0-9]*" inputmode="numeric">
+
+                                                </div>
+                                            </div>
+                                            <div class="govuk-date-input__item">
+                                                <div class="govuk-form-group">
+                                                    <label class="govuk-label govuk-date-input__label"
+                                                           asp-for="DateFromMonth">
+                                                        Month
+                                                    </label>
+                                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                                                           asp-for="DateFromMonth"
+                                                           type="text" pattern="[0-9]*" inputmode="numeric">
+                                                </div>
+                                            </div>
+                                            <div class="govuk-date-input__item">
+                                                <div class="govuk-form-group">
+                                                    <label class="govuk-label govuk-date-input__label"
+                                                           asp-for="DateFromYear">
+                                                        Year
+                                                    </label>
+                                                    <input class="govuk-input govuk-date-input__input govuk-input--width-4"
+                                                           asp-for="DateFromYear"
+                                                           type="text" pattern="[0-9]*" inputmode="numeric">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+                                </div>
+
+
+                            </div>
+                            <div class="govuk-radios__item">
+                                @if (Model.IsSingleDay != null && Model.IsSingleDay.Value == false)
+                                {
+                                    <input class="govuk-radios__input" id="IsSingleDay-No" name="IsSingleDay" asp-for="IsSingleDay" type="radio" data-aria-controls="conditional-radio-pd2" data-group="dateRadios" value=false checked>
+                                }
+                                else
+                                {
+                                    <input class="govuk-radios__input" id="IsSingleDay-No" name="IsSingleDay" asp-for="IsSingleDay" type="radio" data-aria-controls="conditional-radio-pd2" data-group="dateRadios" value=false>
+                                }
+
+                                <label class="govuk-label govuk-radios__label" for="IsSingleDay-No">
+                                    Continuous days
+                                </label>
+                            </div>
+                            <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
+                                 id="conditional-radio-pd2">
+                                <div class="govuk-form-group @(ViewData.ModelState["DateMultipleFromDay"] != null && ViewData.ModelState["DateMultipleFromDay"].Errors.Any()
+                                                ? " govuk-form-group--error" : "")">
+                                    <fieldset class="govuk-fieldset" role="group"
+                                              aria-describedby="multi-closure-hint">
+                                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                            Closure date
+                                        </legend>
+                                        <div id="multi-closure-hint" class="govuk-hint">
+                                            For example, 27 3 2007
+                                        </div>
+
+                                        <span asp-validation-for="DateMultipleFrom" class="govuk-error-message"></span>
+                                        <span asp-validation-for="DateMultipleFromDay" id="DateMultipleFromDay-error" class="govuk-error-message"></span>
+                                        <span asp-validation-for="DateMultipleFromMonth" id="DateMultipleFromMonth-error" class="govuk-error-message"></span>
+                                        <span asp-validation-for="DateMultipleFromYear" id="DateMultipleFromYear-error" class="govuk-error-message"></span>
+                                        <div class="govuk-date-input" id="multi-closure">
+                                            <div class="govuk-date-input__item">
+                                                <div class="govuk-form-group">
+                                                    <label class="govuk-label govuk-date-input__label"
+                                                           asp-for="DateMultipleFromDay">
+                                                        Day
+                                                    </label>
+                                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                                                           asp-for="DateMultipleFromDay"
+                                                           type="text" pattern="[0-9]*" inputmode="numeric">
+
+                                                </div>
+                                            </div>
+                                            <div class="govuk-date-input__item">
+                                                <div class="govuk-form-group">
+                                                    <label class="govuk-label govuk-date-input__label"
+                                                           asp-for="DateMultipleFromMonth">
+                                                        Month
+                                                    </label>
+                                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                                                           asp-for="DateMultipleFromMonth"
+                                                           type="text" pattern="[0-9]*" inputmode="numeric">
+                                                </div>
+                                            </div>
+                                            <div class="govuk-date-input__item">
+                                                <div class="govuk-form-group">
+                                                    <label class="govuk-label govuk-date-input__label"
+                                                           asp-for="DateMultipleFromYear">
+                                                        Year
+                                                    </label>
+                                                    <input class="govuk-input govuk-date-input__input govuk-input--width-4"
+                                                           asp-for="DateMultipleFromYear"
+                                                           type="text" pattern="[0-9]*" inputmode="numeric">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+                                </div>
+
+                                <div class="govuk-form-group @(ViewData.ModelState["DateToDay"] != null && ViewData.ModelState["DateToDay"].Errors.Any()
+                                                ? " govuk-form-group--error" : "")">
+                                    <fieldset class="govuk-fieldset" role="group"
+                                              aria-describedby="multiple-closure2-hint">
+                                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                            Closure to date
+                                        </legend>
+                                        <div id="multiple-closure2-hint" class="govuk-hint">
+                                            For example, 27 3 2007
+                                        </div>
+                                        <span asp-validation-for="DateTo" class="govuk-error-message"></span>
+                                        <span asp-validation-for="DateToDay" id="DateToDay-error" class="govuk-error-message"></span>
+                                        <span asp-validation-for="DateToMonth" id="DateToMonth-error" class="govuk-error-message"></span>
+                                        <span asp-validation-for="DateToYear" id="DateToYear-error" class="govuk-error-message"></span>
+                                        <div class="govuk-date-input" id="multiple-closure2">
+                                            <div class="govuk-date-input__item">
+                                                <div class="govuk-form-group">
+                                                    <label class="govuk-label govuk-date-input__label"
+                                                           asp-for="DateToDay">
+                                                        Day
+                                                    </label>
+                                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                                                           asp-for="DateToDay"
+                                                           type="text" pattern="[0-9]*" inputmode="numeric">
+                                                </div>
+                                            </div>
+                                            <div class="govuk-date-input__item">
+                                                <div class="govuk-form-group">
+                                                    <label class="govuk-label govuk-date-input__label"
+                                                           asp-for="DateToMonth">
+                                                        Month
+                                                    </label>
+                                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                                                           asp-for="DateToMonth"
+                                                           type="text" pattern="[0-9]*" inputmode="numeric">
+                                                </div>
+                                            </div>
+                                            <div class="govuk-date-input__item">
+                                                <div class="govuk-form-group">
+                                                    <label class="govuk-label govuk-date-input__label"
+                                                           asp-for="DateToYear">
+                                                        Year
+                                                    </label>
+                                                    <input class="govuk-input govuk-date-input__input govuk-input--width-4"
+                                                           asp-for="DateToYear"
+                                                           type="text" pattern="[0-9]*" inputmode="numeric">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
                 </div>
-            </fieldset>
-        </div>
 
-        <button class="govuk-button" data-module="govuk-button">
-            Continue
-        </button>
-    </div>
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset" aria-describedby="closure-reason-hint">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                            Reason for closure
+                        </legend>
+                        <div id="closure-reason-hint" class="govuk-hint">
+                            Select one option.
+                        </div>
+
+                        <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
+                            <span asp-validation-for="ReasonTypeId" class="govuk-error-message"></span>
+                            @foreach (var item in Model.ReasonTypeList)
+                            {
+                                @if (item.ApprovalRequired.HasValue && item.ApprovalRequired.Value)
+                                {
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" data-aria-controls="conditional-contact-@item.Id" name="ReasonTypeId" value="@item.Id" />
+                                        <label class="govuk-label govuk-radios__label" for="@item.Id">
+                                            @item.Description
+                                        </label>
+                                        @if (item.Id == 5)
+                                        {
+                                            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-@item.Id">
+                                                <div class="govuk-form-group @(ViewData.ModelState["OtherReason"] != null && ViewData.ModelState["OtherReason"].Errors.Any()
+                                                ? " govuk-form-group--error" : "")">
+                                                    <label class="govuk-label govuk-label--s" asp-for="OtherReason">
+                                                        Can you provide more detail?
+                                                    </label>
+                                                    <span asp-validation-for="OtherReason" id="OtherReason-error" class="govuk-error-message"></span>
+                                                    <textarea class="govuk-textarea" rows="8" asp-for="OtherReason"></textarea>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-@item.Id">
+
+                                                <div class="govuk-form-group @(ViewData.ModelState["CovidQ1"] != null && ViewData.ModelState["CovidQ1"].Errors.Any()
+                                                ? " govuk-form-group--error" : "")">
+                                                    <label class="govuk-label govuk-label--s" asp-for="CovidQ1">
+                                                        Q1
+                                                    </label>
+                                                    <span asp-validation-for="CovidQ1" id="CovidQ1-error" class="govuk-error-message"></span>
+                                                    <textarea class="govuk-textarea" rows="8" asp-for="CovidQ1"></textarea>
+                                                </div>
+
+                                                <div class="govuk-form-group @(ViewData.ModelState["CovidQ2"] != null && ViewData.ModelState["CovidQ2"].Errors.Any()
+                                                ? " govuk-form-group--error" : "")">
+                                                    <label class="govuk-label govuk-label--s" asp-for="CovidQ2">
+                                                        Q2
+                                                    </label>
+                                                    <span asp-validation-for="CovidQ2" id="CovidQ2-error" class="govuk-error-message"></span>
+                                                    <textarea class="govuk-textarea" rows="8" asp-for="CovidQ2"></textarea>
+                                                </div>
+
+                                                <div class="govuk-form-group @(ViewData.ModelState["CovidQ3"] != null && ViewData.ModelState["CovidQ3"].Errors.Any()
+                                                ? " govuk-form-group--error" : "")">
+                                                    <label class="govuk-label govuk-label--s" asp-for="CovidQ3">
+                                                        Q3
+                                                    </label>
+                                                    <span asp-validation-for="CovidQ3" id="CovidQ3-error" class="govuk-error-message"></span>
+                                                    <textarea class="govuk-textarea" rows="8" asp-for="CovidQ3"></textarea>
+                                                </div>
+
+                                                <div class="govuk-form-group @(ViewData.ModelState["CovidQ4"] != null && ViewData.ModelState["CovidQ4"].Errors.Any()
+                                                ? " govuk-form-group--error" : "")">
+                                                    <label class="govuk-label govuk-label--s" asp-for="CovidQ4">
+                                                        Q4
+                                                    </label>
+                                                    <span asp-validation-for="CovidQ4" id="CovidQ4-error" class="govuk-error-message"></span>
+                                                    <textarea class="govuk-textarea" rows="8" asp-for="CovidQ4"></textarea>
+                                                </div>
+
+                                                <div class="govuk-form-group @(ViewData.ModelState["CovidQ5"] != null && ViewData.ModelState["CovidQ5"].Errors.Any()
+                                                ? " govuk-form-group--error" : "")">
+                                                    <label class="govuk-label govuk-label--s" asp-for="CovidQ5">
+                                                        Q5
+                                                    </label>
+                                                    <span asp-validation-for="CovidQ5" id="CovidQ5-error" class="govuk-error-message"></span>
+                                                    <textarea class="govuk-textarea" rows="8" asp-for="CovidQ5"></textarea>
+                                                </div>
+
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" name="ReasonTypeId" value="@item.Id" />
+                                        <label class="govuk-label govuk-radios__label" for="@item.Id">
+                                            @item.Description
+                                        </label>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                    </fieldset>
+                </div>
+
+                <button class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </div>
+            </div>
+        </main>
 </form>
-
-<script>
-    //$('input[type=radio][name=IsSingleDay]').change(function ()
-    //{
-    //    let value = $('input[name=IsSingleDay]:checked').val();
-
-    //    $('#IsSingleDay').val(value);
-    //});
-</script>
