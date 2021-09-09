@@ -5,74 +5,78 @@
     ViewData["Title"] = "Log in";
 }
 
-<div class="govuk-width-container">
+<main class="govuk-main-wrapper" id="main-content" role="main">
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-                <h1  class="govuk-heading-l">@ViewData["Title"]</h1>
-                <section>
-                    <form id="account" method="post">
-                        <div asp-validation-summary="None" class="govuk-error-summary">
-                            <h2 class="govuk-error-summary__title" id="error-summary-title">
-                                There is a problem
-                            </h2>
-                            <div class="govuk-error-summary__body">
-                                <ul class="govuk-list govuk-error-summary__list">
-                                    @foreach (var modelStateKey in ViewData.ModelState.Keys)
-                                    {
-                                        var modelStateVal = ViewData.ModelState[modelStateKey];
-                                        foreach (var error in modelStateVal.Errors)
+        <div class="govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+                    <section>
+                        <form id="account" method="post">
+                            <div asp-validation-summary="None" class="govuk-error-summary">
+                                <h2 class="govuk-error-summary__title" id="error-summary-title">
+                                    There is a problem
+                                </h2>
+                                <div class="govuk-error-summary__body">
+                                    <ul class="govuk-list govuk-error-summary__list">
+                                        @foreach (var modelStateKey in ViewData.ModelState.Keys)
                                         {
-                                            <li>
-                                                <a class="error-items" href="#@modelStateKey">@error.ErrorMessage</a>
-                                            </li>
+                                            var modelStateVal = ViewData.ModelState[modelStateKey];
+                                            foreach (var error in modelStateVal.Errors)
+                                            {
+                                                <li>
+                                                    <a class="error-items" href="#@modelStateKey">@error.ErrorMessage</a>
+                                                </li>
+                                            }
                                         }
-                                    }
-                                </ul>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="govuk-form-group">
+                            <div class="govuk-form-group">
 
-                            <label asp-for="Input.Email" class="govuk-label"></label>
-                            <span asp-validation-for="Input.Email" id="Input_Email-error" class="govuk-error-message"></span>
-                            <input asp-for="Input.Email" class="govuk-input" />
+                                <label asp-for="Input.Email" class="govuk-label"></label>
+                                <span asp-validation-for="Input.Email" id="Input_Email-error" class="govuk-error-message"></span>
+                                <input asp-for="Input.Email" class="govuk-input" />
 
-                        </div>
-                        <div class="govuk-form-group">
-                            <label asp-for="Input.Password" class="govuk-label"></label>
-                            <span asp-validation-for="Input.Password" id="Input_Password-error" class="govuk-error-message"></span>
-                            <input asp-for="Input.Password" class="govuk-input" />
-
-                        </div>
-
-                        <div class="govuk-form-group">
-                        <div class="govuk-checkboxes">
-                            <div class="govuk-checkboxes__item">
-                                @Html.CheckBoxFor(m => m.Input.RememberMe, new { @class = "govuk-checkboxes__input" })
-                                <label class="govuk-label govuk-checkboxes__label" asp-for="Input.RememberMe">
-                                    @Html.DisplayNameFor(m => m.Input.RememberMe)
-                                </label>
                             </div>
-                        </div>
-                        </div>
+                            <div class="govuk-form-group">
+                                <label asp-for="Input.Password" class="govuk-label"></label>
+                                <span asp-validation-for="Input.Password" id="Input_Password-error" class="govuk-error-message"></span>
+                                <input asp-for="Input.Password" class="govuk-input" />
 
-                        <div class="govuk-form-group">
-                            <button type="submit" class="govuk-button" data-module="govuk-button">Log in</button>
-                        </div>
-                        <div class="govuk-form-group">
-                            <p class="govuk-body">
-                                <a id="forgot-password" asp-controller="Account" asp-action="ForgotPassword" class="govuk-link">Forgot your password?</a>
-                            </p>
-                            <p class="govuk-body">
-                                <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl" class="govuk-link">Register as a new user</a>
-                            </p>
-                        </div>
-                    </form>
-                </section>
+                            </div>
+
+                            <div class="govuk-form-group">
+                                <div class="govuk-checkboxes">
+                                    <div class="govuk-checkboxes__item">
+                                        @Html.CheckBoxFor(m => m.Input.RememberMe, new { @class = "govuk-checkboxes__input" })
+                                        <label class="govuk-label govuk-checkboxes__label" asp-for="Input.RememberMe">
+                                            @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="govuk-form-group">
+                                <button type="submit" class="govuk-button" data-module="govuk-button">Log in</button>
+                            </div>
+                            <div class="govuk-form-group">
+                                <p class="govuk-body">
+                                    <a id="forgot-password" asp-controller="Account" asp-action="ForgotPassword" class="govuk-link">Forgot your password?</a>
+                                </p>
+                                <p class="govuk-body">
+                                    <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl" class="govuk-link">Register as a new user</a>
+                                </p>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            </div>
         </div>
-    </div>    
-</div>
+        </div>
+    </main>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+        @section Scripts {
+            <partial name="_ValidationScriptsPartial" />
+        }

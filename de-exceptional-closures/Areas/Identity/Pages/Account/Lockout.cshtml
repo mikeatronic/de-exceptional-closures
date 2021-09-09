@@ -4,12 +4,15 @@
     ViewData["Title"] = "Locked out";
 }
 
-
-<div class="govuk-width-container">
+<main class="govuk-main-wrapper" id="main-content" role="main">
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
-            <p class="govuk-body">This account has been locked out, please try again later.</p>
+        <div class="govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+                    <p class="govuk-body">This account has been locked out, please try again later.</p>
+                </div>
             </div>
         </div>
-</div>
+        </div>
+    </main>
