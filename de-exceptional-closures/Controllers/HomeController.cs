@@ -161,8 +161,6 @@ namespace de_exceptional_closures.Controllers
                 }
             }
 
-
-
             // Set Approval type
             model.ApprovalTypeId = await GetApprovalType(model.ReasonTypeId);
 

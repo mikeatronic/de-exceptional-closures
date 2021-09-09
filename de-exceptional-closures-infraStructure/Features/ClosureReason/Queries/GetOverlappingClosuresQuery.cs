@@ -32,10 +32,13 @@ namespace de_exceptional_closures_infraStructure.Features.ClosureReason.Queries
                 return Result.Fail<bool>(validationResult.ToString());
 
 
-            var getAllClosuresDatesForSchool = ApplicationDbContext.ClosureReason.AsNoTracking().Where(p => p.Srn == request.ClosureReasonDto.Srn).ToList().OrderByDescending(i => i.DateFrom);
+            var getAllClosuresDatesForSchool = ApplicationDbContext.ClosureReason.AsNoTracking().Where(p => p.Srn == request.ClosureReasonDto.Srn).OrderByDescending(i => i.DateFrom);
 
             foreach (var item in getAllClosuresDatesForSchool)
             {
+                // bool overlap = a.start < b.end && b.start < a.end;
+
+
                 bool overlap = request.ClosureReasonDto.DateFrom < item.DateTo && item.DateTo < request.ClosureReasonDto.DateTo;
 
                 if (overlap)
@@ -43,8 +46,6 @@ namespace de_exceptional_closures_infraStructure.Features.ClosureReason.Queries
                     return Result.Ok(true);
                 }
             }
-
-            // bool overlap = a.start < b.end && b.start < a.end;
 
             return Result.Ok(false);
         }
