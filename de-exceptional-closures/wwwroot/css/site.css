@@ -936,3 +936,9 @@ table.dataTable .govuk-link {
 .banner-dangerous-content {
     padding: 10px !important;
 }
+
+.increase-colour-contrast 
+{
+    color:black;
+    background-color:white;
+}
