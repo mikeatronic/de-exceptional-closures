@@ -56,6 +56,7 @@ namespace de_exceptional_closures.Controllers
             model.TitleTagName = "Create closure";
             model.InstitutionName = await GetInstitution();
             model.ReasonTypeList = await GetReasonTypes();
+            model.Srn = GetInstitutionRef();
 
             LogAudit("opened Is the closure for a single day GET view");
 
@@ -198,16 +199,21 @@ namespace de_exceptional_closures.Controllers
             }
 
             reasonDto.DateCreated = DateTime.Now;
-            reasonDto.Srn = "4011654";
+
             // Check overlapping dates
-
-            // bool overlap = a.start < b.end && b.start < a.end;
-
             var getOverlaps = await _mediator.Send(new GetOverlappingClosuresQuery() { ClosureReasonDto = reasonDto });
 
             if (getOverlaps.Value)
             {
-                ModelState.AddModelError("DateFromDay", "This date overlaps with other closures");
+                if (!reasonDto.DateTo.HasValue)
+                {
+                    ModelState.AddModelError("DateFromDay", "This date overlaps with other closures");
+                }
+                else
+                {
+                    ModelState.AddModelError("DateMultipleFromDay", "This date overlaps with other closures");
+                }
+
                 model.ReasonTypeList = await GetReasonTypes();
                 return View(model);
             }

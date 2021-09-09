@@ -31,15 +31,25 @@ namespace de_exceptional_closures_infraStructure.Features.ClosureReason.Queries
             if (!validationResult.IsValid)
                 return Result.Fail<bool>(validationResult.ToString());
 
-
             var getAllClosuresDatesForSchool = ApplicationDbContext.ClosureReason.AsNoTracking().Where(p => p.Srn == request.ClosureReasonDto.Srn).OrderByDescending(i => i.DateFrom);
 
             foreach (var item in getAllClosuresDatesForSchool)
             {
-                // bool overlap = a.start < b.end && b.start < a.end;
+                // Check single days
+                if (!request.ClosureReasonDto.DateTo.HasValue)
+                {
+                    bool singleOverLap = request.ClosureReasonDto.DateFrom >= item.DateFrom && request.ClosureReasonDto.DateFrom <= item.DateTo;
 
+                    bool checkSingleDays = request.ClosureReasonDto.DateFrom == item.DateFrom;
 
-                bool overlap = request.ClosureReasonDto.DateFrom < item.DateTo && item.DateTo < request.ClosureReasonDto.DateTo;
+                    if (singleOverLap || checkSingleDays)
+                    {
+                        return Result.Ok(true);
+                    }
+                }
+
+                // Check multiple days
+                bool overlap = request.ClosureReasonDto.DateFrom <= item.DateTo && item.DateFrom <= request.ClosureReasonDto.DateTo;
 
                 if (overlap)
                 {
