@@ -225,16 +225,8 @@ namespace de_exceptional_closures.Controllers
                 return View(model);
             }
 
-            var getNewClosureDetails = await _mediator.Send(new GetClosureReasonByIdQuery() { Id = createClosureReason.Value });
-
-            if (reasonDto.ApprovalTypeId == (int)ApprovalType.PreApproved)
-            {
-                await SendApprovalNotRequiredNotification(getNewClosureDetails.Value);
-            }
-            else
-            {
-                await SendApprovalRequiredNotification(getNewClosureDetails.Value);
-            }
+            // Send emails
+            await SendEmails(createClosureReason.Value, (int)reasonDto.ApprovalTypeId);
 
             LogAudit("opened Is the closure for a single day POST view and selected model.IsSingleDay = ");
 
@@ -275,6 +267,20 @@ namespace de_exceptional_closures.Controllers
             LogAudit("opened Cookies GET view");
 
             return View(model);
+        }
+
+        private async Task SendEmails(int id, int approvalTypeId)
+        {
+            var getNewClosureDetails = await _mediator.Send(new GetClosureReasonByIdQuery() { Id = id });
+
+            if (approvalTypeId == (int)ApprovalType.PreApproved)
+            {
+                await SendApprovalNotRequiredNotification(getNewClosureDetails.Value);
+            }
+            else
+            {
+                await SendApprovalRequiredNotification(getNewClosureDetails.Value);
+            }
         }
 
         private async Task<string> GetInstitution()
