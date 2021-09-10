@@ -23,16 +23,16 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Email" class="govuk-label govuk-label--s"></label>
+                            <span class="govuk-label govuk-label--s"></span>
                             @if (Model.IsEmailConfirmed)
                             {
                                 <div class="govuk-form-group">
-                                    <input asp-for="Email" class="govuk-input" disabled />
+                                    <span class="govuk-label">@Model.Email</span>
                                 </div>
                             }
                             else
                             {
-                                <input asp-for="Email" class="govuk-input" disabled />
+                                <span class="govuk-label">@Model.Email</span>
                                 <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
                             }
                         </div>
