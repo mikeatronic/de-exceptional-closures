@@ -4,6 +4,7 @@ namespace de_exceptional_closures.ViewModels.Closure
 {
     public class SubmittedViewModel : BaseViewModel
     {
+        public int Id { get; set; }
         public string InstitutionName { get; set; }
         public string Srn { get; set; }
         public DateTime DateFrom { get; set; }
