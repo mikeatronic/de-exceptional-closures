@@ -165,22 +165,6 @@ namespace de_exceptional_closures.Controllers
             // Set Approval type
             model.ApprovalTypeId = await GetApprovalType(model.ReasonTypeId);
 
-            // Reset Covid questions
-            if (model.ReasonTypeId != (int)OtherReasonType.Covid)
-            {
-                model.CovidQ1 = null;
-                model.CovidQ2 = null;
-                model.CovidQ3 = null;
-                model.CovidQ4 = null;
-                model.CovidQ5 = null;
-            }
-
-            // Reset Other text
-            if (model.ReasonTypeId != (int)OtherReasonType.Other)
-            {
-                model.OtherReason = null;
-            }
-
             // Add code when Database is done to actually save data
             var reasonDto = _mapper.Map<ClosureReasonDto>(model);
 

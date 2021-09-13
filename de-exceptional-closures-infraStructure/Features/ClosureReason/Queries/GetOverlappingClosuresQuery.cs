@@ -48,6 +48,8 @@ namespace de_exceptional_closures_infraStructure.Features.ClosureReason.Queries
                     }
                 }
 
+
+
                 // Check multiple days
                 bool overlap = request.ClosureReasonDto.DateFrom <= item.DateTo && item.DateFrom <= request.ClosureReasonDto.DateTo;
 
