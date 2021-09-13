@@ -36,6 +36,15 @@
                         </div>
 
                         <div class="govuk-form-group">
+                            <label asp-for="PhoneNumber" class="govuk-label govuk-label--s"></label>
+                            <span asp-validation-for="PhoneNumber" id="PhoneNumber-error" class="govuk-error-message"></span>
+                            <div id="telephone-number-hint" class="govuk-hint">
+                                Phone number is needed in urgent circumstances
+                            </div>
+                            <input class="govuk-input govuk-input--width-20" asp-for="PhoneNumber" type="tel" autocomplete="tel">
+                        </div>
+
+                        <div class="govuk-form-group">
                             <label asp-for="Password" class="govuk-label govuk-label--s"></label>
                             <span asp-validation-for="Password" id="Password-error" class="govuk-error-message"></span>
                             <input asp-for="Password" class="govuk-input" />

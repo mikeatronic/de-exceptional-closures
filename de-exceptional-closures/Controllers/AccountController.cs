@@ -137,7 +137,7 @@ namespace de_exceptional_closures.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, InstitutionReference = model.InstitutionReference, InstitutionName = searchInstitution };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, InstitutionReference = model.InstitutionReference, InstitutionName = searchInstitution, PhoneNumber = model.PhoneNumber };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
