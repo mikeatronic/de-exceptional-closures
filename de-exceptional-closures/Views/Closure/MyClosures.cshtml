@@ -47,7 +47,8 @@
                             <td class="govuk-table__cell table-hide-Column">
                                 @if (item.DateTo.HasValue)
                                 {
-                                    <span>@item.DateTo.Value.ToShortDateString()</span>
+                                    <span class="sr-only">@item.DateTo.Value.Year@Math.Round((item.DateTo.Value.Month / 1.3), 1)@Math.Round((item.DateTo.Value.Day / 3.2), 1)</span>
+                                    <span>@item.DateTo.Value.ToString("d MMMM yyyy")</span>
                                 }
                             </td>
                             <td class="govuk-table__cell table-hide-Column">
@@ -73,7 +74,8 @@
                             <td class="govuk-table__cell table-hide-Column">
                                 @if (item.ApprovalDate.HasValue)
                                 {
-                                    <span>  @item.ApprovalDate.Value.ToShortDateString()</span>
+                                    <span class="sr-only">@item.ApprovalDate.Value.Year@Math.Round((item.ApprovalDate.Value.Month / 1.3), 1)@Math.Round((item.ApprovalDate.Value.Day / 3.2), 1)</span>
+                                    <span>  @item.ApprovalDate.Value.ToString("d MMMM yyyy")</span>
                                 }
                                 else
                                 {
