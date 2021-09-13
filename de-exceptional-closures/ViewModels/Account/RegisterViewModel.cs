@@ -6,7 +6,7 @@ namespace de_exceptional_closures.ViewModels.Account
     public class RegisterViewModel : BaseViewModel
     {
         [Required(ErrorMessage = "Enter an email")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Enter a valid email")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 

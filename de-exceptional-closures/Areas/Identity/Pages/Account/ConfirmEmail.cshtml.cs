@@ -18,7 +18,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
         public ConfirmEmailModel(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-            TitleTagName = "Confirm email";
+            TitleTagName = "Confirm email address";
         }
 
         [TempData]
