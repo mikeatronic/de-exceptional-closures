@@ -5,34 +5,35 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h2>@ViewData["Title"]</h2>
-<partial name="_StatusMessage" model="Model.StatusMessage" />
-
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-                    <form id="profile-form" method="post">
-                        <div asp-validation-summary="None" class="govuk-error-summary">
-                            <h2 class="govuk-error-summary__title" id="error-summary-title">
-                                There is a problem
-                            </h2>
-                            <div class="govuk-error-summary__body">
-                                <ul class="govuk-list govuk-error-summary__list">
-                                </ul>
-                            </div>
-                        </div>
+            <form id="profile-form" method="post">
 
-                        <div class="govuk-form-group">
-                            <span class="govuk-label govuk-label--s"></span>
-                            <span class="govuk-label">@Model.Username</span>
-                        </div>
-                        <div class="govuk-form-group">
-                            <label asp-for="Input.PhoneNumber" class="govuk-label govuk-label--s"></label>
-                            <input asp-for="Input.PhoneNumber" class="govuk-input" />
-                            <span asp-validation-for="Input.PhoneNumber" id="Input_PhoneNumber-error"  class="govuk-error-message"></span>
-                        </div>
-                        <button id="update-profile-button" type="submit" class="govuk-button" data-module="govuk-button">Save</button>
-                    </form>
+                <h2>@ViewData["Title"]</h2>
+                <partial name="_StatusMessage" model="Model.StatusMessage" />
+
+                <div asp-validation-summary="None" class="govuk-error-summary">
+                    <h2 class="govuk-error-summary__title" id="error-summary-title">
+                        There is a problem
+                    </h2>
+                    <div class="govuk-error-summary__body">
+                        <ul class="govuk-list govuk-error-summary__list">
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="govuk-form-group">
+                    <span class="govuk-label govuk-label--s"></span>
+                    <span class="govuk-label">@Model.Username</span>
+                </div>
+                <div class="govuk-form-group">
+                    <label asp-for="Input.PhoneNumber" class="govuk-label govuk-label--s"></label>
+                    <input asp-for="Input.PhoneNumber" class="govuk-input" />
+                    <span asp-validation-for="Input.PhoneNumber" id="Input_PhoneNumber-error" class="govuk-error-message"></span>
+                </div>
+                <button id="update-profile-button" type="submit" class="govuk-button" data-module="govuk-button">Save</button>
+            </form>
             
 </div>
         </div>

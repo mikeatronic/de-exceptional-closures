@@ -34,7 +34,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Enter a password")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
         }

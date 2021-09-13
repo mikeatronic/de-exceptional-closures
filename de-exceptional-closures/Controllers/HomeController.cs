@@ -88,7 +88,7 @@ namespace de_exceptional_closures.Controllers
                 else
                 {
                     LogAudit("Encountered an error: Please enter in a valid date. DateFrom POST view.");
-                    ModelState.AddModelError("DateFromDay", "Please enter in a valid date");
+                    ModelState.AddModelError("DateFromDay", "The closure date must be a real date");
 
                     model.ReasonTypeList = await GetReasonTypes();
 
@@ -116,7 +116,7 @@ namespace de_exceptional_closures.Controllers
                 else
                 {
                     LogAudit("Encountered an error: Please enter in a valid date. DateFrom POST view.");
-                    ModelState.AddModelError("DateMultipleFromDay", "Please enter in a valid date");
+                    ModelState.AddModelError("DateMultipleFromDay", "The closure date must be a real date");
 
                     model.ReasonTypeList = await GetReasonTypes();
                     return View(model);
@@ -132,7 +132,7 @@ namespace de_exceptional_closures.Controllers
                 else
                 {
                     LogAudit("Encountered an error: Please enter in a valid date. DateTo POST view.");
-                    ModelState.AddModelError("DateToDay", "Please enter in a valid date");
+                    ModelState.AddModelError("DateToDay", "The closure date must be a real date");
                     model.ReasonTypeList = await GetReasonTypes();
                     return View(model);
                 }
@@ -140,7 +140,7 @@ namespace de_exceptional_closures.Controllers
                 // Then Check if Date To is less than Date From
                 if (model.DateTo < model.DateMultipleFrom)
                 {
-                    ModelState.AddModelError("DateToDay", "Date To cannot be less than Date From");
+                    ModelState.AddModelError("DateToDay", "Closure date to cannot be less than date from");
                     model.ReasonTypeList = await GetReasonTypes();
                     return View(model);
                 }
@@ -148,7 +148,7 @@ namespace de_exceptional_closures.Controllers
                 // Then Check if the period is greater than 30 days
                 if ((model.DateTo - model.DateMultipleFrom).Value.TotalDays > 30)
                 {
-                    ModelState.AddModelError("DateToDay", "Closure cannot be more than 30 days maximum");
+                    ModelState.AddModelError("DateToDay", "Closure date cannot be more than 30 days maximum");
                     model.ReasonTypeList = await GetReasonTypes();
                     return View(model);
                 }
@@ -205,13 +205,15 @@ namespace de_exceptional_closures.Controllers
 
             if (getOverlaps.Value)
             {
+                string overLapErrorMessage = "Closure date cannot overlap with other closure requests";
+
                 if (!reasonDto.DateTo.HasValue)
                 {
-                    ModelState.AddModelError("DateFromDay", "This date overlaps with other closures");
+                    ModelState.AddModelError("DateFromDay", overLapErrorMessage);
                 }
                 else
                 {
-                    ModelState.AddModelError("DateMultipleFromDay", "This date overlaps with other closures");
+                    ModelState.AddModelError("DateMultipleFromDay", overLapErrorMessage);
                 }
 
                 model.ReasonTypeList = await GetReasonTypes();

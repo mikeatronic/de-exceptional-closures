@@ -4,12 +4,12 @@ namespace de_exceptional_closures.ViewModels.Account
 {
     public class RegisterViewModel : BaseViewModel
     {
-        [Required(ErrorMessage = "Email is required")]
+        [Required(ErrorMessage = "Enter an email")]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Password is required")]
+        [Required(ErrorMessage = "Enter a password")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -20,7 +20,7 @@ namespace de_exceptional_closures.ViewModels.Account
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        [Required(ErrorMessage = "School reference is required")]
+        [Required(ErrorMessage = "Enter a school reference")]
         [Display(Name = "School reference")]
         public string InstitutionReference { get; set; }
     }
