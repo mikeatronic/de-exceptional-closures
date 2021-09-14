@@ -115,7 +115,7 @@
                                     <input class="govuk-radios__input" id="IsSingleDay-No" name="IsSingleDay" asp-for="IsSingleDay" type="radio" data-aria-controls="conditional-radio-pd2" data-group="dateRadios" value=false>
                                 }
 
-                                <label class="govuk-label govuk-radios__label increase-colour-contrast" for="IsSingleDay-No">
+                                <label class="govuk-label govuk-radios__label" for="IsSingleDay-No">
                                     Continuous days
                                 </label>
                             </div>
@@ -251,7 +251,7 @@
                                 {
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" type="radio" id="@item.Id" asp-for="ReasonTypeId" data-aria-controls="conditional-contact-@item.Id" name="ReasonTypeId" value="@item.Id" />
-                            <label class="govuk-label govuk-radios__label  increase-colour-contrast" for="@item.Id">
+                            <label class="govuk-label govuk-radios__label" for="@item.Id">
                                 @item.Description
                             </label>
                             @if (item.Id == 6)
