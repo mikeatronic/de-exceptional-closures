@@ -221,14 +221,6 @@ namespace de_exceptional_closures.Controllers
             return View(model);
         }
 
-        public IActionResult Test()
-        {
-
-            BaseViewModel model = new BaseViewModel();
-            model.TitleTagName = "";
-            return View(model);
-        }
-
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Cookies()
@@ -401,7 +393,6 @@ namespace de_exceptional_closures.Controllers
 
             return getUser.Result.InstitutionReference;
         }
-
         private async Task<List<ReasonTypeDto>> GetReasonTypes()
         {
             var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
@@ -426,7 +417,6 @@ namespace de_exceptional_closures.Controllers
 
             return dateToCheck;
         }
-
         private void LogAudit(string message)
         {
             string ip = "IPAddress: " + HttpContext.Connection.RemoteIpAddress.ToString() + ", DateTime: " + DateTime.Now;
