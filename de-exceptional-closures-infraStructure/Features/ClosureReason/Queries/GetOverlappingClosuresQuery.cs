@@ -36,7 +36,7 @@ namespace de_exceptional_closures_infraStructure.Features.ClosureReason.Queries
 
             foreach (var item in getAllClosuresDatesForSchool)
             {
-                if (!item.DateTo .HasValue)
+                if (!item.DateTo.HasValue)
                 {
                     item.DateTo = item.DateFrom;
                 }
@@ -47,7 +47,7 @@ namespace de_exceptional_closures_infraStructure.Features.ClosureReason.Queries
                 if (!request.ClosureReasonDto.DateTo.HasValue)
                 {
                     DateTime dateTo;
-                        
+
                     dateTo = new DateTime(request.ClosureReasonDto.DateFrom.Value.Year, request.ClosureReasonDto.DateFrom.Value.Month, request.ClosureReasonDto.DateFrom.Value.Day);
 
                     bool singleOverlap = request.ClosureReasonDto.DateFrom <= item.DateTo && item.DateFrom <= dateTo;
