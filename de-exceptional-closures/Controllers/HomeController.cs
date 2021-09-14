@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using de_exceptional_closures.Config;
 using de_exceptional_closures.Models;
 using de_exceptional_closures.Notify;
 using de_exceptional_closures.ViewModels;
@@ -11,10 +12,14 @@ using de_exceptional_closures_infraStructure.Features.AutoApprovalList.Queries;
 using de_exceptional_closures_infraStructure.Features.ClosureReason.Commands;
 using de_exceptional_closures_infraStructure.Features.ClosureReason.Queries;
 using de_exceptional_closures_infraStructure.Features.ReasonType.Queries;
+using JWT;
+using JWT.Algorithms;
+using JWT.Serializers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -35,9 +40,10 @@ namespace de_exceptional_closures.Controllers
         private readonly IMapper _mapper;
         private readonly INotifyService _notifyService;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IOptions<SchoolsApiConfig> _schoolApiConfig;
         private static readonly NLog.Logger Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
-        public HomeController(IMediator mediator, UserManager<ApplicationUser> userManager, IHttpClientFactory client, IMapper mapper, INotifyService notifyService, SignInManager<ApplicationUser> signInManager)
+        public HomeController(IMediator mediator, UserManager<ApplicationUser> userManager, IHttpClientFactory client, IMapper mapper, INotifyService notifyService, SignInManager<ApplicationUser> signInManager, IOptions<SchoolsApiConfig> schoolApiConfig)
         {
             _mediator = mediator;
             _userManager = userManager;
@@ -45,6 +51,7 @@ namespace de_exceptional_closures.Controllers
             _notifyService = notifyService;
             _mapper = mapper;
             _signInManager = signInManager;
+            _schoolApiConfig = schoolApiConfig;
         }
 
         [HttpGet]
@@ -314,6 +321,8 @@ namespace de_exceptional_closures.Controllers
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + CreateJwtToken());
+
             var result = await client.GetAsync("GetByReferenceNumber?refNumber=" + GetInstitutionRef());
 
             Institution institution;
@@ -332,6 +341,26 @@ namespace de_exceptional_closures.Controllers
             }
 
             return $"{institution.Name}, {institution.address.address1}, {institution.address.townCity}, {institution.address.postCode}";
+        }
+
+        private string CreateJwtToken()
+        {
+            var unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var iat = Math.Round((DateTime.UtcNow - unixEpoch).TotalSeconds);
+
+            var payload = new Dictionary<string, object>
+            {
+                { "iat", iat },
+                { "kid", _schoolApiConfig.Value.kid }
+            };
+
+            IJwtAlgorithm algorithm = new HMACSHA256Algorithm();
+            IJsonSerializer serializer = new JsonNetSerializer();
+            IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
+            IJwtEncoder encoder = new JwtEncoder(algorithm, serializer, urlEncoder);
+
+            var jwtToken = encoder.Encode(payload, _schoolApiConfig.Value.secret);
+            return jwtToken;
         }
 
         private string GetDateFrom(DateTime? dateTo)
