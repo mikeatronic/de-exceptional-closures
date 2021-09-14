@@ -3,7 +3,7 @@
     public class SchoolsApiConfig
     {
         public string ApiUrl { get; set; }
-        public string Kid { get; set; }
-        public string Secret { get; set; }
+        public string kid { get; set; }
+        public string secret { get; set; }
     }
 }
