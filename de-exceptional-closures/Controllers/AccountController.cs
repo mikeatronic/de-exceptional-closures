@@ -1,14 +1,21 @@
-﻿using de_exceptional_closures.Extensions;
+﻿using de_exceptional_closures.Config;
+using de_exceptional_closures.Extensions;
 using de_exceptional_closures.Models;
 using de_exceptional_closures.Notify;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Account;
 using de_exceptional_closures_infraStructure.Data;
+using JWT;
+using JWT.Algorithms;
+using JWT.Serializers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -24,14 +31,16 @@ namespace de_exceptional_closures.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IHttpClientFactory _client;
         public readonly string TitleTagName;
+        private readonly IOptions<SchoolsApiConfig> _schoolApiConfig;
         private static readonly NLog.Logger Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
-        public AccountController(UserManager<ApplicationUser> userManager, INotifyService notifyService, SignInManager<ApplicationUser> signInManager, IHttpClientFactory client)
+        public AccountController(UserManager<ApplicationUser> userManager, INotifyService notifyService, SignInManager<ApplicationUser> signInManager, IHttpClientFactory client, IOptions<SchoolsApiConfig> schoolApiConfig)
         {
             _userManager = userManager;
             _notifyService = notifyService;
             _signInManager = signInManager;
             _client = client;
+            _schoolApiConfig = schoolApiConfig;
             TitleTagName = "Forgot your password?";
         }
 
@@ -199,6 +208,8 @@ namespace de_exceptional_closures.Controllers
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + CreateJwtToken());
+
             var result = await client.GetAsync("GetSchoolByReferenceNumber?refNumber=" + referenceNumber);
 
             if (result.IsSuccessStatusCode)
@@ -215,6 +226,26 @@ namespace de_exceptional_closures.Controllers
             }
 
             return string.Empty;
+        }
+
+        private string CreateJwtToken()
+        {
+            var unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var iat = Math.Round((DateTime.UtcNow - unixEpoch).TotalSeconds);
+
+            var payload = new Dictionary<string, object>
+            {
+                { "iat", iat },
+                { "kid", _schoolApiConfig.Value.Kid }
+            };
+
+            IJwtAlgorithm algorithm = new HMACSHA256Algorithm();
+            IJsonSerializer serializer = new JsonNetSerializer();
+            IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
+            IJwtEncoder encoder = new JwtEncoder(algorithm, serializer, urlEncoder);
+
+            var jwtToken = encoder.Encode(payload, _schoolApiConfig.Value.Secret);
+            return jwtToken;
         }
     }
 }
