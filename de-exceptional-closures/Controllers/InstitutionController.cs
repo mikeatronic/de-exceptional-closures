@@ -17,12 +17,12 @@ namespace de_exceptional_closures.Controllers
 {
     public class InstitutionController : Controller
     {
-        private readonly IHttpClientFactory _pointerClient;
+        private readonly IHttpClientFactory _schoolsClient;
         private readonly IOptions<SchoolsApiConfig> _schoolApiConfig;
 
         public InstitutionController(IHttpClientFactory pointerClient, IOptions<SchoolsApiConfig> schoolApiConfig)
         {
-            _pointerClient = pointerClient;
+            _schoolsClient = pointerClient;
             _schoolApiConfig = schoolApiConfig;
         }
 
@@ -34,7 +34,7 @@ namespace de_exceptional_closures.Controllers
         [HttpGet]
         public async Task<JsonResult> GetInstitutions(string name)
         {
-            var client = _pointerClient.CreateClient("InstitutionsClient");
+            var client = _schoolsClient.CreateClient("InstitutionsClient");
 
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
