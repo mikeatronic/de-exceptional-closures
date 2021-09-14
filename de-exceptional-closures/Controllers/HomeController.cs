@@ -162,27 +162,8 @@ namespace de_exceptional_closures.Controllers
                 }
             }
 
-            // Set Approval type
-            model.ApprovalTypeId = await GetApprovalType(model.ReasonTypeId);
-
-            // Add code when Database is done to actually save data
-            var reasonDto = _mapper.Map<ClosureReasonDto>(model);
-
-            if (reasonDto.ApprovalTypeId == (int)ApprovalType.PreApproved)
-            {
-                reasonDto.Approved = true;
-                reasonDto.ApprovalDate = DateTime.Now;
-            }
-
-            reasonDto.DateFrom = model.DateFrom;
-
-            if (model.DateTo.HasValue)
-            {
-                reasonDto.DateTo = model.DateTo;
-                reasonDto.DateFrom = model.DateMultipleFrom;
-            }
-
-            reasonDto.DateCreated = DateTime.Now;
+            // Map model before committing to the database
+            ClosureReasonDto reasonDto = await MapModelAsync(model);
 
             // Check overlapping dates
             var getOverlaps = await _mediator.Send(new GetOverlappingClosuresQuery() { ClosureReasonDto = reasonDto });
@@ -253,6 +234,49 @@ namespace de_exceptional_closures.Controllers
             LogAudit("opened Cookies GET view");
 
             return View(model);
+        }
+
+        private async Task<ClosureReasonDto> MapModelAsync(IndexViewModel model)
+        {
+            // Set Approval type
+            model.ApprovalTypeId = await GetApprovalType(model.ReasonTypeId);
+
+            // Reset Covid questions
+            if (model.ReasonTypeId != (int)OtherReasonType.Covid)
+            {
+                model.CovidQ1 = null;
+                model.CovidQ2 = null;
+                model.CovidQ3 = null;
+                model.CovidQ4 = null;
+                model.CovidQ5 = null;
+            }
+
+            // Reset Other text
+            if (model.ReasonTypeId != (int)OtherReasonType.Other)
+            {
+                model.OtherReason = null;
+            }
+
+            // Add code when Database is done to actually save data
+            var reasonDto = _mapper.Map<ClosureReasonDto>(model);
+
+            if (reasonDto.ApprovalTypeId == (int)ApprovalType.PreApproved)
+            {
+                reasonDto.Approved = true;
+                reasonDto.ApprovalDate = DateTime.Now;
+            }
+
+            reasonDto.DateFrom = model.DateFrom;
+
+            if (model.DateTo.HasValue)
+            {
+                reasonDto.DateTo = model.DateTo;
+                reasonDto.DateFrom = model.DateMultipleFrom;
+            }
+
+            reasonDto.DateCreated = DateTime.Now;
+
+            return reasonDto;
         }
 
         private async Task SendEmails(int id, int approvalTypeId)
