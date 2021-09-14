@@ -26,7 +26,7 @@ namespace de_exceptional_closures_unitTests.Controllers
               null, null, null, null);
 
             var mockClient = new Mock<IHttpClientFactory>();
-            var mockSchoolsApiConfig = new Mock<IOptions<SchoolsApiConfig>();
+            var mockSchoolsApiConfig = new Mock<IOptions<SchoolsApiConfig>>();
 
             controller = new AccountController(userManagerMock.Object, mockNotify.Object, mockSignInManager.Object, mockClient.Object, mockSchoolsApiConfig.Object);
         }
