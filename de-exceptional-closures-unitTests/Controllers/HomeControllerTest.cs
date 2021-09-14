@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using de_exceptional_closures.Config;
 using de_exceptional_closures.Controllers;
 using de_exceptional_closures.Notify;
 using de_exceptional_closures_infraStructure.Data;
@@ -6,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Moq;
 using System.Net;
 using System.Net.Http;
@@ -31,7 +33,9 @@ namespace de_exceptional_closures_unitTests.Controllers
             userManagerMock.Object, Mock.Of<IHttpContextAccessor>(), Mock.Of<IUserClaimsPrincipalFactory<ApplicationUser>>(),
             null, null, null, null);
 
-            controller = new HomeController(mockMediator.Object, userManagerMock.Object, mockClient.Object, mockMapper.Object, mockNotify.Object, mockSignInManager.Object);
+            var mockSchoolsApiConfig = new Mock<IOptions<SchoolsApiConfig>>();
+
+            controller = new HomeController(mockMediator.Object, userManagerMock.Object, mockClient.Object, mockMapper.Object, mockNotify.Object, mockSignInManager.Object, mockSchoolsApiConfig.Object);
 
             // Setup Context
             controller.ControllerContext = new ControllerContext();
