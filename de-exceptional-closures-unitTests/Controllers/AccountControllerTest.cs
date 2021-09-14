@@ -1,9 +1,11 @@
-﻿using de_exceptional_closures.Controllers;
+﻿using de_exceptional_closures.Config;
+using de_exceptional_closures.Controllers;
 using de_exceptional_closures.Notify;
 using de_exceptional_closures_infraStructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Moq;
 using System.Net.Http;
 using Xunit;
@@ -24,8 +26,9 @@ namespace de_exceptional_closures_unitTests.Controllers
               null, null, null, null);
 
             var mockClient = new Mock<IHttpClientFactory>();
+            var mockSchoolsApiConfig = new Mock<IOptions<SchoolsApiConfig>>();
 
-            controller = new AccountController(userManagerMock.Object, mockNotify.Object, mockSignInManager.Object, mockClient.Object);
+            controller = new AccountController(userManagerMock.Object, mockNotify.Object, mockSignInManager.Object, mockClient.Object, mockSchoolsApiConfig.Object);
         }
 
         [Fact]

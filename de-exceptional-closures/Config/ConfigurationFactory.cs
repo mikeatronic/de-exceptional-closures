@@ -21,8 +21,8 @@ namespace de_exceptional_closures.Config
             return new SchoolsApiConfig
             {
                 ApiUrl = credentials["apiUrl"].Value,
-                Kid = credentials["kid"].Value,
-                Secret = credentials["secret"].Value
+                kid = credentials["kid"].Value,
+                secret = credentials["secret"].Value
             };
         }
 
@@ -36,8 +36,8 @@ namespace de_exceptional_closures.Config
         public static void PopulateSchoolsApiConfig(this SchoolsApiConfig schoolsApiConfig, SchoolsApiConfig sourceSchoolsApiConfig)
         {
             schoolsApiConfig.ApiUrl = sourceSchoolsApiConfig.ApiUrl;
-            schoolsApiConfig.Kid = sourceSchoolsApiConfig.Kid;
-            schoolsApiConfig.Secret = sourceSchoolsApiConfig.Secret;
+            schoolsApiConfig.kid = sourceSchoolsApiConfig.kid;
+            schoolsApiConfig.secret = sourceSchoolsApiConfig.secret;
         }
 
         public static string PopulateLocalConnectionString(IConfiguration configuration)

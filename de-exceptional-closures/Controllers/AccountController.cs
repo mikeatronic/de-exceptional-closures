@@ -236,7 +236,7 @@ namespace de_exceptional_closures.Controllers
             var payload = new Dictionary<string, object>
             {
                 { "iat", iat },
-                { "kid", _schoolApiConfig.Value.Kid }
+                { "kid", _schoolApiConfig.Value.kid }
             };
 
             IJwtAlgorithm algorithm = new HMACSHA256Algorithm();
@@ -244,7 +244,7 @@ namespace de_exceptional_closures.Controllers
             IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
             IJwtEncoder encoder = new JwtEncoder(algorithm, serializer, urlEncoder);
 
-            var jwtToken = encoder.Encode(payload, _schoolApiConfig.Value.Secret);
+            var jwtToken = encoder.Encode(payload, _schoolApiConfig.Value.secret);
             return jwtToken;
         }
     }
