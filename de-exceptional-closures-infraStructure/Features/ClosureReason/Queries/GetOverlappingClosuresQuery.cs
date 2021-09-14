@@ -32,7 +32,7 @@ namespace de_exceptional_closures_infraStructure.Features.ClosureReason.Queries
             if (!validationResult.IsValid)
                 return Result.Fail<bool>(validationResult.ToString());
 
-            var getAllClosuresDatesForSchool = ApplicationDbContext.ClosureReason.AsNoTracking().Where(p => p.Srn == request.ClosureReasonDto.Srn).ToList().OrderByDescending(i => i.DateFrom);
+            var getAllClosuresDatesForSchool = ApplicationDbContext.ClosureReason.AsNoTracking().Where(p => p.Srn == request.ClosureReasonDto.Srn).AsEnumerable().OrderByDescending(i => i.DateFrom);
 
             // Get all single days and covert to Date From and Date to in code
             foreach (var item in getAllClosuresDatesForSchool)
