@@ -6,6 +6,7 @@ using dss_common.Functional;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,26 +32,33 @@ namespace de_exceptional_closures_infraStructure.Features.ClosureReason.Queries
             if (!validationResult.IsValid)
                 return Result.Fail<bool>(validationResult.ToString());
 
-            var getAllClosuresDatesForSchool = ApplicationDbContext.ClosureReason.AsNoTracking().Where(p => p.Srn == request.ClosureReasonDto.Srn).OrderByDescending(i => i.DateFrom);
+            var getAllClosuresDatesForSchool = ApplicationDbContext.ClosureReason.AsNoTracking().Where(p => p.Srn == request.ClosureReasonDto.Srn).ToList().OrderByDescending(i => i.DateFrom);
+
+            // Get all single days and covert to Date From and Date to in code
+            foreach (var item in getAllClosuresDatesForSchool)
+            {
+                if (!item.DateTo.HasValue)
+                {
+                    item.DateTo = item.DateFrom;
+                }
+            }
 
             foreach (var item in getAllClosuresDatesForSchool)
             {
-                // Check single days
                 if (!request.ClosureReasonDto.DateTo.HasValue)
                 {
-                    bool singleOverLap = request.ClosureReasonDto.DateFrom >= item.DateFrom && request.ClosureReasonDto.DateFrom <= item.DateTo;
+                    DateTime dateTo;
 
-                    bool checkSingleDays = request.ClosureReasonDto.DateFrom == item.DateFrom;
+                    dateTo = new DateTime(request.ClosureReasonDto.DateFrom.Value.Year, request.ClosureReasonDto.DateFrom.Value.Month, request.ClosureReasonDto.DateFrom.Value.Day);
 
-                    if (singleOverLap || checkSingleDays)
+                    bool singleOverlap = request.ClosureReasonDto.DateFrom <= item.DateTo && item.DateFrom <= dateTo;
+
+                    if (singleOverlap)
                     {
                         return Result.Ok(true);
                     }
                 }
 
-
-
-                // Check multiple days
                 bool overlap = request.ClosureReasonDto.DateFrom <= item.DateTo && item.DateFrom <= request.ClosureReasonDto.DateTo;
 
                 if (overlap)
