@@ -170,16 +170,13 @@ namespace de_exceptional_closures.Controllers
 
             if (getOverlaps.Value)
             {
-                string overLapErrorMessage = "Closure date cannot overlap with other closure requests";
+                string errorMessage;
+                string key;
 
-                if (!reasonDto.DateTo.HasValue)
-                {
-                    ModelState.AddModelError("DateFromDay", overLapErrorMessage);
-                }
-                else
-                {
-                    ModelState.AddModelError("DateMultipleFromDay", overLapErrorMessage);
-                }
+                // Get which DateFrom this overlap error is for
+                (key, errorMessage) = GetModelStateError(reasonDto.DateTo);
+
+                ModelState.AddModelError(key, errorMessage);
 
                 model.ReasonTypeList = await GetReasonTypes();
                 return View(model);
@@ -221,6 +218,14 @@ namespace de_exceptional_closures.Controllers
 
             LogAudit("opened Accessibility GET view");
 
+            return View(model);
+        }
+
+        public IActionResult Test()
+        {
+
+            BaseViewModel model = new BaseViewModel();
+            model.TitleTagName = "";
             return View(model);
         }
 
@@ -277,6 +282,23 @@ namespace de_exceptional_closures.Controllers
             reasonDto.DateCreated = DateTime.Now;
 
             return reasonDto;
+        }
+
+        private (string, string) GetModelStateError(DateTime? dateTo)
+        {
+            string overLapErrorMessage = "Closure date cannot overlap with other closure requests";
+            string key;
+
+            if (!dateTo.HasValue)
+            {
+                key = "DateFromDay";
+            }
+            else
+            {
+                key = "DateMultipleFromDay";
+            }
+
+            return (key, overLapErrorMessage);
         }
 
         private async Task SendEmails(int id, int approvalTypeId)
@@ -386,7 +408,6 @@ namespace de_exceptional_closures.Controllers
 
             return getReasons.Value;
         }
-
         private async Task<int> GetApprovalType(int id)
         {
             var getReasons = await _mediator.Send(new GetAllReasonTypesQuery());
