@@ -163,7 +163,7 @@ namespace de_exceptional_closures.Controllers
             }
 
             // Map model before committing to the database
-            ClosureReasonDto reasonDto =  await MapModelAsync(model);
+            ClosureReasonDto reasonDto = await MapModelAsync(model);
 
             // Check overlapping dates
             var getOverlaps = await _mediator.Send(new GetOverlappingClosuresQuery() { ClosureReasonDto = reasonDto });

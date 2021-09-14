@@ -3,9 +3,7 @@ using de_exceptional_closures.Helpers;
 using de_exceptional_closures.ViewModels;
 using de_exceptional_closures.ViewModels.Closure;
 using de_exceptional_closures.ViewModels.Home;
-using de_exceptional_closures_core.Common;
 using de_exceptional_closures_core.Dtos;
-using System;
 
 namespace de_exceptional_closures.Mapping
 {
