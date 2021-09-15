@@ -42,7 +42,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
         {
 
             [Required(ErrorMessage = "Enter an email")]
-            [EmailAddress]
+            [EmailAddress(ErrorMessage = "Enter a valid email")]
             public string Email { get; set; }
 
             [Required(ErrorMessage = "Enter a password")]
