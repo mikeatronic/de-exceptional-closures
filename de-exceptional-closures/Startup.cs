@@ -20,6 +20,8 @@ using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using static de_exceptional_closures_infraStructure.Behaviours.ExceptionBehaviour;
 
@@ -73,8 +75,14 @@ namespace de_exceptional_closures
                 GlobalDiagnosticsContext.Set("DefaultNlogConnection", ConfigurationFactory.PopulateConnectionString(adminApplication));
             }
 
-            // Notify Config
-            NotifyConfig = ConfigurationFactory.CreateNotifyConfig(CloudFoundryServicesOptions
+            // Bypass Proxy if local
+            if (bool.Parse(Configuration["RequiresProxy"]))
+            {
+                // Needed to bypass proxy
+                HttpClient.DefaultProxy.Credentials = CredentialCache.DefaultNetworkCredentials;
+            }
+                // Notify Config
+                NotifyConfig = ConfigurationFactory.CreateNotifyConfig(CloudFoundryServicesOptions
                .Services["user-provided"]
                .First(s => s.Name == "de-exceptional-closures-notify").Credentials["Credentials"]);
 
