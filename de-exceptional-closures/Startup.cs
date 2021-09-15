@@ -75,16 +75,16 @@ namespace de_exceptional_closures
                 GlobalDiagnosticsContext.Set("DefaultNlogConnection", ConfigurationFactory.PopulateConnectionString(adminApplication));
             }
 
-            // Bypass Proxy if local
-            if (bool.Parse(Configuration["RequiresProxy"]))
+            if (currentEnvironment == "Development" && bool.Parse(Configuration["RequiresProxy"]))
             {
-                // Needed to bypass proxy
-                HttpClient.DefaultProxy.Credentials = CredentialCache.DefaultNetworkCredentials;
+                    // Needed to bypass proxy
+                    HttpClient.DefaultProxy.Credentials = CredentialCache.DefaultNetworkCredentials;
             }
-                // Notify Config
-                NotifyConfig = ConfigurationFactory.CreateNotifyConfig(CloudFoundryServicesOptions
-               .Services["user-provided"]
-               .First(s => s.Name == "de-exceptional-closures-notify").Credentials["Credentials"]);
+ 
+            // Notify Config
+            NotifyConfig = ConfigurationFactory.CreateNotifyConfig(CloudFoundryServicesOptions
+           .Services["user-provided"]
+           .First(s => s.Name == "de-exceptional-closures-notify").Credentials["Credentials"]);
 
             services.Configure<NotifyConfig>(nc => nc.PopulateNotifyConfig(NotifyConfig));
 
