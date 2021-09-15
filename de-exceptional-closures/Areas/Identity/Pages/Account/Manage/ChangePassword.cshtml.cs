@@ -89,7 +89,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
                 {
                     if (error.Code == "PasswordMismatch")
                     {
-                        ModelState.AddModelError("Input.OldPassword", error.Description);
+                        ModelState.AddModelError("Input.OldPassword", "Enter a valid password");
                     }
                     else
                     {
