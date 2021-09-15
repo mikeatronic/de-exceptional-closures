@@ -11,6 +11,10 @@
 
 Application to record exceptional closures of schools in Northern Ireland.
 
+# Diagram
+
+![ExceptionalClosures](https://user-images.githubusercontent.com/66303816/133393066-1d51d23b-59f4-45cc-bda2-d061f787af5a.jpg)
+
 ## Contents of this file
 
 - [Contributing](#contributing)
