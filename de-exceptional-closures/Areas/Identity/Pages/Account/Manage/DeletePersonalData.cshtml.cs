@@ -65,7 +65,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
 
             if (RequirePassword && !await _userManager.CheckPasswordAsync(user, Input.Password))
             {
-                ModelState.AddModelError("Input.Password", "Incorrect password.");
+                ModelState.AddModelError("Input.Password", "Enter a valid password");
                 return Page();
             }
 

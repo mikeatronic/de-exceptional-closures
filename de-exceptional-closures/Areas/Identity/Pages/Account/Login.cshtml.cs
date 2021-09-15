@@ -41,11 +41,11 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account
         public class InputModel : BaseViewModel
         {
 
-            [Required]
+            [Required(ErrorMessage = "Enter an email")]
             [EmailAddress]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Enter a password")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 

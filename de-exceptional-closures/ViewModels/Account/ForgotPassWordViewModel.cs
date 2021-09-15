@@ -5,7 +5,7 @@ namespace de_exceptional_closures.ViewModels.Account
     public class ForgotPassWordViewModel : BaseViewModel
     {
         [Required(ErrorMessage = "Enter an email")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Enter a valid email")]
         public string Email { get; set; }
     }
 }

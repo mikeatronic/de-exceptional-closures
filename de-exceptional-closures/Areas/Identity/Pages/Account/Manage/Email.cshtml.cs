@@ -42,7 +42,7 @@ namespace de_exceptional_closures.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Required(ErrorMessage = "Enter a new email")]
-            [EmailAddress]
+            [EmailAddress(ErrorMessage = "Enter a valid email")]
             [Display(Name = "New email")]
             public string NewEmail { get; set; }
         }
