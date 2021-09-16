@@ -61,7 +61,7 @@ namespace de_exceptional_closures.Controllers
         [RateLimiting(Name = "ForgotPassword", Minutes = 1)]
         public async Task<IActionResult> ForgotPassword(ForgotPassWordViewModel model)
         {
-            model.TitleTagName = "Forgot password";
+            model.TitleTagName = "Reset password";
 
             if (ModelState.IsValid)
             {
