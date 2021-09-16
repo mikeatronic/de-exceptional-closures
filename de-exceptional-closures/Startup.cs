@@ -20,6 +20,8 @@ using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using static de_exceptional_closures_infraStructure.Behaviours.ExceptionBehaviour;
 
@@ -73,10 +75,16 @@ namespace de_exceptional_closures
                 GlobalDiagnosticsContext.Set("DefaultNlogConnection", ConfigurationFactory.PopulateConnectionString(adminApplication));
             }
 
+            if (currentEnvironment == "Development" && bool.Parse(Configuration["RequiresProxy"]))
+            {
+                    // Needed to bypass proxy
+                    HttpClient.DefaultProxy.Credentials = CredentialCache.DefaultNetworkCredentials;
+            }
+ 
             // Notify Config
             NotifyConfig = ConfigurationFactory.CreateNotifyConfig(CloudFoundryServicesOptions
-               .Services["user-provided"]
-               .First(s => s.Name == "de-exceptional-closures-notify").Credentials["Credentials"]);
+           .Services["user-provided"]
+           .First(s => s.Name == "de-exceptional-closures-notify").Credentials["Credentials"]);
 
             services.Configure<NotifyConfig>(nc => nc.PopulateNotifyConfig(NotifyConfig));
 
@@ -139,6 +147,25 @@ namespace de_exceptional_closures
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // Added for Zap recommendation - X-Frame-Options Header Not Set
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+                context.Response.Headers.Add("X-XSS-Protection", "1; mode = block");
+
+                context.Response.GetTypedHeaders().CacheControl =
+                           new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+                           {
+                               NoCache = true,
+                               NoStore = true,
+                           };
+                context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.Pragma] = new string[] { "no-cache" };
+                context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.CacheControl] = new string[] { "no-store, no-cache, must-revalidate, max-age=0" };
+
+                await next();
+            });
+
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedProto
