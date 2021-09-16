@@ -49,7 +49,7 @@ namespace de_exceptional_closures.Controllers
         public IActionResult ForgotPassword()
         {
             ForgotPassWordViewModel model = new ForgotPassWordViewModel();
-            model.TitleTagName = "Forgot password";
+            model.TitleTagName = "Reset password";
 
             Logger.Info("opened Forgot your password GET view");
 
@@ -111,7 +111,7 @@ namespace de_exceptional_closures.Controllers
         public IActionResult Register()
         {
             RegisterViewModel model = new RegisterViewModel();
-            model.TitleTagName = "Register";
+            model.TitleTagName = "Register new user";
 
             Logger.Info("opened Register GET view");
 
