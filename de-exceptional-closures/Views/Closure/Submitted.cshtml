@@ -11,9 +11,6 @@
                 <h1 class="govuk-panel__title">
                     Exceptional closure submitted
                 </h1>
-                <div class="govuk-panel__body">
-                    Your reference number<br><strong>@Model.Id</strong>
-                </div>
             </div>
 
             <p class="govuk-body">We have sent you a confirmation email.</p>
@@ -34,146 +31,9 @@
                 </p>
             }
 
-            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
-                <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Approval type
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @if (Model.ApprovalTypeId == 1)
-                    {
-                        <strong class="govuk-tag">Pre-approved</strong>
-                    }
-                    else
-                    {
-                        <strong class="govuk-tag">Approval required</strong>
-                    }
-                </dd>
-        </div>
-
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                School
-            </dt>
-            <dd class="govuk-summary-list__value">
-                @Html.DisplayFor(model => model.InstitutionName)
-            </dd>
-        </div>
-
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                Date from
-            </dt>
-            <dd class="govuk-summary-list__value">
-                @Model.DateFrom.ToString("d MMMM yyyy")
-            </dd>
-        </div>
-
-        @if (Model.DateTo.HasValue)
-        {
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Date to
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Model.DateTo.Value.ToString("d MMMM yyyy")
-                </dd>
+            <div class="govuk-button-group">
+                <a href="@Url.Action("MyClosures", "Closure")" class="govuk-button govuk-button--secondary"> Go to my closures</a>
             </div>
-        }
-
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                Reason
-            </dt>
-            <dd class="govuk-summary-list__value">
-                @Html.DisplayFor(model => model.ReasonType)
-            </dd>
-        </div>
-
-        @if (Model.OtherReason != null)
-        {
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Other reason
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Html.DisplayFor(model => model.OtherReason)
-                </dd>
-            </div>
-        }
-
-        @if (Model.CovidQ1 != null)
-        {
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    How many cases have been recorded?
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Html.DisplayFor(model => model.CovidQ1)
-                </dd>
-            </div>
-        }
-
-        @if (Model.CovidQ2 != null)
-        {
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Why did the whole school need to be closed?
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Html.DisplayFor(model => model.CovidQ2)
-                </dd>
-            </div>
-        }
-
-        @if (Model.CovidQ3 != null)
-        {
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Was an alternative considered in line with any contingency plans?
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Html.DisplayFor(model => model.CovidQ3)
-                </dd>
-            </div>
-        }
-
-        @if (Model.CovidQ4 != null)
-        {
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Did PHA advise that the school needed to close for deep clean?
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Html.DisplayFor(model => model.CovidQ4)
-                </dd>
-            </div>
-        }
-
-        @if (Model.CovidQ5 != null)
-        {
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Provide details of the closure
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Html.DisplayFor(model => model.CovidQ5)
-                </dd>
-            </div>
-        }
-
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                Date created
-            </dt>
-            <dd class="govuk-summary-list__value">
-                @Model.DateCreated.ToString("d MMMM yyyy")
-            </dd>
-        </div>
-        </dl>
-
-        <div class="govuk-button-group">
-            <a href="@Url.Action("MyClosures", "Closure")" class="govuk-button govuk-button--secondary"> Go to my closures</a>
         </div>
        </div>
 </main>
